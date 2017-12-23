@@ -41,19 +41,24 @@
             this.smnuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuRename = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuProperty = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblSizeChanger = new System.Windows.Forms.Label();
             this.cmnuItem.SuspendLayout();
             this.SuspendLayout();
             // 
             // tvwFiles
             // 
-            this.tvwFiles.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvwFiles.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tvwFiles.Dock = System.Windows.Forms.DockStyle.Right;
             this.tvwFiles.HideSelection = false;
             this.tvwFiles.LabelEdit = true;
-            this.tvwFiles.Location = new System.Drawing.Point(0, 0);
+            this.tvwFiles.Location = new System.Drawing.Point(5, 0);
+            this.tvwFiles.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.tvwFiles.MinimumSize = new System.Drawing.Size(100, 4);
             this.tvwFiles.Name = "tvwFiles";
             this.tvwFiles.PathSeparator = "/";
-            this.tvwFiles.Size = new System.Drawing.Size(298, 467);
+            this.tvwFiles.Size = new System.Drawing.Size(293, 467);
             this.tvwFiles.TabIndex = 0;
+            this.tvwFiles.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvwFiles_AfterLabelEdit);
             this.tvwFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvwFiles_NodeMouseClick);
             // 
             // cmnuItem
@@ -138,17 +143,39 @@
             // smnuProperty
             // 
             this.smnuProperty.Name = "smnuProperty";
+            this.smnuProperty.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.smnuProperty.Size = new System.Drawing.Size(145, 22);
             this.smnuProperty.Text = "属性";
+            this.smnuProperty.Click += new System.EventHandler(this.smnuProperty_Click);
+            // 
+            // lblSizeChanger
+            // 
+            this.lblSizeChanger.BackColor = System.Drawing.Color.Aqua;
+            this.lblSizeChanger.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.lblSizeChanger.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblSizeChanger.Location = new System.Drawing.Point(0, 0);
+            this.lblSizeChanger.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.lblSizeChanger.Name = "lblSizeChanger";
+            this.lblSizeChanger.Size = new System.Drawing.Size(5, 467);
+            this.lblSizeChanger.TabIndex = 1;
+            this.lblSizeChanger.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblSizeChanger_MouseDown);
+            this.lblSizeChanger.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lblSizeChanger_MouseMove);
+            this.lblSizeChanger.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblSizeChanger_MouseUp);
             // 
             // FileTree
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(298, 467);
+            this.ControlBox = false;
+            this.Controls.Add(this.lblSizeChanger);
             this.Controls.Add(this.tvwFiles);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.Name = "FileTree";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FileTree_KeyDown);
             this.cmnuItem.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -168,5 +195,6 @@
         private System.Windows.Forms.ToolStripMenuItem smnuRename;
         private System.Windows.Forms.ToolStripMenuItem smnuProperty;
         private System.Windows.Forms.ToolStripMenuItem smnuDelete;
+        private System.Windows.Forms.Label lblSizeChanger;
     }
 }
