@@ -38,8 +38,11 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,6 +51,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Forms\FileTree.cs">
@@ -106,17 +112,19 @@
     <Folder Include="DataClasses\Recipes\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\FileTree\Advancement.PNG" />
-    <Content Include="Resources\FileTree\Directory.PNG" />
-    <Content Include="Resources\FileTree\Function.PNG" />
-    <Content Include="Resources\FileTree\Json.PNG" />
-    <Content Include="Resources\FileTree\LootTable.PNG" />
-    <Content Include="Resources\FileTree\Misc.PNG" />
-    <Content Include="Resources\FileTree\Recipe.PNG" />
-    <Content Include="Resources\FileTree\Setting.PNG" />
-    <Content Include="Resources\FileTree\Structure.PNG" />
-    <Content Include="Resources\FileTree\Picture.PNG" />
-    <Content Include="Resources\FileTree\Namespace.PNG" />
+    <Content Include="Resources\FileTree\Advancements.png" />
+    <Content Include="Resources\FileTree\Directory.png" />
+    <Content Include="Resources\FileTree\Functions.png" />
+    <Content Include="Resources\FileTree\Json.png" />
+    <Content Include="Resources\FileTree\LootTables.png" />
+    <Content Include="Resources\FileTree\Misc.png" />
+    <Content Include="Resources\FileTree\Recipes.png" />
+    <Content Include="Resources\FileTree\Setting.png" />
+    <Content Include="Resources\FileTree\Structures.png" />
+    <Content Include="Resources\FileTree\Picture.png" />
+    <Content Include="Resources\FileTree\Namespace.png" />
+    <Content Include="Resources\FileTree\Function.png" />
+    <Content Include="Resources\FileTree\Tags.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

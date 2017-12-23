@@ -63,9 +63,9 @@ namespace DataMaker {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap Advancement {
+        internal static System.Drawing.Bitmap Advancements {
             get {
-                object obj = ResourceManager.GetObject("Advancement", resourceCulture);
+                object obj = ResourceManager.GetObject("Advancements", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,6 +93,16 @@ namespace DataMaker {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Functions {
+            get {
+                object obj = ResourceManager.GetObject("Functions", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap Json {
             get {
                 object obj = ResourceManager.GetObject("Json", resourceCulture);
@@ -103,9 +113,9 @@ namespace DataMaker {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap LootTable {
+        internal static System.Drawing.Bitmap LootTables {
             get {
-                object obj = ResourceManager.GetObject("LootTable", resourceCulture);
+                object obj = ResourceManager.GetObject("LootTables", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +153,9 @@ namespace DataMaker {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap Recipe {
+        internal static System.Drawing.Bitmap Recipes {
             get {
-                object obj = ResourceManager.GetObject("Recipe", resourceCulture);
+                object obj = ResourceManager.GetObject("Recipes", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +173,19 @@ namespace DataMaker {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap Structure {
+        internal static System.Drawing.Bitmap Structures {
             get {
-                object obj = ResourceManager.GetObject("Structure", resourceCulture);
+                object obj = ResourceManager.GetObject("Structures", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap Tags {
+            get {
+                object obj = ResourceManager.GetObject("Tags", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

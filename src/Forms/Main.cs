@@ -18,6 +18,11 @@ namespace DataMaker
 
     public partial class Main : Form
     {
+        public static string GetText(string key)
+        {
+            return key;
+        }
+
         public Main()
         {
             InitializeComponent();
