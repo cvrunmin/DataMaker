@@ -25,13 +25,16 @@ namespace DataMaker
         TagsRoot,
         Tags,
         Directory,
+        JsonFile,
+        McFunctionFile,
+        McMetaFile,
         File
     }
 
     public partial class FileTree : Form
     {
         /// <summary>
-        /// 右键选中的节点
+        /// 数据包路径
         /// </summary>
         private string packPath;
 
@@ -39,8 +42,9 @@ namespace DataMaker
         /// 通过节点获取该节点对应的文件路径
         /// </summary>
         /// <param name="node">指定节点</param>
+        /// <param name="isSuccessful">获取是否成功</param>
         /// <returns>文件路径</returns>
-        private string GetPathFromNode(TreeNode node)
+        private string GetPathFromNode(TreeNode node, out bool isSuccessful)
         {
             var result = node.FullPath;
 
@@ -52,10 +56,40 @@ namespace DataMaker
             result = result.Replace("/" + Lang("标签"), "/tags");
             result = result.Replace("/" + Lang("战利品表"), "/loot_tables");
             result = result.Replace(Lang("/配方/"), "/recipes/");
-            result = result.Replace(Lang("/设置"), "/pack.mcmeta");
+            result = result.Replace(Lang("/设置"), "/pack");
             result = result.Replace(Lang("/"), "\\");
 
+            switch ((NodeType)node.Tag)
+            {
+                case NodeType.JsonFile:
+                    result = result.Insert(result.Length, ".json");
+                    break;
+                case NodeType.McFunctionFile:
+                    result = result.Insert(result.Length, ".mcfunction");
+                    break;
+                case NodeType.McMetaFile:
+                    result = result.Insert(result.Length, ".mcmeta");
+                    break;
+                default:
+                    break;
+            }
+
+            if (Directory.Exists(result))
+                isSuccessful = true;
+            else
+                isSuccessful = false;
+
             return result;
+        }
+
+        /// <summary>
+        /// 通过节点获取该节点对应的文件路径
+        /// </summary>
+        /// <param name="node">指定节点</param>
+        /// <returns>文件路径</returns>
+        private string GetPathFromNode(TreeNode node)
+        {
+            return GetPathFromNode(node, out var isSuccessful);
         }
 
         #region 启动时初始化
@@ -96,8 +130,8 @@ namespace DataMaker
         {
             tvwFiles.Nodes.Clear();
             var rootNode = tvwFiles.Nodes.Add("dataPack");
-            InitializeNode(rootNode, 0, false);
-            LoadDirectory(path, rootNode, 0);
+            InitializeNode(rootNode, false);
+            LoadDirectory(path, rootNode);
         }
 
         /// <summary>
@@ -105,8 +139,8 @@ namespace DataMaker
         /// </summary>
         /// <param name="path">指定目录</param>
         /// <param name="node">该目录对应的节点</param>
-        /// <param name="layers">指定节点的层数</param>
-        private void LoadDirectory(string path, TreeNode node, int layers)
+        /// 
+        private void LoadDirectory(string path, TreeNode node)
         {
             // 读取目录
             var dirs = Directory.GetDirectories(path);
@@ -114,9 +148,9 @@ namespace DataMaker
             {
                 var dirName = dir.LastIndexOf(@"\") + 1;
                 var dirNode = node.Nodes.Add(dir.Remove(0, dirName));
-                InitializeNode(dirNode, layers + 1, false);
+                InitializeNode(dirNode, false);
                 // 遍历
-                LoadDirectory(dir, dirNode, layers + 1);
+                LoadDirectory(dir, dirNode);
             }
 
             // 读取文件
@@ -125,7 +159,7 @@ namespace DataMaker
             {
                 var fileName = file.Remove(0, file.LastIndexOf(@"\") + 1);
                 var fileNode = node.Nodes.Add(fileName);
-                InitializeNode(fileNode, layers + 1, true);
+                InitializeNode(fileNode, true);
             }
         }
 
@@ -135,24 +169,34 @@ namespace DataMaker
         /// <param name="node">指定节点</param>
         /// <param name="layers">指定节点的层数</param>
         /// <param name="isFile">指示是否是一个文件</param>
-        private void InitializeNode(TreeNode node, int layers, bool isFile)
+        private void InitializeNode(TreeNode node, bool isFile)
         {
             if (isFile)
             {
                 if (node.Text.EndsWith(".json"))
+                {
                     node.ImageKey = node.SelectedImageKey = "Json";
+                    node.Tag = NodeType.JsonFile;
+                    node.Text = node.Text.Remove(node.Text.Length - ".json".Length);
+                }
                 else if (node.Text.EndsWith(".mcfunction"))
+                {
                     node.ImageKey = node.SelectedImageKey = "Function";
-                else if (node.Text.Equals("pack.mcmeta"))
+                    node.Tag = NodeType.McFunctionFile;
+                    node.Text = node.Text.Remove(node.Text.Length - ".mcfunction".Length);
+                }
+                else if (node.Level == 1 && node.Text.Equals("pack.mcmeta"))
                 {
                     node.ImageKey = node.SelectedImageKey = "Setting";
+                    node.Tag = NodeType.McMetaFile;
                     node.Text = Lang("设置");
                 }
-                node.Tag = NodeType.File;
+                else
+                    node.Tag = NodeType.File;
             }
             else
             {
-                switch (layers)
+                switch (node.Level)
                 {
                     case 0:
                         // 根目录
@@ -226,7 +270,6 @@ namespace DataMaker
                     default:
                         // 其他层级 跟随父级目录的属性
                         node.ImageKey = node.SelectedImageKey = "Directory";
-
                         switch ((NodeType)node.Parent.Tag)
                         {
                             case NodeType.AdvancementsRoot:
@@ -258,7 +301,6 @@ namespace DataMaker
                                 node.Tag = NodeType.Directory;
                                 break;
                         }
-
                         break;
                 }
             }
@@ -316,82 +358,84 @@ namespace DataMaker
             smnuPaste.Text = Lang("粘贴");
             smnuProperty.Text = Lang("属性");
             smnuRename.Text = Lang("重命名");
-            if (tvwFiles.SelectedNode.IsExpanded)
-                smnuOpen.Text = Lang("收起");
-            else
-                smnuOpen.Text = Lang("展开");
-
-            switch ((NodeType)tvwFiles.SelectedNode.Tag)
+            if (tvwFiles.SelectedNode != null)
             {
-                case NodeType.DataPack:
-                    smnuDelete.Enabled = false;
-                    smnuAdd.Enabled = false;
-                    smnuRename.Enabled = false;
-                    break;
-                case NodeType.Data:
-                    smnuAddDirectory.Text = Lang("命名空间");
-                    smnuDelete.Enabled = false;
-                    smnuAddFile.Enabled = false;
-                    smnuRename.Enabled = false;
-                    break;
-                case NodeType.Namespace:
-                    smnuAddFile.Enabled = false;
-                    break;
-                case NodeType.Advancements:
-                    smnuAddFile.Text = Lang("进度文件");
-                    break;
-                case NodeType.Functions:
-                    smnuAddFile.Text = Lang("函数文件");
-                    break;
-                case NodeType.LootTables:
-                    smnuAddFile.Text = Lang("战利品表文件");
-                    break;
-                case NodeType.Recipes:
-                    smnuAddFile.Text = Lang("配方文件");
-                    break;
-                case NodeType.Structures:
-                    smnuAddFile.Text = Lang("结构文件");
-                    break;
-                case NodeType.Tags:
-                    smnuAddFile.Text = Lang("标签文件");
-                    break;
-                case NodeType.AdvancementsRoot:
-                    smnuAddFile.Text = Lang("进度文件");
-                    smnuDelete.Enabled = false;
-                    smnuRename.Enabled = false;
-                    break;
-                case NodeType.FunctionsRoot:
-                    smnuAddFile.Text = Lang("函数文件");
-                    smnuDelete.Enabled = false;
-                    smnuRename.Enabled = false;
-                    break;
-                case NodeType.LootTablesRoot:
-                    smnuAddFile.Text = Lang("战利品表文件");
-                    smnuDelete.Enabled = false;
-                    smnuRename.Enabled = false;
-                    break;
-                case NodeType.RecipesRoot:
-                    smnuAddFile.Text = Lang("配方文件");
-                    smnuDelete.Enabled = false;
-                    smnuRename.Enabled = false;
-                    break;
-                case NodeType.StructuresRoot:
-                    smnuAddFile.Text = Lang("结构文件");
-                    smnuDelete.Enabled = false;
-                    smnuRename.Enabled = false;
-                    break;
-                case NodeType.TagsRoot:
-                    smnuAddFile.Text = Lang("标签文件");
-                    smnuDelete.Enabled = false;
-                    smnuRename.Enabled = false;
-                    break;
-                case NodeType.Directory:
-                    break;
-                case NodeType.File:
-                    smnuOpen.Text = Lang("编辑");
-                    break;
-                default:
-                    break;
+                if (tvwFiles.SelectedNode.IsExpanded)
+                    smnuOpen.Text = Lang("收起");
+                else
+                    smnuOpen.Text = Lang("展开");
+                switch ((NodeType)tvwFiles.SelectedNode.Tag)
+                {
+                    case NodeType.DataPack:
+                        smnuDelete.Enabled = false;
+                        smnuAdd.Enabled = false;
+                        smnuRename.Enabled = false;
+                        break;
+                    case NodeType.Data:
+                        smnuAddDirectory.Text = Lang("命名空间");
+                        smnuDelete.Enabled = false;
+                        smnuAddFile.Enabled = false;
+                        smnuRename.Enabled = false;
+                        break;
+                    case NodeType.Namespace:
+                        smnuAddFile.Enabled = false;
+                        break;
+                    case NodeType.Advancements:
+                        smnuAddFile.Text = Lang("进度文件");
+                        break;
+                    case NodeType.Functions:
+                        smnuAddFile.Text = Lang("函数文件");
+                        break;
+                    case NodeType.LootTables:
+                        smnuAddFile.Text = Lang("战利品表文件");
+                        break;
+                    case NodeType.Recipes:
+                        smnuAddFile.Text = Lang("配方文件");
+                        break;
+                    case NodeType.Structures:
+                        smnuAddFile.Text = Lang("结构文件");
+                        break;
+                    case NodeType.Tags:
+                        smnuAddFile.Text = Lang("标签文件");
+                        break;
+                    case NodeType.AdvancementsRoot:
+                        smnuAddFile.Text = Lang("进度文件");
+                        smnuDelete.Enabled = false;
+                        smnuRename.Enabled = false;
+                        break;
+                    case NodeType.FunctionsRoot:
+                        smnuAddFile.Text = Lang("函数文件");
+                        smnuDelete.Enabled = false;
+                        smnuRename.Enabled = false;
+                        break;
+                    case NodeType.LootTablesRoot:
+                        smnuAddFile.Text = Lang("战利品表文件");
+                        smnuDelete.Enabled = false;
+                        smnuRename.Enabled = false;
+                        break;
+                    case NodeType.RecipesRoot:
+                        smnuAddFile.Text = Lang("配方文件");
+                        smnuDelete.Enabled = false;
+                        smnuRename.Enabled = false;
+                        break;
+                    case NodeType.StructuresRoot:
+                        smnuAddFile.Text = Lang("结构文件");
+                        smnuDelete.Enabled = false;
+                        smnuRename.Enabled = false;
+                        break;
+                    case NodeType.TagsRoot:
+                        smnuAddFile.Text = Lang("标签文件");
+                        smnuDelete.Enabled = false;
+                        smnuRename.Enabled = false;
+                        break;
+                    case NodeType.Directory:
+                        break;
+                    case NodeType.File:
+                        smnuOpen.Text = Lang("编辑");
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -434,11 +478,9 @@ namespace DataMaker
             }
         }
 
-        private void smnuOpen_Click(object sender, EventArgs e)
-        {
-            OpenNode();
-        }
-
+        /// <summary>
+        /// 展开/编辑一个节点
+        /// </summary>
         private void OpenNode()
         {
             if (smnuOpen.Enabled)
@@ -452,12 +494,10 @@ namespace DataMaker
                 }
             }
         }
-        
-        private void smnuRename_Click(object sender, EventArgs e)
-        {
-            RenameNode();
-        }
 
+        /// <summary>
+        /// 重命名一个节点
+        /// </summary>
         private void RenameNode()
         {
             if (smnuRename.Enabled)
@@ -469,25 +509,9 @@ namespace DataMaker
             }
         }
 
-        private void tvwFiles_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            if (e.Label != null)
-            {
-                var pattern = @"[^(a-z0-9\-_\.)]";
-
-                if (Regex.IsMatch(e.Label, pattern))
-                {
-                    MessageBox.Show(Lang("文件名只能包含 abcdefghijklmnopqrstuvwxyz0123456789-_. "));
-                    e.CancelEdit = true;
-                }
-            }
-        }
-
-        private void smnuProperty_Click(object sender, EventArgs e)
-        {
-            SeeProperty();
-        }
-
+        /// <summary>
+        /// 查看节点属性
+        /// </summary>
         private void SeeProperty()
         {
             if (smnuProperty.Enabled)
@@ -502,6 +526,243 @@ namespace DataMaker
                 }
             }
         }
+
+        /// <summary>
+        /// 在节点下新建文件夹
+        /// </summary>
+        private void AddDirectory()
+        {
+            if (smnuAddDirectory.Enabled)
+            {
+                if (tvwFiles.SelectedNode != null)
+                {
+                    TreeNode node;
+                    if ((NodeType)tvwFiles.SelectedNode.Tag == NodeType.File)
+                    {
+                        node = tvwFiles.SelectedNode.Parent.Nodes.Add("new_folder_" + Environment.TickCount);
+                        tvwFiles.SelectedNode.Parent.Expand();
+                    }
+                    else
+                    {
+                        node = tvwFiles.SelectedNode.Nodes.Add("new_folder_" + Environment.TickCount);
+                        tvwFiles.SelectedNode.Expand();
+                    }
+
+                    InitializeNode(node, false);
+                    Directory.CreateDirectory(GetPathFromNode(node));
+                    node.BeginEdit();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 在节点下新建文件
+        /// </summary>
+        private void AddFile()
+        {
+            if (smnuAddFile.Enabled)
+            {
+                if (tvwFiles.SelectedNode != null)
+                {
+                    TreeNode node;
+                    if ((NodeType)tvwFiles.SelectedNode.Tag == NodeType.File)
+                    {
+                        node = tvwFiles.SelectedNode.Parent.Nodes.Add("new_file_" + Environment.TickCount);
+                        tvwFiles.SelectedNode.Parent.Expand();
+                    }
+                    else
+                    {
+                        node = tvwFiles.SelectedNode.Nodes.Add("new_file_" + Environment.TickCount);
+                        tvwFiles.SelectedNode.Expand();
+                    }
+
+                    InitializeNode(node, true);
+                    File.WriteAllText(GetPathFromNode(node), "");
+                    node.BeginEdit();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 删除节点
+        /// </summary>
+        private void DeleteNode()
+        {
+            if (smnuDelete.Enabled)
+            {
+                if (tvwFiles.SelectedNode != null)
+                {
+                    TreeNode node;
+                    if ((NodeType)tvwFiles.SelectedNode.Tag == NodeType.File)
+                    {
+                        node = tvwFiles.SelectedNode.Parent.Nodes.Add("new_file_" + Environment.TickCount);
+                        tvwFiles.SelectedNode.Parent.Expand();
+                    }
+                    else
+                    {
+                        node = tvwFiles.SelectedNode.Nodes.Add("new_file_" + Environment.TickCount);
+                        tvwFiles.SelectedNode.Expand();
+                    }
+
+                    InitializeNode(node, true);
+                    File.WriteAllText(GetPathFromNode(node), "");
+                    node.BeginEdit();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void CopyItem()
+        {
+            //string filePath = @"c:\a.txt";
+            //string dirPath = @"c:\ab";
+            //System.Collections.Specialized.StringCollection strcoll = new System.Collections.Specialized.StringCollection();
+            //strcoll.Add(filePath);
+            //strcoll.Add(dirPath);
+            //Clipboard.SetFileDropList(strcoll);
+        }
+
+        #region 事件响应
+
+        private void tvwFiles_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        {
+            // 取消命名 后续命名由代码手动实现
+            e.CancelEdit = true;
+
+            if (e.Label != null)
+            {
+                var pattern = @"[^(a-z0-9\-_\.)]";
+
+                if (Regex.IsMatch(e.Label, pattern))
+                {
+                    // 非法文件名
+                    MessageBox.Show(Lang("文件名只能包含abcdefghijklmnopqrstuvwxyz0123456789.-_"));
+                }
+                else
+                {
+                    // 合法文件名
+                    var before = GetPathFromNode(e.Node);
+                    var backup = e.Node.Text;
+                    e.Node.Text = e.Label;
+                    var after = GetPathFromNode(e.Node);
+
+                    switch ((NodeType)e.Node.Tag)
+                    {
+                        // 重命名文件
+                        case NodeType.JsonFile:
+                        case NodeType.McFunctionFile:
+                        case NodeType.McMetaFile:
+
+                            // 加上文件后缀
+                            switch ((NodeType)e.Node.Tag)
+                            {
+                                case NodeType.JsonFile:
+                                    before += ".json";
+                                    break;
+                                case NodeType.McFunctionFile:
+                                    before += ".mcfunction";
+                                    break;
+                                case NodeType.McMetaFile:
+                                    before += ".mcmeta";
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            if (File.Exists(after))
+                            {
+                                // 命名后的文件存在 这可坏了
+                                MessageBox.Show(Lang("已存在" + ": " + e.Node.Text));
+                                e.Node.Text = backup;
+                            }
+                            else if (File.Exists(before))
+                            {
+                                // 命名前的文件存在 直接重命名
+                                File.Move(before, after);
+                            }
+                            else
+                            {
+                                // 命名前的文件并不存在 创建命名后的目录
+                                File.WriteAllText(after, "");
+                            }
+
+                            InitializeNode(e.Node, true);
+                            break;
+
+                        // 重命名目录
+                        default:
+                            if (Directory.Exists(after))
+                            {
+                                // 命名后的目录存在 这可坏了
+                                MessageBox.Show(Lang("已存在" + ": " + e.Node.Text));
+                                e.Node.Text = backup;
+                            }
+                            else if (Directory.Exists(before))
+                            {
+                                // 命名前的目录存在 直接重命名
+                                Directory.Move(before, after);
+                            }
+                            else
+                            {
+                                // 命名前的目录并不存在 创建命名后的目录
+                                Directory.CreateDirectory(after);
+                            }
+                            InitializeNode(e.Node, false);
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void smnuOpen_Click(object sender, EventArgs e)
+        {
+            OpenNode();
+        }
+
+        private void smnuRename_Click(object sender, EventArgs e)
+        {
+            RenameNode();
+        }
+
+        private void smnuProperty_Click(object sender, EventArgs e)
+        {
+            SeeProperty();
+        }
+
+        private void smnuAddDirectory_Click(object sender, EventArgs e)
+        {
+            AddDirectory();
+        }
+
+        private void smnuAddFile_Click(object sender, EventArgs e)
+        {
+            AddFile();
+        }
+
+        private void smnuCopy_Click(object sender, EventArgs e)
+        {
+            CopyItem();
+        }
+
+        private void smnuCut_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void smnuPaste_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void smnuDelete_Click(object sender, EventArgs e)
+        {
+            DeleteNode();
+        }
+
+        #endregion
+
         #endregion
     }
 }
