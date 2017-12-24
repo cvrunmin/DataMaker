@@ -181,7 +181,7 @@
             this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(100, 0);
             this.Name = "FileTree";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FileTree_KeyDown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RespondShortcutKeys);
             this.cmnuItem.ResumeLayout(false);
             this.ResumeLayout(false);
 
