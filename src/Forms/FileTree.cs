@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -9,6 +10,11 @@ using static DataMaker.Main;
 
 namespace DataMaker
 {
+    /* TODO: AddFile的已有重命名
+     * Paste的已有重命名
+     */
+
+
     public enum NodeType
     {
         DataPack,
@@ -238,7 +244,12 @@ namespace DataMaker
             var bytes = new byte[] { 0, 0, 0, 0 };
             memo.Read(bytes, 0, bytes.Length);
 
-            if (bytes == new byte[] { 2, 0, 0, 0 })
+            var cutBytes = new byte[] { 2, 0, 0, 0 };
+
+            if (bytes[0] == cutBytes[0] &&
+                bytes[1] == cutBytes[1] &&
+                bytes[2] == cutBytes[2] &&
+                bytes[3] == cutBytes[3])
             {
                 isCut = true;
             }
@@ -258,6 +269,51 @@ namespace DataMaker
 
             return list.ToArray();
         }
+
+        /// <summary>
+        /// 根据目录和文件名获取可用的文件名
+        /// </summary>
+        private string GetAvailableFileName(string path)
+        {
+            var file = path.Remove(0, path.LastIndexOf("\\") + 1);
+            var dir = path.Remove(path.Length - file.Length - 1, path.Length - path.LastIndexOf("\\"));
+
+            var result = file;
+
+            for (int i = 1; File.Exists(dir + "\\" + result); i++)
+                result = file + "_" + i;
+
+            return result;
+        }
+
+        ///// <summary>
+        ///// 根据节点获取可用的文件名
+        ///// </summary>
+        //private string GetAvailableFileName(TreeNode node)
+        //    => GetAvailableFileName(GetPathFromNode(node));
+
+        /// <summary>
+        /// 根据目录和目录名获取可用的目录名
+        /// </summary>
+        private string GetAvailableDirName(string path)
+        {
+            var subDir = path.Remove(0, path.LastIndexOf("\\") + 1);
+            var dir = path.Remove(path.Length - subDir.Length - 1, path.Length - path.LastIndexOf("\\"));
+
+            var result = subDir;
+
+            for (int i = 1; Directory.Exists(dir + "\\" + result); i++)
+                result = subDir + "_" + i;
+
+            return result;
+        }
+
+        ///// <summary>
+        ///// 根据节点获取可用的目录名
+        ///// </summary>
+        //private string GetAvailableDirName(TreeNode node)
+        //    => GetAvailableDirName(GetPathFromNode(node));
+
         #endregion
 
         #region 启动时初始化
@@ -619,30 +675,39 @@ namespace DataMaker
                 case Keys.C:
                     if (e.Control)
                     {
+                        // 避免按键后的警报声
+                        e.SuppressKeyPress = true;
+
                         CopyItem();
                     }
                     break;
                 case Keys.Delete:
+                    e.SuppressKeyPress = true;
                     DeleteItem();
                     break;
                 case Keys.Enter:
+                    e.SuppressKeyPress = true;
                     OpenItem();
                     break;
                 case Keys.F1:
+                    e.SuppressKeyPress = true;
                     SeeProperty();
                     break;
                 case Keys.F2:
+                    e.SuppressKeyPress = true;
                     RenameItem();
                     break;
                 case Keys.V:
                     if (e.Control)
                     {
+                        e.SuppressKeyPress = true;
                         PasteItem();
                     }
                     break;
                 case Keys.X:
                     if (e.Control)
                     {
+                        e.SuppressKeyPress = true;
                         CutItem();
                     }
                     break;
@@ -654,7 +719,7 @@ namespace DataMaker
         /// <summary>
         /// 显示右键菜单
         /// </summary>
-        private void tvwFiles_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void ShowMenu(object sender, TreeNodeMouseClickEventArgs e)
         {
             tvwFiles.SelectedNode = e.Node;
 
@@ -724,14 +789,17 @@ namespace DataMaker
                 if (tvwFiles.SelectedNode != null)
                 {
                     TreeNode node;
+                    string name;
                     if (IsFile(tvwFiles.SelectedNode))
                     {
-                        node = tvwFiles.SelectedNode.Parent.Nodes.Add("new_folder_" + Environment.TickCount);
+                        name = GetAvailableFileName(GetPathFromNode(tvwFiles.SelectedNode) + "\\new_folder");
+                        node = tvwFiles.SelectedNode.Parent.Nodes.Add(name);
                         tvwFiles.SelectedNode.Parent.Expand();
                     }
                     else
                     {
-                        node = tvwFiles.SelectedNode.Nodes.Add("new_folder_" + Environment.TickCount);
+                        name = GetAvailableDirName(GetPathFromNode(tvwFiles.SelectedNode) + "\\new_folder");
+                        node = tvwFiles.SelectedNode.Nodes.Add(name);
                         tvwFiles.SelectedNode.Expand();
                     }
 
@@ -899,15 +967,37 @@ namespace DataMaker
                 {
                     var list = GetClipboardList(out var isCut);
 
+                    Debug.Print("vvv - IsCut: " + isCut.ToString());
                     foreach (var i in list)
                     {
-                        File.Copy(i, GetPathFromNode(tvwFiles.SelectedNode) + @"\", false);
-                        if (isCut)
-                        {   // 是剪切
-                            // 删除原项目
-                            File.Delete(i);
+                        Debug.Print(i);
+
+                        string destination;
+
+                        if (IsFile(tvwFiles.SelectedNode))
+                        {   // 选择的是文件
+                            // 粘贴到上一级目录
+                            destination = GetPathFromNode(tvwFiles.SelectedNode.Parent);
                         }
+                        else
+                        {   // 选择的是目录
+                            // 粘贴到本级下面
+                            destination = GetPathFromNode(tvwFiles.SelectedNode);
+                        }
+                        destination += "\\";
+                        destination += i.Remove(0, i.LastIndexOf("\\"));
+
+                        if (isCut)
+                        {   // 剪切
+                            File.Move(i, destination);
+                        }
+                        else
+                        {   // 复制
+                            File.Copy(i, destination);
+                        }
+
                     }
+                    Debug.Print("^^^");
                 }
             }
         }

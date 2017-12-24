@@ -58,7 +58,7 @@
             this.tvwFiles.Size = new System.Drawing.Size(293, 467);
             this.tvwFiles.TabIndex = 0;
             this.tvwFiles.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvwFiles_AfterLabelEdit);
-            this.tvwFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvwFiles_NodeMouseClick);
+            this.tvwFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.ShowMenu);
             // 
             // cmnuItem
             // 
@@ -78,7 +78,8 @@
             // smnuOpen
             // 
             this.smnuOpen.Name = "smnuOpen";
-            this.smnuOpen.Size = new System.Drawing.Size(145, 22);
+            this.smnuOpen.ShortcutKeyDisplayString = "Enter";
+            this.smnuOpen.Size = new System.Drawing.Size(152, 22);
             this.smnuOpen.Text = "打开";
             this.smnuOpen.Click += new System.EventHandler(this.smnuOpen_Click);
             // 
@@ -88,68 +89,68 @@
             this.smnuAddDirectory,
             this.smnuAddFile});
             this.smnuAdd.Name = "smnuAdd";
-            this.smnuAdd.Size = new System.Drawing.Size(145, 22);
+            this.smnuAdd.Size = new System.Drawing.Size(152, 22);
             this.smnuAdd.Text = "添加";
             // 
             // smnuAddDirectory
             // 
             this.smnuAddDirectory.Name = "smnuAddDirectory";
-            this.smnuAddDirectory.Size = new System.Drawing.Size(152, 22);
+            this.smnuAddDirectory.Size = new System.Drawing.Size(112, 22);
             this.smnuAddDirectory.Text = "文件夹";
             this.smnuAddDirectory.Click += new System.EventHandler(this.smnuAddDirectory_Click);
             // 
             // smnuAddFile
             // 
             this.smnuAddFile.Name = "smnuAddFile";
-            this.smnuAddFile.Size = new System.Drawing.Size(152, 22);
+            this.smnuAddFile.Size = new System.Drawing.Size(112, 22);
             this.smnuAddFile.Text = "文件";
             this.smnuAddFile.Click += new System.EventHandler(this.smnuAddFile_Click);
             // 
             // smnuCopy
             // 
             this.smnuCopy.Name = "smnuCopy";
-            this.smnuCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.smnuCopy.Size = new System.Drawing.Size(145, 22);
+            this.smnuCopy.ShortcutKeyDisplayString = "Ctrl+C";
+            this.smnuCopy.Size = new System.Drawing.Size(152, 22);
             this.smnuCopy.Text = "复制";
             this.smnuCopy.Click += new System.EventHandler(this.smnuCopy_Click);
             // 
             // smnuCut
             // 
             this.smnuCut.Name = "smnuCut";
-            this.smnuCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.smnuCut.Size = new System.Drawing.Size(145, 22);
+            this.smnuCut.ShortcutKeyDisplayString = "Ctrl+X";
+            this.smnuCut.Size = new System.Drawing.Size(152, 22);
             this.smnuCut.Text = "剪切";
             this.smnuCut.Click += new System.EventHandler(this.smnuCut_Click);
             // 
             // smnuPaste
             // 
             this.smnuPaste.Name = "smnuPaste";
-            this.smnuPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.smnuPaste.Size = new System.Drawing.Size(145, 22);
+            this.smnuPaste.ShortcutKeyDisplayString = "Ctrl+V";
+            this.smnuPaste.Size = new System.Drawing.Size(152, 22);
             this.smnuPaste.Text = "粘贴";
             this.smnuPaste.Click += new System.EventHandler(this.smnuPaste_Click);
             // 
             // smnuDelete
             // 
             this.smnuDelete.Name = "smnuDelete";
-            this.smnuDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.smnuDelete.Size = new System.Drawing.Size(145, 22);
+            this.smnuDelete.ShortcutKeyDisplayString = "Delete";
+            this.smnuDelete.Size = new System.Drawing.Size(152, 22);
             this.smnuDelete.Text = "删除";
             this.smnuDelete.Click += new System.EventHandler(this.smnuDelete_Click);
             // 
             // smnuRename
             // 
             this.smnuRename.Name = "smnuRename";
-            this.smnuRename.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.smnuRename.Size = new System.Drawing.Size(145, 22);
+            this.smnuRename.ShortcutKeyDisplayString = "F2";
+            this.smnuRename.Size = new System.Drawing.Size(152, 22);
             this.smnuRename.Text = "重命名";
             this.smnuRename.Click += new System.EventHandler(this.smnuRename_Click);
             // 
             // smnuProperty
             // 
             this.smnuProperty.Name = "smnuProperty";
-            this.smnuProperty.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.smnuProperty.Size = new System.Drawing.Size(145, 22);
+            this.smnuProperty.ShortcutKeyDisplayString = "F1";
+            this.smnuProperty.Size = new System.Drawing.Size(152, 22);
             this.smnuProperty.Text = "属性";
             this.smnuProperty.Click += new System.EventHandler(this.smnuProperty_Click);
             // 
