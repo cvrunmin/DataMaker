@@ -33,4 +33,4 @@
 
 ## License
 
-  GPL v3
+  Apache v2
