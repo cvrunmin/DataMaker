@@ -10,10 +10,9 @@ using static DataMaker.Main;
 
 namespace DataMaker
 {
-    /* TODO: AddFile的已有重命名
-     * Paste的已有重命名
+    /* Paste的已有重命名
      */
-    
+
     public partial class FileTree : Form
     {
         private enum Type { DataPack, Data, Namespace, Root, Directory, File }
@@ -98,137 +97,42 @@ namespace DataMaker
         private string packPath;
 
         #region 定义函数
+        /// <summary>
+        /// 复制文件夹及文件夹下所有子文件夹和文件
+        /// </summary>
+        /// <param name="sourcePath">待复制的文件夹路径</param>
+        /// <param name="destinationPath">目标路径</param>
+        public static void CopyDirectory(string sourcePath, string destinationPath)
+        {
+            var info = new DirectoryInfo(sourcePath);
+            Directory.CreateDirectory(destinationPath);
+
+            foreach (var i in info.GetFileSystemInfos())
+            {
+                var destPath = destinationPath + "\\" + i.Name;
+
+                if (i is FileInfo)
+                {
+                    // 是文件
+                    File.Copy(i.FullName, destPath);
+                }
+                else
+                {
+                    // 是文件夹
+                    Directory.CreateDirectory(destPath);
+                    // 递归
+                    CopyDirectory(i.FullName, destPath);
+                }
+            }
+        }
 
         /// <summary>
         /// 通过节点获取该节点对应的文件路径
         /// </summary>
         /// <param name="node">指定节点</param>
         /// <returns>文件路径</returns>
-        private string GetPathFromNode(TreeNode node) 
+        private string GetPathFromNode(TreeNode node)
             => GetPathFromNode(node, out var isSuccessful);
-
-        /// <summary>
-        /// 根据节点类型返回文件(或其子文件)的后缀名
-        /// <para><seealso cref="GetFileSuffix(NodeType)"/></para>
-        /// <para><seealso cref="GetFileSuffix(TreeNode)"/></para>
-        /// <para><seealso cref="GetFileOrSubFileSuffix(TreeNode)"/></para>
-        /// </summary>
-        /// <param name="node">节点类型</param>
-        /// <returns>文件(或其子文件)的后缀名</returns>
-        //private string GetFileOrSubFileSuffix(NodeType type)
-        //{
-        //    string result;
-
-        //    switch (type)
-        //    {
-        //        case NodeType.File:
-        //        case NodeType.JsonFile:
-        //        case NodeType.Advancements:
-        //        case NodeType.AdvancementsRoot:
-        //        case NodeType.LootTables:
-        //        case NodeType.LootTablesRoot:
-        //        case NodeType.Recipes:
-        //        case NodeType.RecipesRoot:
-        //        case NodeType.Tags:
-        //        case NodeType.TagsRoot:
-        //            result = ".json";
-        //            break;
-        //        case NodeType.MCFunctionFile:
-        //        case NodeType.Functions:
-        //        case NodeType.FunctionsRoot:
-        //            result = ".mcfunction";
-        //            break;
-        //        case NodeType.MCMetaFile:
-        //            result = ".mcmeta";
-        //            break;
-        //        default:
-        //            result = "";
-        //            break;
-        //    }
-
-        //    return result;
-        //}
-
-        /// <summary>
-        /// 根据节点返回文件(或其子文件)的后缀名
-        /// <para><seealso cref="GetFileSuffix(NodeType)"/></para>
-        /// <para><seealso cref="GetFileSuffix(TreeNode)"/></para>
-        /// <para><seealso cref="GetFileOrSubFileSuffix(NodeType)"/></para>
-        /// </summary>
-        /// <param name="node">节点</param>
-        /// <returns>文件(或其子文件)的后缀名</returns>
-        //private string GetFileOrSubFileSuffix(TreeNode node) 
-        //    => GetFileOrSubFileSuffix((NodeType)node.Tag);
-
-        /// <summary>
-        /// 根据节点类型返回文件的后缀名
-        /// <para><seealso cref="GetFileOrSubFileSuffix(NodeType)"/></para>
-        /// <para><seealso cref="GetFileOrSubFileSuffix(TreeNode)"/></para>
-        /// <para><seealso cref="GetFileSuffix(TreeNode)"/></para>
-        /// </summary>
-        /// <param name="node">节点类型</param>
-        /// <returns>文件后缀名</returns>
-        //private string GetFileSuffix(NodeType type)
-        //{
-        //    string result;
-
-        //    switch (type)
-        //    {
-        //        case NodeType.File:
-        //        case NodeType.JsonFile:
-        //            result = ".json";
-        //            break;
-        //        case NodeType.MCFunctionFile:
-        //            result = ".mcfunction";
-        //            break;
-        //        case NodeType.MCMetaFile:
-        //            result = ".mcmeta";
-        //            break;
-        //        default:
-        //            result = "";
-        //            break;
-        //    }
-
-        //    return result;
-        //}
-
-        /// <summary>
-        /// 根据节点返回文件的后缀名
-        /// <para><seealso cref="GetFileOrSubFileSuffix(NodeType)"/></para>
-        /// <para><seealso cref="GetFileOrSubFileSuffix(TreeNode)"/></para>
-        /// <para><seealso cref="GetFileSuffix(NodeType)"/></para>
-        /// </summary>
-        /// <param name="node">节点</param>
-        /// <returns>文件后缀名</returns>
-        //private string GetFileSuffix(TreeNode node)
-        //    => GetFileSuffix((NodeType)node.Tag);
-
-        /// <summary>
-        /// 根据节点类型返回该项是否是文件
-        /// </summary>
-        /// <param name="type">指定节点类型</param>
-        /// <returns></returns>
-        //private bool IsFile(NodeType type)
-        //{
-        //    switch (type)
-        //    {
-        //        case NodeType.File:
-        //        case NodeType.JsonFile:
-        //        case NodeType.MCMetaFile:
-        //        case NodeType.MCFunctionFile:
-        //            return true;
-        //        default:
-        //            return false;
-        //    }
-        //}
-
-        /// <summary>
-        /// 根据节点返回该项是否是文件
-        /// </summary>
-        /// <param name="type">指定节点</param>
-        /// <returns></returns>
-        //private bool IsFile(TreeNode node)
-        //    => IsFile((NodeType)node.Tag);
 
         /// <summary>
         /// 复制或剪切文件路径数组至剪贴板
@@ -338,12 +242,6 @@ namespace DataMaker
             return result;
         }
 
-        ///// <summary>
-        ///// 根据节点获取可用的文件名
-        ///// </summary>
-        //private string GetAvailableFileName(TreeNode node)
-        //    => GetAvailableFileName(GetPathFromNode(node), ((Item)node).GetFileSuffix(true));
-
         /// <summary>
         /// 根据目录和目录名获取可用的目录名
         /// </summary>
@@ -359,12 +257,6 @@ namespace DataMaker
 
             return result;
         }
-
-        /// <summary>
-        /// 根据节点获取可用的目录名
-        /// </summary>
-        private string GetAvailableDirName(TreeNode node)
-            => GetAvailableDirName(GetPathFromNode(node));
 
         #endregion
 
@@ -801,17 +693,21 @@ namespace DataMaker
                     InitializeNode(node, false);
 
                     try
-                    {   // 尝试创建目录
+                    {
+                        // 尝试创建目录
                         Directory.CreateDirectory(GetPathFromNode(node));
                         node.BeginEdit();
                     }
                     catch (Exception ex)
-                    {   // 出错
+                    {
+                        // 出错
+
                         // 弹窗提示
                         MessageBox.Show(ex.Message);
 
                         if (!Directory.Exists(GetPathFromNode(node)))
-                        {   // 目录创建失败
+                        {
+                            // 目录创建失败
                             // 把节点删除
                             tvwFiles.Nodes.Remove(node);
                         }
@@ -831,11 +727,12 @@ namespace DataMaker
                 {
                     TreeNode node;
                     var name = GetAvailableFileName(
-                        GetPathFromNode(tvwFiles.SelectedNode) + "\\new_file", 
+                        GetPathFromNode(tvwFiles.SelectedNode) + "\\new_file",
                         ((Item)tvwFiles.SelectedNode).GetFileSuffix(true)
                         );
                     if (((Item)tvwFiles.SelectedNode).Type == Type.File)
-                    {   // 在文件级别右键
+                    {
+                        // 在文件级别右键
 
                         // 在父级目录下增加节点
                         node = tvwFiles.SelectedNode.Parent.Nodes.Add(name);
@@ -844,7 +741,8 @@ namespace DataMaker
                         tvwFiles.SelectedNode.Parent.Expand();
                     }
                     else
-                    {   // 在目录级别右键
+                    {
+                        // 在目录级别右键
 
                         // 在本级目录下增加节点
                         node = tvwFiles.SelectedNode.Nodes.Add(name);
@@ -856,17 +754,20 @@ namespace DataMaker
                     InitializeNode(node, true);
 
                     try
-                    { // 尝试创建文件
+                    {
+                        // 尝试创建文件
                         File.WriteAllText(GetPathFromNode(node), "");
                         node.BeginEdit();
                     }
                     catch (Exception ex)
-                    { // 出错
+                    {
+                        // 出错
                         // 弹窗提示
                         MessageBox.Show(ex.Message);
 
                         if (!File.Exists(GetPathFromNode(node)))
-                        { // 文件创建失败
+                        {
+                            // 文件创建失败
                             // 把节点删除
                             tvwFiles.Nodes.Remove(node);
                         }
@@ -885,21 +786,25 @@ namespace DataMaker
                 if (tvwFiles.SelectedNode != null)
                 {
                     // 提示
-                    var result = MessageBox.Show(this, Lang("你确定要删除 ") + tvwFiles.SelectedNode.Text + " ?", 
+                    var result = MessageBox.Show(this, Lang("你确定要删除 ") + tvwFiles.SelectedNode.Text + " ?",
                         Application.ProductName, MessageBoxButtons.OKCancel);
 
                     if (result == DialogResult.OK)
-                    {   // 确定删除
+                    {
+                        // 确定删除
 
                         try
-                        { // 尝试删除
-                            
+                        {
+                            // 尝试删除
+
                             if (((Item)tvwFiles.SelectedNode).Type == Type.File)
-                            {   // 删除文件
+                            {
+                                // 删除文件
                                 File.Delete(GetPathFromNode(tvwFiles.SelectedNode));
                             }
                             else
-                            {   // 删除目录
+                            {
+                                // 删除目录
                                 Directory.Delete(GetPathFromNode(tvwFiles.SelectedNode), true);
                             }
 
@@ -908,7 +813,8 @@ namespace DataMaker
 
                         }
                         catch (Exception ex)
-                        { // 出错
+                        {
+                            // 出错
 
                             // 弹窗提示
                             MessageBox.Show(ex.Message);
@@ -959,32 +865,53 @@ namespace DataMaker
                     var list = GetClipboardList(out var isCut);
 
                     Debug.Print("vvv - IsCut: " + isCut.ToString());
-                    foreach (var i in list)
+                    foreach (var source in list)
                     {
-                        Debug.Print(i);
+                        Debug.Print(source);
 
                         string destination;
 
                         if (((Item)tvwFiles.SelectedNode).Type == Type.File)
-                        {   // 选择的是文件
+                        {
+                            // 选择的是文件
                             // 粘贴到上一级目录
                             destination = GetPathFromNode(tvwFiles.SelectedNode.Parent);
                         }
                         else
-                        {   // 选择的是目录
+                        {
+                            // 选择的是目录
                             // 粘贴到本级下面
                             destination = GetPathFromNode(tvwFiles.SelectedNode);
                         }
-                        destination += "\\";
-                        destination += i.Remove(0, i.LastIndexOf("\\"));
+                        destination += source.Remove(0, source.LastIndexOf("\\"));
 
-                        if (isCut)
-                        {   // 剪切
-                            File.Move(i, destination);
+                        if (File.Exists(source))
+                        {
+                            // 是文件
+                            if (isCut)
+                            {
+                                // 剪切
+                                File.Move(source, destination);
+                            }
+                            else
+                            {
+                                // 复制
+                                File.Copy(source, destination);
+                            }
                         }
-                        else
-                        {   // 复制
-                            File.Copy(i, destination);
+                        else if (Directory.Exists(source))
+                        {
+                            // 是目录
+                            if (isCut)
+                            {
+                                // 剪切
+                                Directory.Move(source, destination);
+                            }
+                            else
+                            {
+                                // 复制
+                                CopyDirectory(source, destination);
+                            }
                         }
 
                     }
@@ -1023,7 +950,8 @@ namespace DataMaker
                     var after = GetPathFromNode(e.Node);
 
                     if (((Item)e.Node).Type == Type.File)
-                    {   // 重命名文件
+                    {
+                        // 重命名文件
                         if (File.Exists(after))
                         {
                             // 命名后的文件存在 这可坏了
@@ -1042,7 +970,8 @@ namespace DataMaker
                         }
                     }
                     else
-                    {   // 重命名目录
+                    {
+                        // 重命名目录
                         if (Directory.Exists(after))
                         {
                             // 命名后的目录存在 这可坏了
