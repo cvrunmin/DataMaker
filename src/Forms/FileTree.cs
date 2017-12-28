@@ -13,70 +13,91 @@ namespace DataMaker
     /* TODO: AddFile的已有重命名
      * Paste的已有重命名
      */
-
-
-    public enum NodeType
-    {
-        DataPack,
-        Data,
-        Namespace,
-        AdvancementsRoot,
-        Advancements,
-        FunctionsRoot,
-        Functions,
-        LootTablesRoot,
-        LootTables,
-        RecipesRoot,
-        Recipes,
-        StructuresRoot,
-        Structures,
-        TagsRoot,
-        Tags,
-        Directory,
-        JsonFile,
-        MCFunctionFile,
-        MCMetaFile,
-        File
-    }
-
+    
     public partial class FileTree : Form
     {
+        private enum Type { DataPack, Data, Namespace, Root, Directory, File }
+
+        private enum Sort { Advancement, Function, LootTable, Recipe, Structure, Tag, None }
+
+        private enum Format { Json, MCFunction, MCMeta }
+
+        private struct Item
+        {
+            public Type Type { get; set; }
+            public Sort Sort { get; set; }
+
+            public Item(Type type, Sort sort)
+            {
+                Type = type;
+                Sort = sort;
+            }
+
+            public override string ToString()
+            {
+                return this;
+            }
+
+            /// <summary>
+            ///  获取文件后缀名
+            /// </summary>
+            /// <param name="canFolder">指定是否可以是一个文件夹</param>
+            public string GetFileSuffix(bool checkSubFile)
+            {
+                var suffix = "";
+
+                if (!checkSubFile && Type != Type.File)
+                {
+                    return suffix;
+                }
+
+                switch (Sort)
+                {
+                    case Sort.Advancement:
+                    case Sort.LootTable:
+                    case Sort.Recipe:
+                    case Sort.Tag:
+                        suffix = ".json";
+                        break;
+                    case Sort.Function:
+                        suffix = ".mcfunction";
+                        break;
+                    case Sort.Structure:
+                        suffix = ".nbt";
+                        break;
+                }
+
+                return suffix;
+            }
+
+            public static implicit operator string(Item item)
+            {
+                return $"{item.Type}|{item.Sort}";
+            }
+
+            public static explicit operator Item(TreeNode node)
+            {
+                var type = (Type)Enum.Parse(typeof(Type), node.Tag.ToString().Split('|')[0]);
+                var sort = (Sort)Enum.Parse(typeof(Sort), node.Tag.ToString().Split('|')[1]);
+
+                return new Item(type, sort);
+            }
+
+            public static explicit operator Item(string str)
+            {
+                var type = (Type)Enum.Parse(typeof(Type), str.Split('|')[0]);
+                var sort = (Sort)Enum.Parse(typeof(Sort), str.Split('|')[1]);
+
+                return new Item(type, sort);
+            }
+        }
+
         /// <summary>
         /// 数据包路径
         /// </summary>
         private string packPath;
 
         #region 定义函数
-        /// <summary>
-        /// 通过节点获取该节点对应的文件路径
-        /// </summary>
-        /// <param name="node">指定节点</param>
-        /// <param name="isSuccessful">获取是否成功</param>
-        /// <returns>文件路径</returns>
-        private string GetPathFromNode(TreeNode node, out bool isSuccessful)
-        {
-            var result = node.FullPath;
-
-            result = result.Replace(Lang("数据包") + "/", packPath + "/");
-            result = result.Replace("/" + Lang("数据"), "/data");
-            result = result.Replace("/" + Lang("进度"), "/advancements");
-            result = result.Replace("/" + Lang("函数"), "/functions");
-            result = result.Replace("/" + Lang("结构"), "/structures");
-            result = result.Replace("/" + Lang("标签"), "/tags");
-            result = result.Replace("/" + Lang("战利品表"), "/loot_tables");
-            result = result.Replace(Lang("/配方/"), "/recipes/");
-            result = result.Replace(Lang("/设置"), "/pack");
-            result = result.Replace(Lang("/"), "\\");
-            // 加后缀
-            result = result.Insert(result.Length, GetFileSuffix(node));
-
-            if (Directory.Exists(result))
-                isSuccessful = true;
-            else
-                isSuccessful = false;
-
-            return result;
-        }
 
         /// <summary>
         /// 通过节点获取该节点对应的文件路径
@@ -94,39 +115,39 @@ namespace DataMaker
         /// </summary>
         /// <param name="node">节点类型</param>
         /// <returns>文件(或其子文件)的后缀名</returns>
-        private string GetFileOrSubFileSuffix(NodeType type)
-        {
-            string result;
+        //private string GetFileOrSubFileSuffix(NodeType type)
+        //{
+        //    string result;
 
-            switch (type)
-            {
-                case NodeType.File:
-                case NodeType.JsonFile:
-                case NodeType.Advancements:
-                case NodeType.AdvancementsRoot:
-                case NodeType.LootTables:
-                case NodeType.LootTablesRoot:
-                case NodeType.Recipes:
-                case NodeType.RecipesRoot:
-                case NodeType.Tags:
-                case NodeType.TagsRoot:
-                    result = ".json";
-                    break;
-                case NodeType.MCFunctionFile:
-                case NodeType.Functions:
-                case NodeType.FunctionsRoot:
-                    result = ".mcfunction";
-                    break;
-                case NodeType.MCMetaFile:
-                    result = ".mcmeta";
-                    break;
-                default:
-                    result = "";
-                    break;
-            }
+        //    switch (type)
+        //    {
+        //        case NodeType.File:
+        //        case NodeType.JsonFile:
+        //        case NodeType.Advancements:
+        //        case NodeType.AdvancementsRoot:
+        //        case NodeType.LootTables:
+        //        case NodeType.LootTablesRoot:
+        //        case NodeType.Recipes:
+        //        case NodeType.RecipesRoot:
+        //        case NodeType.Tags:
+        //        case NodeType.TagsRoot:
+        //            result = ".json";
+        //            break;
+        //        case NodeType.MCFunctionFile:
+        //        case NodeType.Functions:
+        //        case NodeType.FunctionsRoot:
+        //            result = ".mcfunction";
+        //            break;
+        //        case NodeType.MCMetaFile:
+        //            result = ".mcmeta";
+        //            break;
+        //        default:
+        //            result = "";
+        //            break;
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         /// <summary>
         /// 根据节点返回文件(或其子文件)的后缀名
@@ -136,8 +157,8 @@ namespace DataMaker
         /// </summary>
         /// <param name="node">节点</param>
         /// <returns>文件(或其子文件)的后缀名</returns>
-        private string GetFileOrSubFileSuffix(TreeNode node) 
-            => GetFileOrSubFileSuffix((NodeType)node.Tag);
+        //private string GetFileOrSubFileSuffix(TreeNode node) 
+        //    => GetFileOrSubFileSuffix((NodeType)node.Tag);
 
         /// <summary>
         /// 根据节点类型返回文件的后缀名
@@ -147,29 +168,29 @@ namespace DataMaker
         /// </summary>
         /// <param name="node">节点类型</param>
         /// <returns>文件后缀名</returns>
-        private string GetFileSuffix(NodeType type)
-        {
-            string result;
+        //private string GetFileSuffix(NodeType type)
+        //{
+        //    string result;
 
-            switch (type)
-            {
-                case NodeType.File:
-                case NodeType.JsonFile:
-                    result = ".json";
-                    break;
-                case NodeType.MCFunctionFile:
-                    result = ".mcfunction";
-                    break;
-                case NodeType.MCMetaFile:
-                    result = ".mcmeta";
-                    break;
-                default:
-                    result = "";
-                    break;
-            }
+        //    switch (type)
+        //    {
+        //        case NodeType.File:
+        //        case NodeType.JsonFile:
+        //            result = ".json";
+        //            break;
+        //        case NodeType.MCFunctionFile:
+        //            result = ".mcfunction";
+        //            break;
+        //        case NodeType.MCMetaFile:
+        //            result = ".mcmeta";
+        //            break;
+        //        default:
+        //            result = "";
+        //            break;
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         /// <summary>
         /// 根据节点返回文件的后缀名
@@ -179,35 +200,35 @@ namespace DataMaker
         /// </summary>
         /// <param name="node">节点</param>
         /// <returns>文件后缀名</returns>
-        private string GetFileSuffix(TreeNode node)
-            => GetFileSuffix((NodeType)node.Tag);
+        //private string GetFileSuffix(TreeNode node)
+        //    => GetFileSuffix((NodeType)node.Tag);
 
         /// <summary>
         /// 根据节点类型返回该项是否是文件
         /// </summary>
         /// <param name="type">指定节点类型</param>
         /// <returns></returns>
-        private bool IsFile(NodeType type)
-        {
-            switch (type)
-            {
-                case NodeType.File:
-                case NodeType.JsonFile:
-                case NodeType.MCMetaFile:
-                case NodeType.MCFunctionFile:
-                    return true;
-                default:
-                    return false;
-            }
-        }
+        //private bool IsFile(NodeType type)
+        //{
+        //    switch (type)
+        //    {
+        //        case NodeType.File:
+        //        case NodeType.JsonFile:
+        //        case NodeType.MCMetaFile:
+        //        case NodeType.MCFunctionFile:
+        //            return true;
+        //        default:
+        //            return false;
+        //    }
+        //}
 
         /// <summary>
         /// 根据节点返回该项是否是文件
         /// </summary>
         /// <param name="type">指定节点</param>
         /// <returns></returns>
-        private bool IsFile(TreeNode node)
-            => IsFile((NodeType)node.Tag);
+        //private bool IsFile(TreeNode node)
+        //    => IsFile((NodeType)node.Tag);
 
         /// <summary>
         /// 复制或剪切文件路径数组至剪贴板
@@ -273,15 +294,46 @@ namespace DataMaker
         /// <summary>
         /// 根据目录和文件名获取可用的文件名
         /// </summary>
-        private string GetAvailableFileName(string path)
+        private string GetAvailableFileName(string path, string suffix)
         {
             var file = path.Remove(0, path.LastIndexOf("\\") + 1);
             var dir = path.Remove(path.Length - file.Length - 1, path.Length - path.LastIndexOf("\\"));
 
             var result = file;
 
-            for (int i = 1; File.Exists(dir + "\\" + result); i++)
+            for (int i = 1; File.Exists(dir + "\\" + result + suffix); i++)
                 result = file + "_" + i;
+
+            return result + suffix;
+        }
+
+        /// <summary>
+        /// 通过节点获取该节点对应的文件路径
+        /// </summary>
+        /// <param name="node">指定节点</param>
+        /// <param name="isExists">获取是否成功</param>
+        /// <returns>文件路径</returns>
+        private string GetPathFromNode(TreeNode node, out bool isExists)
+        {
+            var result = node.FullPath;
+
+            result = result.Replace(Lang("数据包") + "/", packPath + "/");
+            result = result.Replace("/" + Lang("数据"), "/data");
+            result = result.Replace("/" + Lang("进度"), "/advancements");
+            result = result.Replace("/" + Lang("函数"), "/functions");
+            result = result.Replace("/" + Lang("结构"), "/structures");
+            result = result.Replace("/" + Lang("标签"), "/tags");
+            result = result.Replace("/" + Lang("战利品表"), "/loot_tables");
+            result = result.Replace(Lang("/配方/"), "/recipes/");
+            result = result.Replace(Lang("/设置"), "/pack");
+            result = result.Replace(Lang("/"), "\\");
+            // 加后缀
+            result = result.Insert(result.Length, ((Item)node).GetFileSuffix(false));
+
+            if (Directory.Exists(result))
+                isExists = true;
+            else
+                isExists = false;
 
             return result;
         }
@@ -290,7 +342,7 @@ namespace DataMaker
         ///// 根据节点获取可用的文件名
         ///// </summary>
         //private string GetAvailableFileName(TreeNode node)
-        //    => GetAvailableFileName(GetPathFromNode(node));
+        //    => GetAvailableFileName(GetPathFromNode(node), ((Item)node).GetFileSuffix(true));
 
         /// <summary>
         /// 根据目录和目录名获取可用的目录名
@@ -308,11 +360,11 @@ namespace DataMaker
             return result;
         }
 
-        ///// <summary>
-        ///// 根据节点获取可用的目录名
-        ///// </summary>
-        //private string GetAvailableDirName(TreeNode node)
-        //    => GetAvailableDirName(GetPathFromNode(node));
+        /// <summary>
+        /// 根据节点获取可用的目录名
+        /// </summary>
+        private string GetAvailableDirName(TreeNode node)
+            => GetAvailableDirName(GetPathFromNode(node));
 
         #endregion
 
@@ -323,7 +375,7 @@ namespace DataMaker
             Theme.Initialize(this);
 
             LoadImages();
-            packPath = $"{Environment.CurrentDirectory}/我是正经数据包";
+            packPath = $"{Environment.CurrentDirectory}\\我是正经数据包";
             LoadFileTree(packPath);
         }
 
@@ -370,7 +422,7 @@ namespace DataMaker
             var dirs = Directory.GetDirectories(path);
             foreach (var dir in dirs)
             {
-                var dirName = dir.LastIndexOf(@"\") + 1;
+                var dirName = dir.LastIndexOf("\\") + 1;
                 var dirNode = node.Nodes.Add(dir.Remove(0, dirName));
                 InitializeNode(dirNode, false);
                 // 遍历
@@ -381,7 +433,7 @@ namespace DataMaker
             var files = Directory.GetFiles(path);
             foreach (var file in files)
             {
-                var fileName = file.Remove(0, file.LastIndexOf(@"\") + 1);
+                var fileName = file.Remove(0, file.LastIndexOf("\\") + 1);
                 var fileNode = node.Nodes.Add(fileName);
                 InitializeNode(fileNode, true);
             }
@@ -397,27 +449,23 @@ namespace DataMaker
         {
             if (isFile)
             {
-
-                if (node.Text.EndsWith(".json"))
+                node.Tag = new Item(Type.File, ((Item)node.Parent).Sort);
+                // 设置显示相关
+                if (((Item)node).GetFileSuffix(false) == ".json")
                 {
                     node.ImageKey = node.SelectedImageKey = "Json";
-                    node.Tag = NodeType.JsonFile;
                     node.Text = node.Text.Remove(node.Text.Length - ".json".Length);
                 }
-                else if (node.Text.EndsWith(".mcfunction"))
+                else if (((Item)node).GetFileSuffix(false) == ".mcfunction")
                 {
                     node.ImageKey = node.SelectedImageKey = "Function";
-                    node.Tag = NodeType.MCFunctionFile;
                     node.Text = node.Text.Remove(node.Text.Length - ".mcfunction".Length);
                 }
-                else if (node.Level == 1 && node.Text.Equals("pack.mcmeta"))
+                else if (node.Level == 1 && ((Item)node).GetFileSuffix(false) == "pack.mcmeta")
                 {
                     node.ImageKey = node.SelectedImageKey = "Setting";
-                    node.Tag = NodeType.MCMetaFile;
                     node.Text = Lang("设置");
                 }
-                else
-                    node.Tag = NodeType.File;
             }
             else
             {
@@ -427,8 +475,8 @@ namespace DataMaker
                         // 根目录
                         node.ImageKey = node.SelectedImageKey = "Directory";
                         node.Text = Lang("数据包");
-                        node.Tag = NodeType.DataPack;
                         node.Expand();
+                        node.Tag = new Item(Type.DataPack, Sort.None);
                         break;
                     case 1:
                         // TODO: 数据包、数据的图标
@@ -438,14 +486,14 @@ namespace DataMaker
                         {
                             node.ImageKey = node.SelectedImageKey = "Directory";
                             node.Text = "数据";
-                            node.Tag = NodeType.Data;
+                            node.Tag = new Item(Type.Data, Sort.None);
                             node.Expand();
                         }
                         break;
                     case 2:
                         // 命名空间
                         node.ImageKey = node.SelectedImageKey = "Namespace";
-                        node.Tag = NodeType.Namespace;
+                        node.Tag = new Item(Type.Namespace, Sort.None);
                         node.Expand();
                         break;
                     case 3:
@@ -455,37 +503,37 @@ namespace DataMaker
                             case "advancements":
                                 node.ImageKey = node.SelectedImageKey = "Advancements";
                                 node.Text = Lang("进度");
-                                node.Tag = NodeType.AdvancementsRoot;
+                                node.Tag = new Item(Type.Root, Sort.Advancement);
                                 node.Expand();
                                 break;
                             case "functions":
                                 node.ImageKey = node.SelectedImageKey = "Functions";
                                 node.Text = Lang("函数");
-                                node.Tag = NodeType.FunctionsRoot;
+                                node.Tag = new Item(Type.Root, Sort.Function);
                                 node.Expand();
                                 break;
                             case "loot_tables":
                                 node.ImageKey = node.SelectedImageKey = "LootTables";
                                 node.Text = Lang("战利品表");
-                                node.Tag = NodeType.LootTablesRoot;
+                                node.Tag = new Item(Type.Root, Sort.LootTable);
                                 node.Expand();
                                 break;
                             case "structures":
                                 node.ImageKey = node.SelectedImageKey = "Structures";
                                 node.Text = Lang("结构");
-                                node.Tag = NodeType.StructuresRoot;
+                                node.Tag = new Item(Type.Root, Sort.Structure);
                                 node.Expand();
                                 break;
                             case "recipes":
                                 node.ImageKey = node.SelectedImageKey = "Recipes";
                                 node.Text = Lang("配方");
-                                node.Tag = NodeType.RecipesRoot;
+                                node.Tag = new Item(Type.Root, Sort.Recipe);
                                 node.Expand();
                                 break;
                             case "tags":
                                 node.ImageKey = node.SelectedImageKey = "Tags";
                                 node.Text = Lang("标签");
-                                node.Tag = NodeType.TagsRoot;
+                                node.Tag = new Item(Type.Root, Sort.Tag);
                                 node.Expand();
                                 break;
                             default:
@@ -495,37 +543,7 @@ namespace DataMaker
                     default:
                         // 其他层级 跟随父级目录的属性
                         node.ImageKey = node.SelectedImageKey = "Directory";
-                        switch ((NodeType)node.Parent.Tag)
-                        {
-                            case NodeType.AdvancementsRoot:
-                            case NodeType.Advancements:
-                                node.Tag = NodeType.Advancements;
-                                break;
-                            case NodeType.FunctionsRoot:
-                            case NodeType.Functions:
-                                node.Tag = NodeType.Functions;
-                                break;
-                            case NodeType.LootTablesRoot:
-                            case NodeType.LootTables:
-                                node.Tag = NodeType.LootTables;
-                                break;
-                            case NodeType.RecipesRoot:
-                            case NodeType.Recipes:
-                                node.Tag = NodeType.Recipes;
-                                break;
-                            case NodeType.StructuresRoot:
-                            case NodeType.Structures:
-                                node.Tag = NodeType.Structures;
-                                break;
-                            case NodeType.TagsRoot:
-                            case NodeType.Tags:
-                                node.Tag = NodeType.Tags;
-                                break;
-                            default:
-                                // 普通文件夹
-                                node.Tag = NodeType.Directory;
-                                break;
-                        }
+                        node.Tag = new Item(Type.Directory, ((Item)node.Parent).Sort);
                         break;
                 }
             }
@@ -589,74 +607,51 @@ namespace DataMaker
                     smnuOpen.Text = Lang("收起");
                 else
                     smnuOpen.Text = Lang("展开");
-                switch ((NodeType)tvwFiles.SelectedNode.Tag)
+                switch (((Item)tvwFiles.SelectedNode).Type)
                 {
-                    case NodeType.DataPack:
+                    case Type.DataPack:
                         smnuDelete.Enabled = false;
                         smnuAdd.Enabled = false;
                         smnuRename.Enabled = false;
                         break;
-                    case NodeType.Data:
+                    case Type.Data:
                         smnuAddDirectory.Text = Lang("命名空间");
                         smnuDelete.Enabled = false;
                         smnuAddFile.Enabled = false;
                         smnuRename.Enabled = false;
                         break;
-                    case NodeType.Namespace:
+                    case Type.Namespace:
                         smnuAddFile.Enabled = false;
                         break;
-                    case NodeType.Advancements:
-                        smnuAddFile.Text = Lang("进度文件");
-                        break;
-                    case NodeType.Functions:
-                        smnuAddFile.Text = Lang("函数文件");
-                        break;
-                    case NodeType.LootTables:
-                        smnuAddFile.Text = Lang("战利品表文件");
-                        break;
-                    case NodeType.Recipes:
-                        smnuAddFile.Text = Lang("配方文件");
-                        break;
-                    case NodeType.Structures:
-                        smnuAddFile.Text = Lang("结构文件");
-                        break;
-                    case NodeType.Tags:
-                        smnuAddFile.Text = Lang("标签文件");
-                        break;
-                    case NodeType.AdvancementsRoot:
-                        smnuAddFile.Text = Lang("进度文件");
+                    case Type.Root:
                         smnuDelete.Enabled = false;
                         smnuRename.Enabled = false;
                         break;
-                    case NodeType.FunctionsRoot:
-                        smnuAddFile.Text = Lang("函数文件");
-                        smnuDelete.Enabled = false;
-                        smnuRename.Enabled = false;
-                        break;
-                    case NodeType.LootTablesRoot:
-                        smnuAddFile.Text = Lang("战利品表文件");
-                        smnuDelete.Enabled = false;
-                        smnuRename.Enabled = false;
-                        break;
-                    case NodeType.RecipesRoot:
-                        smnuAddFile.Text = Lang("配方文件");
-                        smnuDelete.Enabled = false;
-                        smnuRename.Enabled = false;
-                        break;
-                    case NodeType.StructuresRoot:
-                        smnuAddFile.Text = Lang("结构文件");
-                        smnuDelete.Enabled = false;
-                        smnuRename.Enabled = false;
-                        break;
-                    case NodeType.TagsRoot:
-                        smnuAddFile.Text = Lang("标签文件");
-                        smnuDelete.Enabled = false;
-                        smnuRename.Enabled = false;
-                        break;
-                    case NodeType.Directory:
-                        break;
-                    case NodeType.File:
+                    case Type.File:
                         smnuOpen.Text = Lang("编辑");
+                        break;
+                    default:
+                        break;
+                }
+                switch (((Item)tvwFiles.SelectedNode).Sort)
+                {
+                    case Sort.Advancement:
+                        smnuAddFile.Text = Lang("进度文件");
+                        break;
+                    case Sort.Function:
+                        smnuAddFile.Text = Lang("函数文件");
+                        break;
+                    case Sort.LootTable:
+                        smnuAddFile.Text = Lang("战利品表文件");
+                        break;
+                    case Sort.Recipe:
+                        smnuAddFile.Text = Lang("配方文件");
+                        break;
+                    case Sort.Structure:
+                        smnuAddFile.Text = Lang("结构文件");
+                        break;
+                    case Sort.Tag:
+                        smnuAddFile.Text = Lang("标签文件");
                         break;
                     default:
                         break;
@@ -790,9 +785,9 @@ namespace DataMaker
                 {
                     TreeNode node;
                     string name;
-                    if (IsFile(tvwFiles.SelectedNode))
+                    if (((Item)tvwFiles.SelectedNode).Type == Type.File)
                     {
-                        name = GetAvailableFileName(GetPathFromNode(tvwFiles.SelectedNode) + "\\new_folder");
+                        name = GetAvailableDirName(GetPathFromNode(tvwFiles.SelectedNode) + "\\new_folder");
                         node = tvwFiles.SelectedNode.Parent.Nodes.Add(name);
                         tvwFiles.SelectedNode.Parent.Expand();
                     }
@@ -806,17 +801,17 @@ namespace DataMaker
                     InitializeNode(node, false);
 
                     try
-                    { // 尝试创建目录
+                    {   // 尝试创建目录
                         Directory.CreateDirectory(GetPathFromNode(node));
                         node.BeginEdit();
                     }
                     catch (Exception ex)
-                    { // 出错
+                    {   // 出错
                         // 弹窗提示
                         MessageBox.Show(ex.Message);
 
                         if (!Directory.Exists(GetPathFromNode(node)))
-                        { // 目录创建失败
+                        {   // 目录创建失败
                             // 把节点删除
                             tvwFiles.Nodes.Remove(node);
                         }
@@ -835,14 +830,15 @@ namespace DataMaker
                 if (tvwFiles.SelectedNode != null)
                 {
                     TreeNode node;
-
-                    if (IsFile(tvwFiles.SelectedNode))
+                    var name = GetAvailableFileName(
+                        GetPathFromNode(tvwFiles.SelectedNode) + "\\new_file", 
+                        ((Item)tvwFiles.SelectedNode).GetFileSuffix(true)
+                        );
+                    if (((Item)tvwFiles.SelectedNode).Type == Type.File)
                     {   // 在文件级别右键
 
                         // 在父级目录下增加节点
-                        node = tvwFiles.SelectedNode.Parent.Nodes.Add("new_file_" +
-                            Environment.TickCount +
-                            GetFileOrSubFileSuffix(tvwFiles.SelectedNode));
+                        node = tvwFiles.SelectedNode.Parent.Nodes.Add(name);
 
                         // 展开父级目录
                         tvwFiles.SelectedNode.Parent.Expand();
@@ -851,9 +847,7 @@ namespace DataMaker
                     {   // 在目录级别右键
 
                         // 在本级目录下增加节点
-                        node = tvwFiles.SelectedNode.Nodes.Add("new_file_" +
-                            Environment.TickCount +
-                            GetFileOrSubFileSuffix(tvwFiles.SelectedNode));
+                        node = tvwFiles.SelectedNode.Nodes.Add(name);
 
                         // 展开本级目录
                         tvwFiles.SelectedNode.Expand();
@@ -899,11 +893,8 @@ namespace DataMaker
 
                         try
                         { // 尝试删除
-
-                            if ((NodeType)tvwFiles.SelectedNode.Tag == NodeType.File ||
-                                (NodeType)tvwFiles.SelectedNode.Tag == NodeType.JsonFile ||
-                                (NodeType)tvwFiles.SelectedNode.Tag == NodeType.MCFunctionFile ||
-                                (NodeType)tvwFiles.SelectedNode.Tag == NodeType.MCMetaFile)
+                            
+                            if (((Item)tvwFiles.SelectedNode).Type == Type.File)
                             {   // 删除文件
                                 File.Delete(GetPathFromNode(tvwFiles.SelectedNode));
                             }
@@ -974,7 +965,7 @@ namespace DataMaker
 
                         string destination;
 
-                        if (IsFile(tvwFiles.SelectedNode))
+                        if (((Item)tvwFiles.SelectedNode).Type == Type.File)
                         {   // 选择的是文件
                             // 粘贴到上一级目录
                             destination = GetPathFromNode(tvwFiles.SelectedNode.Parent);
@@ -1031,53 +1022,44 @@ namespace DataMaker
                     e.Node.Text = e.Label;
                     var after = GetPathFromNode(e.Node);
 
-                    switch ((NodeType)e.Node.Tag)
-                    {
-                        // 重命名文件
-                        case NodeType.File:
-                        case NodeType.JsonFile:
-                        case NodeType.MCFunctionFile:
-                        case NodeType.MCMetaFile:
-
-                            if (File.Exists(after))
-                            {
-                                // 命名后的文件存在 这可坏了
-                                MessageBox.Show(Lang("已存在" + ": " + e.Node.Text));
-                                e.Node.Text = backup;
-                            }
-                            else if (File.Exists(before))
-                            {
-                                // 命名前的文件存在 直接重命名
-                                File.Move(before, after);
-                            }
-                            else
-                            {
-                                // 命名前的文件并不存在 创建命名后的目录
-                                File.WriteAllText(after, "");
-                            }
-
-                            break;
-
-                        // 重命名目录
-                        default:
-                            if (Directory.Exists(after))
-                            {
-                                // 命名后的目录存在 这可坏了
-                                MessageBox.Show(Lang("已存在" + ": " + e.Node.Text));
-                                e.Node.Text = backup;
-                            }
-                            else if (Directory.Exists(before))
-                            {
-                                // 命名前的目录存在 直接重命名
-                                Directory.Move(before, after);
-                            }
-                            else
-                            {
-                                // 命名前的目录并不存在 创建命名后的目录
-                                Directory.CreateDirectory(after);
-                            }
-                            InitializeNode(e.Node, false);
-                            break;
+                    if (((Item)e.Node).Type == Type.File)
+                    {   // 重命名文件
+                        if (File.Exists(after))
+                        {
+                            // 命名后的文件存在 这可坏了
+                            MessageBox.Show(Lang("已存在" + ": " + e.Node.Text));
+                            e.Node.Text = backup;
+                        }
+                        else if (File.Exists(before))
+                        {
+                            // 命名前的文件存在 直接重命名
+                            File.Move(before, after);
+                        }
+                        else
+                        {
+                            // 命名前的文件并不存在 创建命名后的目录
+                            File.WriteAllText(after, "");
+                        }
+                    }
+                    else
+                    {   // 重命名目录
+                        if (Directory.Exists(after))
+                        {
+                            // 命名后的目录存在 这可坏了
+                            MessageBox.Show(Lang("已存在" + ": " + e.Node.Text));
+                            e.Node.Text = backup;
+                        }
+                        else if (Directory.Exists(before))
+                        {
+                            // 命名前的目录存在 直接重命名
+                            Directory.Move(before, after);
+                        }
+                        else
+                        {
+                            // 命名前的目录并不存在 创建命名后的目录
+                            Directory.CreateDirectory(after);
+                        }
+                        InitializeNode(e.Node, false);
                     }
                 }
             }
