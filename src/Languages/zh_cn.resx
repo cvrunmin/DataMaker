@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="global_advancements" xml:space="preserve">
+  <data name="global_advancement" xml:space="preserve">
     <value>进度</value>
   </data>
   <data name="global_data" xml:space="preserve">
@@ -129,22 +129,22 @@
   <data name="filetree_copy" xml:space="preserve">
     <value>复制</value>
   </data>
-  <data name="global_functions" xml:space="preserve">
+  <data name="global_function" xml:space="preserve">
     <value>函数</value>
   </data>
-  <data name="global_loottables" xml:space="preserve">
+  <data name="global_loottable" xml:space="preserve">
     <value>战利品表</value>
   </data>
-  <data name="global_recipes" xml:space="preserve">
+  <data name="global_recipe" xml:space="preserve">
     <value>配方</value>
   </data>
   <data name="global_settings" xml:space="preserve">
     <value>设置</value>
   </data>
-  <data name="global_structures" xml:space="preserve">
+  <data name="global_structure" xml:space="preserve">
     <value>结构</value>
   </data>
-  <data name="global_tags" xml:space="preserve">
+  <data name="global_tag" xml:space="preserve">
     <value>标签</value>
   </data>
   <data name="filetree_add" xml:space="preserve">
@@ -200,5 +200,11 @@
   </data>
   <data name="global_namespace" xml:space="preserve">
     <value>命名空间</value>
+  </data>
+  <data name="global_block" xml:space="preserve">
+    <value>方块</value>
+  </data>
+  <data name="global_item" xml:space="preserve">
+    <value>物品</value>
   </data>
 </root>

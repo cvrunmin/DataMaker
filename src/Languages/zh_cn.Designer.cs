@@ -225,9 +225,18 @@ namespace DataMaker.Languages {
         /// <summary>
         ///   查找类似 进度 的本地化字符串。
         /// </summary>
-        internal static string global_advancements {
+        internal static string global_advancement {
             get {
-                return ResourceManager.GetString("global_advancements", resourceCulture);
+                return ResourceManager.GetString("global_advancement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 方块 的本地化字符串。
+        /// </summary>
+        internal static string global_block {
+            get {
+                return ResourceManager.GetString("global_block", resourceCulture);
             }
         }
         
@@ -252,18 +261,27 @@ namespace DataMaker.Languages {
         /// <summary>
         ///   查找类似 函数 的本地化字符串。
         /// </summary>
-        internal static string global_functions {
+        internal static string global_function {
             get {
-                return ResourceManager.GetString("global_functions", resourceCulture);
+                return ResourceManager.GetString("global_function", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 物品 的本地化字符串。
+        /// </summary>
+        internal static string global_item {
+            get {
+                return ResourceManager.GetString("global_item", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 战利品表 的本地化字符串。
         /// </summary>
-        internal static string global_loottables {
+        internal static string global_loottable {
             get {
-                return ResourceManager.GetString("global_loottables", resourceCulture);
+                return ResourceManager.GetString("global_loottable", resourceCulture);
             }
         }
         
@@ -279,9 +297,9 @@ namespace DataMaker.Languages {
         /// <summary>
         ///   查找类似 配方 的本地化字符串。
         /// </summary>
-        internal static string global_recipes {
+        internal static string global_recipe {
             get {
-                return ResourceManager.GetString("global_recipes", resourceCulture);
+                return ResourceManager.GetString("global_recipe", resourceCulture);
             }
         }
         
@@ -297,18 +315,18 @@ namespace DataMaker.Languages {
         /// <summary>
         ///   查找类似 结构 的本地化字符串。
         /// </summary>
-        internal static string global_structures {
+        internal static string global_structure {
             get {
-                return ResourceManager.GetString("global_structures", resourceCulture);
+                return ResourceManager.GetString("global_structure", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 标签 的本地化字符串。
         /// </summary>
-        internal static string global_tags {
+        internal static string global_tag {
             get {
-                return ResourceManager.GetString("global_tags", resourceCulture);
+                return ResourceManager.GetString("global_tag", resourceCulture);
             }
         }
     }

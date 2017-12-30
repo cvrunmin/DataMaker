@@ -11,22 +11,17 @@ using static DataMaker.Main;
 
 namespace DataMaker
 {
-    /* Paste的已有重命名
-     */
-
     public partial class FileTree : Form
     {
         private enum Type { DataPack, Data, Namespace, Root, Directory, File }
 
         private enum Sort { Advancement, Function, LootTable, Recipe, Structure, Tag, None }
-
-        private enum Format { Json, MCFunction, MCMeta }
-
+        
         private struct Item
         {
             public Type Type { get; set; }
             public Sort Sort { get; set; }
-
+            
             public Item(Type type, Sort sort)
             {
                 Type = type;
@@ -77,6 +72,10 @@ namespace DataMaker
 
             public static explicit operator Item(TreeNode node)
             {
+                if (node.Tag == null)
+                {
+                    return new Item(Type.Directory, Sort.None);
+                }
                 var type = (Type)Enum.Parse(typeof(Type), node.Tag.ToString().Split('|')[0]);
                 var sort = (Sort)Enum.Parse(typeof(Sort), node.Tag.ToString().Split('|')[1]);
 
@@ -97,6 +96,11 @@ namespace DataMaker
         /// </summary>
         private string packPath;
 
+        /// <summary>
+        /// 是否正在新建文件夹
+        /// </summary>
+        private bool isAddingFolder;
+
         #region 定义函数
         /// <summary>
         /// 复制文件夹及文件夹下所有子文件夹和文件
@@ -105,6 +109,11 @@ namespace DataMaker
         /// <param name="destinationPath">目标路径</param>
         public static void CopyDirectory(string sourcePath, string destinationPath)
         {
+            // 防止复制到自身
+            if ((destinationPath + "\\").Contains(sourcePath + "\\"))
+                throw new IOException("Try copying a folder to itself!");
+
+            // 复制
             var info = new DirectoryInfo(sourcePath);
             Directory.CreateDirectory(destinationPath);
 
@@ -126,6 +135,7 @@ namespace DataMaker
                 }
             }
         }
+
         /// <summary>
         /// 通过节点获取该节点对应的文件路径
         /// </summary>
@@ -134,15 +144,14 @@ namespace DataMaker
         private string GetPathFromNode(TreeNode node)
         {
             var result = node.FullPath;
-
-            result = result.Replace(Lang("global_datapack") + "/", packPath + "/");
+            result = result.Replace(Lang("global_datapack"), packPath);
             result = result.Replace("/" + Lang("global_data"), "/data");
-            result = result.Replace("/" + Lang("global_advancements"), "/advancements");
+            result = result.Replace("/" + Lang("global_advancement"), "/advancements");
             result = result.Replace("/" + Lang("global_function"), "/functions");
-            result = result.Replace("/" + Lang("global_structures"), "/structures");
-            result = result.Replace("/" + Lang("global_tags"), "/tags");
-            result = result.Replace("/" + Lang("global_loottables"), "/loot_tables");
-            result = result.Replace("/" + Lang("global_recipes"), "/recipes");
+            result = result.Replace("/" + Lang("global_structure"), "/structures");
+            result = result.Replace("/" + Lang("global_tag"), "/tags");
+            result = result.Replace("/" + Lang("global_loottable"), "/loot_tables");
+            result = result.Replace("/" + Lang("global_recipe"), "/recipes");
             result = result.Replace("/" + Lang("global_settings"), "/pack");
             result = result.Replace("/", "\\");
             // 加后缀
@@ -267,6 +276,29 @@ namespace DataMaker
             return result;
         }
 
+        /// <summary>
+        /// 获取指定文件名是否合法
+        /// </summary>
+        /// <param name="str">文件名</param>
+        /// <returns></returns>
+        private bool IsNameLegal(string str)
+        {
+            // 匹配包含非法字符的字符串
+            var pattern = @"[^(a-z0-9\-_\.)]";
+
+            if (Regex.IsMatch(str, pattern))
+            {
+                /* 
+                 * 文件名不符合社会主义核心价值观
+                 * 富强、民主、文明、和谐
+                 * 自由、平等、公正、法治
+                 * 爱国、敬业、诚信、友善
+                 */
+                return false;
+            }
+
+            return true;
+        }
         #endregion
 
         #region 启动时初始化
@@ -276,7 +308,7 @@ namespace DataMaker
             Theme.Initialize(this);
 
             LoadImages();
-            packPath = $"{Environment.CurrentDirectory}\\我是正经数据包";
+            packPath = $@"{Environment.CurrentDirectory}\我是正经数据包";
             LoadFileTree(packPath);
         }
 
@@ -305,10 +337,37 @@ namespace DataMaker
         /// <param name="path"></param>
         private void LoadFileTree(string path)
         {
+            // 根目录
             tvwFiles.Nodes.Clear();
             var rootNode = tvwFiles.Nodes.Add("dataPack");
             InitializeNode(rootNode, false);
+
+            // 补全目录
+            CompleteDirectory();
+
+            // 开始递归读取
             LoadDirectory(path, rootNode);
+        }
+
+        /// <summary>
+        /// 补全必要的目录们
+        /// </summary>
+        private void CompleteDirectory()
+        {
+            // 一级
+            Directory.CreateDirectory(packPath + @"\data");
+
+            // 补全命名空间下的目录
+            foreach (var i in Directory.GetDirectories(packPath + @"\data"))
+            {
+                Directory.CreateDirectory(i + @"\advancements");
+                Directory.CreateDirectory(i + @"\functions");
+                Directory.CreateDirectory(i + @"\recipes");
+                Directory.CreateDirectory(i + @"\structures");
+                Directory.CreateDirectory(i + @"\tags\blocks");
+                Directory.CreateDirectory(i + @"\tags\items");
+                Directory.CreateDirectory(i + @"\tags\functions");
+            }
         }
 
         /// <summary>
@@ -326,7 +385,7 @@ namespace DataMaker
                 var dirName = dir.LastIndexOf("\\") + 1;
                 var dirNode = node.Nodes.Add(dir.Remove(0, dirName));
                 InitializeNode(dirNode, false);
-                // 遍历
+                // 递归
                 LoadDirectory(dir, dirNode);
             }
 
@@ -353,21 +412,43 @@ namespace DataMaker
                 // 是文件
 
                 node.Tag = new Item(Type.File, ((Item)node.Parent).Sort);
+
                 // 设置显示文字和图片
-                if (((Item)node).GetFileSuffix(false) == ".json")
+                var suffix = ((Item)node).GetFileSuffix(false);
+                if (node.Text.EndsWith(suffix))
                 {
-                    node.ImageKey = node.SelectedImageKey = "Json";
-                    node.Text = node.Text.Remove(node.Text.Length - ".json".Length);
+                    // 文件类型正确
+
+                    // 判断文件具体类型
+                    if (node.Level >= 4 && suffix == ".json")
+                    {
+                        node.ImageKey = node.SelectedImageKey = "Json";
+                        node.Text = node.Text.Remove(node.Text.Length - ".json".Length);
+                    }
+                    else if (node.Level >= 4 && suffix == ".mcfunction")
+                    {
+                        node.ImageKey = node.SelectedImageKey = "Function";
+                        node.Text = node.Text.Remove(node.Text.Length - ".mcfunction".Length);
+                    }
+                    else if (node.Level >= 4 && suffix == ".nbt")
+                    {
+                        node.ImageKey = node.SelectedImageKey = "Nbt";
+                        node.Text = node.Text.Remove(node.Text.Length - ".nbt".Length);
+                    }
+                    else if (node.Level == 1 && node.Text == "pack.mcmeta")
+                    {
+                        node.ImageKey = node.SelectedImageKey = "Setting";
+                        node.Text = Lang("global_settings");
+                    }
+                    else
+                    {
+                        node.Remove();
+                    }
                 }
-                else if (((Item)node).GetFileSuffix(false) == ".mcfunction")
+                else
                 {
-                    node.ImageKey = node.SelectedImageKey = "Function";
-                    node.Text = node.Text.Remove(node.Text.Length - ".mcfunction".Length);
-                }
-                else if (node.Level == 1 && node.Text == "pack.mcmeta")
-                {
-                    node.ImageKey = node.SelectedImageKey = "Setting";
-                    node.Text = Lang("global_settings");
+                    // 文件类型不正确
+                    node.Remove();
                 }
             }
             else
@@ -381,8 +462,9 @@ namespace DataMaker
                         node.ImageKey = node.SelectedImageKey = "Directory";
                         node.Text = Lang("global_datapack");
                         node.Tag = new Item(Type.DataPack, Sort.None);
-                        node.Expand();
+                        //node.Expand();
                         break;
+
                     case 1:
                         // TODO: 数据包、数据的图标
 
@@ -392,66 +474,119 @@ namespace DataMaker
                             node.ImageKey = node.SelectedImageKey = "Directory";
                             node.Text = Lang("global_data");
                             node.Tag = new Item(Type.Data, Sort.None);
-                            node.Expand();
+                            //node.Expand();
+                        }
+                        else
+                        {
+                            node.Remove();
                         }
                         break;
+
                     case 2:
                         // 命名空间
                         node.ImageKey = node.SelectedImageKey = "Namespace";
                         node.Tag = new Item(Type.Namespace, Sort.None);
-                        node.Expand();
+                        //node.Expand();
                         break;
+
                     case 3:
                         // 细分类
                         switch (node.Text)
                         {
                             case "advancements":
                                 node.ImageKey = node.SelectedImageKey = "Advancements";
-                                node.Text = Lang("global_advancements");
+                                node.Text = Lang("global_advancement");
                                 node.Tag = new Item(Type.Root, Sort.Advancement);
-                                node.Expand();
+                                //node.Expand();
                                 break;
                             case "functions":
                                 node.ImageKey = node.SelectedImageKey = "Functions";
-                                node.Text = Lang("global_functions");
+                                node.Text = Lang("global_function");
                                 node.Tag = new Item(Type.Root, Sort.Function);
-                                node.Expand();
+                                //node.Expand();
                                 break;
                             case "loot_tables":
                                 node.ImageKey = node.SelectedImageKey = "LootTables";
-                                node.Text = Lang("global_loottables");
+                                node.Text = Lang("global_loottable");
                                 node.Tag = new Item(Type.Root, Sort.LootTable);
-                                node.Expand();
+                                //node.Expand();
                                 break;
                             case "structures":
                                 node.ImageKey = node.SelectedImageKey = "Structures";
-                                node.Text = Lang("global_structures");
+                                node.Text = Lang("global_structure");
                                 node.Tag = new Item(Type.Root, Sort.Structure);
-                                node.Expand();
+                                //node.Expand();
                                 break;
                             case "recipes":
                                 node.ImageKey = node.SelectedImageKey = "Recipes";
-                                node.Text = Lang("global_recipes");
+                                node.Text = Lang("global_recipe");
                                 node.Tag = new Item(Type.Root, Sort.Recipe);
-                                node.Expand();
+                                //node.Expand();
                                 break;
                             case "tags":
                                 node.ImageKey = node.SelectedImageKey = "Tags";
-                                node.Text = Lang("global_tags");
+                                node.Text = Lang("global_tag");
                                 node.Tag = new Item(Type.Root, Sort.Tag);
-                                node.Expand();
+                                //node.Expand();
                                 break;
                             default:
+                                node.Remove();
                                 break;
                         }
                         break;
+
+                    case 4:
+                        // tags下细分类
+                        if (((Item)node.Parent).Sort == Sort.Tag)
+                        {
+                            node.ImageKey = node.SelectedImageKey = "Directory";
+                            node.Tag = new Item(Type.Root, Sort.Tag);
+                            switch (node.Text)
+                            {
+                                case "blocks":
+                                    node.Text = Lang("global_block");
+                                    break;
+                                case "items":
+                                    node.Text = Lang("global_item");
+                                    break;
+                                case "functions":
+                                    node.Text = Lang("global_function");
+                                    break;
+                                default:
+                                    node.Remove();
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            goto default;
+                        }
+                        break;
+
                     default:
-                        // 其他层级 跟随父级目录的属性
-                        node.ImageKey = node.SelectedImageKey = "Directory";
-                        node.Tag = new Item(Type.Directory, ((Item)node.Parent).Sort);
+                        // 其他层级
+
+                        // 判断是否合法
+                        if (IsNameLegal(node.Text))
+                        {
+                            // 合法
+                            // 跟随父级目录的属性
+                            node.ImageKey = node.SelectedImageKey = "Directory";
+                            node.Tag = new Item(Type.Directory, ((Item)node.Parent).Sort);
+                        }
+                        else
+                        {
+                            // 非法
+                            // 删除
+                            node.Remove();
+                        }
+
                         break;
                 }
             }
+
+            // 全部展开
+            tvwFiles.ExpandAll();
         }
         #endregion
 
@@ -512,13 +647,14 @@ namespace DataMaker
             smnuProperty.Text = Lang("filetree_property");
             smnuRename.Text = Lang("filetree_rename");
 
+
             if (tvwFiles.SelectedNode != null)
             {
-                // 更换“收起”“展开”
-                if (tvwFiles.SelectedNode.IsExpanded)
-                    smnuOpen.Text = Lang("filetree_collapse");
-                else
-                    smnuOpen.Text = Lang("filetree_expand");
+                //// 更换“收起”“展开”
+                //if (tvwFiles.SelectedNode.IsExpanded)
+                //    smnuOpen.Text = Lang("filetree_collapse");
+                //else
+                //    smnuOpen.Text = Lang("filetree_expand");
 
                 // 更改普遍可用性
                 switch (((Item)tvwFiles.SelectedNode).Type)
@@ -559,22 +695,22 @@ namespace DataMaker
                 switch (((Item)tvwFiles.SelectedNode).Sort)
                 {
                     case Sort.Advancement:
-                        smnuAddFile.Text = Lang("global_advancements");
+                        smnuAddFile.Text = Lang("global_advancement");
                         break;
                     case Sort.Function:
-                        smnuAddFile.Text = Lang("global_functions");
+                        smnuAddFile.Text = Lang("global_function");
                         break;
                     case Sort.LootTable:
-                        smnuAddFile.Text = Lang("global_loottables");
+                        smnuAddFile.Text = Lang("global_loottable");
                         break;
                     case Sort.Recipe:
-                        smnuAddFile.Text = Lang("global_recipes");
+                        smnuAddFile.Text = Lang("global_recipe");
                         break;
                     case Sort.Structure:
-                        smnuAddFile.Text = Lang("global_structures");
+                        smnuAddFile.Text = Lang("global_structure");
                         break;
                     case Sort.Tag:
-                        smnuAddFile.Text = Lang("global_tags");
+                        smnuAddFile.Text = Lang("global_tag");
                         break;
                     default:
                         break;
@@ -739,6 +875,8 @@ namespace DataMaker
             {
                 if (tvwFiles.SelectedNode != null)
                 {
+                    isAddingFolder = true;
+
                     TreeNode node;
                     string name;
                     if (((Item)tvwFiles.SelectedNode).Type == Type.File)
@@ -776,6 +914,9 @@ namespace DataMaker
                             tvwFiles.Nodes.Remove(node);
                         }
                     }
+
+                    // 补全目录
+                    CompleteDirectory();
                 }
             }
         }
@@ -927,13 +1068,24 @@ namespace DataMaker
             {
                 if (tvwFiles.SelectedNode != null)
                 {
+                    // 获取列表
                     var list = GetClipboardList(out var isCut);
                     if (list is null)
                     {
                         return;
                     }
 
-                    PasteInDisk(list, isCut);
+                    // 尝试粘贴
+                    try
+                    {
+                        PasteInDisk(list, isCut);
+                    }
+                    catch (IOException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
+                    // 刷新
                     RefreshItems();
                 }
             }
@@ -964,12 +1116,11 @@ namespace DataMaker
                     destination = GetPathFromNode(tvwFiles.SelectedNode);
                 }
                 destination += source.Remove(0, source.LastIndexOf("\\"));
-                destination = destination.Remove(destination.LastIndexOf("\\") + 1) + GetAvailableFileName(destination);
-
-                // 粘贴
                 if (File.Exists(source))
                 {
                     // 是文件
+
+                    destination = destination.Remove(destination.LastIndexOf("\\") + 1) + GetAvailableFileName(destination);
 
                     if (isCut)
                     {
@@ -985,6 +1136,8 @@ namespace DataMaker
                 else if (Directory.Exists(source))
                 {
                     // 是目录
+
+                    destination = destination.Remove(destination.LastIndexOf("\\") + 1) + GetAvailableDirName(destination);
 
                     if (isCut)
                     {
@@ -1009,10 +1162,51 @@ namespace DataMaker
             {
                 if (tvwFiles.SelectedNode != null)
                 {
-                    // FIXME: 不知为何这里执行后所有的节点都是收缩状态…
+                    // 记录当前选中的节点信息
+                    var selectedFullPath = tvwFiles.SelectedNode.FullPath;
+
+                    // 重新加载文件
                     LoadFileTree(packPath);
-                    tvwFiles.ExpandAll();
+
+                    // 选择刚刚选中的节点
+                    SelectNodeFromTextAndLevel(selectedFullPath);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 根据指定文字和所在层级选中节点
+        /// </summary>
+        /// <param name="text">指定文字</param>
+        /// <param name="level">指定层级</param>
+        private void SelectNodeFromTextAndLevel(string fullPath)
+        {
+            foreach (TreeNode i in tvwFiles.Nodes)
+            {
+                if (i.FullPath == fullPath)
+                {
+                    tvwFiles.SelectedNode = i;
+                    return;
+                }
+                SelectNodeFromTextAndLevel(fullPath, i);
+            }
+        }
+
+        /// <summary>
+        /// 根据指定文字和所在层级选中节点
+        /// </summary>
+        /// <param name="text">指定文字</param>
+        /// <param name="level">指定层级</param>
+        private void SelectNodeFromTextAndLevel(string fullPath, TreeNode node)
+        {
+            foreach (TreeNode i in node.Nodes)
+            {
+                if (i.FullPath == fullPath)
+                {
+                    tvwFiles.SelectedNode = i;
+                    return;
+                }
+                SelectNodeFromTextAndLevel(fullPath, i);
             }
         }
 
@@ -1067,7 +1261,20 @@ namespace DataMaker
             {
                 if (tvwFiles.SelectedNode != null)
                 {
-
+                    ProcessStartInfo info = new ProcessStartInfo("explorer.exe");
+                    if (((Item)tvwFiles.SelectedNode).Type == Type.File)
+                    {
+                        // 选中的是文件
+                        // 打开explorer.exe, 将光标定位在此文件
+                        info.Arguments = "/e,/select," + GetPathFromNode(tvwFiles.SelectedNode);
+                    }
+                    else
+                    {
+                        // 选中的是文件夹
+                        // 以此文件夹作为根目录打开explorer.exe
+                        info.Arguments = "/root," + GetPathFromNode(tvwFiles.SelectedNode);
+                    }
+                    Process.Start(info);
                 }
             }
         }
@@ -1078,22 +1285,13 @@ namespace DataMaker
         {
             // 取消命名 后续命名由代码手动实现
             e.CancelEdit = true;
-            
+
             if (e.Label != null && e.Label != e.Node.Text)
             {
                 // 确实改名了
 
-                // 匹配包含非法字符的字符串
-                var pattern = @"[^(a-z0-9\-_\.)]";
-
-                if (Regex.IsMatch(e.Label, pattern))
+                if (!IsNameLegal(e.Label))
                 {
-                    /* 
-                     * 文件名不符合社会主义核心价值观
-                     * 富强、民主、文明、和谐
-                     * 自由、平等、公正、法治
-                     * 爱国、敬业、诚信、友善
-                     */
                     MessageBox.Show(Lang("filetree_msgbox_name"));
                 }
                 else
@@ -1149,6 +1347,12 @@ namespace DataMaker
                         InitializeNode(e.Node, false);
                     }
                 }
+            }
+
+            if (isAddingFolder)
+            {
+                RefreshItems();
+                isAddingFolder = false;
             }
         }
 
@@ -1222,6 +1426,11 @@ namespace DataMaker
             RefreshItems();
         }
 
+        private void tvwFiles_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            // 想收起？不存在的
+            e.Node.Expand();
+        }
         #endregion
 
         #endregion
