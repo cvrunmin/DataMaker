@@ -145,6 +145,7 @@
     <Content Include="Resources\FileTree\Json.png" />
     <Content Include="Resources\FileTree\LootTables.png" />
     <Content Include="Resources\FileTree\Misc.png" />
+    <Content Include="Resources\FileTree\Nbt.png" />
     <Content Include="Resources\FileTree\Recipes.png" />
     <Content Include="Resources\FileTree\Setting.png" />
     <Content Include="Resources\FileTree\Structures.png" />

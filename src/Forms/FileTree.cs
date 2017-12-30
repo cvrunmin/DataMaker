@@ -13,7 +13,7 @@ namespace DataMaker
 {
     public partial class FileTree : Form
     {
-        private enum Type { DataPack, Data, Namespace, Root, Directory, File }
+        private enum Type { DataPack, Data, Namespace, Root, Directory, File, Unknown }
 
         private enum Sort { Advancement, Function, LootTable, Recipe, Structure, Tag, None }
         
@@ -74,7 +74,7 @@ namespace DataMaker
             {
                 if (node.Tag == null)
                 {
-                    return new Item(Type.Directory, Sort.None);
+                    return new Item(Type.Unknown, Sort.None);
                 }
                 var type = (Type)Enum.Parse(typeof(Type), node.Tag.ToString().Split('|')[0]);
                 var sort = (Sort)Enum.Parse(typeof(Sort), node.Tag.ToString().Split('|')[1]);
@@ -144,16 +144,19 @@ namespace DataMaker
         private string GetPathFromNode(TreeNode node)
         {
             var result = node.FullPath;
-            result = result.Replace(Lang("global_datapack"), packPath);
-            result = result.Replace("/" + Lang("global_data"), "/data");
-            result = result.Replace("/" + Lang("global_advancement"), "/advancements");
-            result = result.Replace("/" + Lang("global_function"), "/functions");
-            result = result.Replace("/" + Lang("global_structure"), "/structures");
-            result = result.Replace("/" + Lang("global_tag"), "/tags");
-            result = result.Replace("/" + Lang("global_loottable"), "/loot_tables");
-            result = result.Replace("/" + Lang("global_recipe"), "/recipes");
-            result = result.Replace("/" + Lang("global_settings"), "/pack");
-            result = result.Replace("/", "\\");
+            result = result.Replace(Lang("global_datapack"), packPath)
+                .Replace("/" + Lang("global_data"), "/data")
+                .Replace("/" + Lang("global_advancement"), "/advancements")
+                .Replace("/" + Lang("global_function"), "/functions")
+                .Replace("/" + Lang("global_structure"), "/structures")
+                .Replace("/" + Lang("global_loottable"), "/loot_tables")
+                .Replace("/" + Lang("global_recipe"), "/recipes")
+                .Replace("/" + Lang("global_settings"), "/pack")
+                .Replace("/" + Lang("global_tag"), "/tags")
+                .Replace("/" + Lang("global_block"), "/blocks")
+                .Replace("/" + Lang("global_item"), "/items")
+                .Replace("/" + Lang("global_function"), "/functions")
+                .Replace("/", "\\");
             // 加后缀
             result += ((Item)node).GetFileSuffix(false);
 
@@ -299,6 +302,20 @@ namespace DataMaker
 
             return true;
         }
+
+        /// <summary>
+        /// 获取被选中的节点对应的Item
+        /// </summary>
+        private Item SelectedItem { get => (Item)tvwFiles.SelectedNode; }
+
+        /// <summary>
+        /// 获取指定节点对应的路径是否是文件
+        /// </summary>
+        /// <param name="node">指定节点</param>
+        private bool IsFile(TreeNode node)
+        {
+            return File.Exists(GetPathFromNode(node));
+        }
         #endregion
 
         #region 启动时初始化
@@ -329,6 +346,7 @@ namespace DataMaker
             tvwFiles.ImageList.Images.Add("Recipes", (Image)rm.GetObject("Recipes"));
             tvwFiles.ImageList.Images.Add("Structures", (Image)rm.GetObject("Structures"));
             tvwFiles.ImageList.Images.Add("Tags", (Image)rm.GetObject("Tags"));
+            tvwFiles.ImageList.Images.Add("Nbt", (Image)rm.GetObject("Nbt"));
         }
 
         /// <summary>
@@ -442,13 +460,15 @@ namespace DataMaker
                     }
                     else
                     {
-                        node.Remove();
+                        node.ImageKey = node.SelectedImageKey = "Misc";
+                        node.Tag = new Item(Type.Unknown, Sort.None);
                     }
                 }
                 else
                 {
                     // 文件类型不正确
-                    node.Remove();
+                    node.ImageKey = node.SelectedImageKey = "Misc";
+                    node.Tag = new Item(Type.Unknown, Sort.None);
                 }
             }
             else
@@ -478,7 +498,8 @@ namespace DataMaker
                         }
                         else
                         {
-                            node.Remove();
+                            node.ImageKey = node.SelectedImageKey = "Misc";
+                            node.Tag = new Item(Type.Unknown, Sort.None);
                         }
                         break;
 
@@ -530,7 +551,8 @@ namespace DataMaker
                                 //node.Expand();
                                 break;
                             default:
-                                node.Remove();
+                                node.ImageKey = node.SelectedImageKey = "Misc";
+                                node.Tag = new Item(Type.Unknown, Sort.None);
                                 break;
                         }
                         break;
@@ -553,7 +575,8 @@ namespace DataMaker
                                     node.Text = Lang("global_function");
                                     break;
                                 default:
-                                    node.Remove();
+                                    node.ImageKey = node.SelectedImageKey = "Misc";
+                                    node.Tag = new Item(Type.Unknown, Sort.None);
                                     break;
                             }
                         }
@@ -577,8 +600,8 @@ namespace DataMaker
                         else
                         {
                             // 非法
-                            // 删除
-                            node.Remove();
+                            node.ImageKey = node.SelectedImageKey = "Misc";
+                            node.Tag = new Item(Type.Unknown, Sort.None);
                         }
 
                         break;
@@ -657,11 +680,13 @@ namespace DataMaker
                 //    smnuOpen.Text = Lang("filetree_expand");
 
                 // 更改普遍可用性
-                switch (((Item)tvwFiles.SelectedNode).Type)
+                switch (SelectedItem.Type)
                 {
                     case Type.DataPack:
                         smnuDelete.Enabled = false;
                         smnuAdd.Enabled = false;
+                        smnuAddFile.Enabled = false;
+                        smnuAddDirectory.Enabled = false;
                         smnuRename.Enabled = false;
                         break;
                     case Type.Data:
@@ -671,7 +696,9 @@ namespace DataMaker
                         smnuRename.Enabled = false;
                         break;
                     case Type.Namespace:
+                        smnuAdd.Enabled = false;
                         smnuAddFile.Enabled = false;
+                        smnuAddDirectory.Enabled = false;
                         break;
                     case Type.Root:
                         smnuDelete.Enabled = false;
@@ -692,7 +719,7 @@ namespace DataMaker
                 }
 
                 // 更改“添加文件”名字
-                switch (((Item)tvwFiles.SelectedNode).Sort)
+                switch (SelectedItem.Sort)
                 {
                     case Sort.Advancement:
                         smnuAddFile.Text = Lang("global_advancement");
@@ -717,10 +744,10 @@ namespace DataMaker
                 }
 
                 // 更改编辑器可用性
-                switch (((Item)tvwFiles.SelectedNode).Type)
+                switch (SelectedItem.Type)
                 {
                     case Type.File:
-                        switch (((Item)tvwFiles.SelectedNode).Sort)
+                        switch (SelectedItem.Sort)
                         {
                             case Sort.Advancement:
                             case Sort.LootTable:
@@ -879,7 +906,7 @@ namespace DataMaker
 
                     TreeNode node;
                     string name;
-                    if (((Item)tvwFiles.SelectedNode).Type == Type.File)
+                    if (IsFile(tvwFiles.SelectedNode))
                     {
                         name = GetAvailableDirName(GetPathFromNode(tvwFiles.SelectedNode) + "\\new_folder");
                         node = tvwFiles.SelectedNode.Parent.Nodes.Add(name);
@@ -921,6 +948,7 @@ namespace DataMaker
             }
         }
 
+
         /// <summary>
         /// 在项目下新建文件
         /// </summary>
@@ -933,9 +961,9 @@ namespace DataMaker
                     TreeNode node;
                     var name = GetAvailableFileName(
                         GetPathFromNode(tvwFiles.SelectedNode) + "\\new_file",
-                        ((Item)tvwFiles.SelectedNode).GetFileSuffix(true)
+                        SelectedItem.GetFileSuffix(true)
                         );
-                    if (((Item)tvwFiles.SelectedNode).Type == Type.File)
+                    if (IsFile(tvwFiles.SelectedNode))
                     {
                         // 在文件级别右键
 
@@ -1003,16 +1031,12 @@ namespace DataMaker
                         {
                             // 尝试删除
 
-                            if (((Item)tvwFiles.SelectedNode).Type == Type.File)
-                            {
+                            if (File.Exists(GetPathFromNode(tvwFiles.SelectedNode)))
                                 // 删除文件
                                 File.Delete(GetPathFromNode(tvwFiles.SelectedNode));
-                            }
                             else
-                            {
                                 // 删除目录
                                 Directory.Delete(GetPathFromNode(tvwFiles.SelectedNode), true);
-                            }
 
                             // 移除节点
                             tvwFiles.Nodes.Remove(tvwFiles.SelectedNode);
@@ -1103,7 +1127,7 @@ namespace DataMaker
                 string destination;
 
                 // 设定粘贴路径
-                if (((Item)tvwFiles.SelectedNode).Type == Type.File)
+                if (IsFile(tvwFiles.SelectedNode))
                 {
                     // 选择的是文件
                     // 粘贴到上一级目录
@@ -1160,17 +1184,14 @@ namespace DataMaker
         {
             if (smnuRefresh.Enabled)
             {
-                if (tvwFiles.SelectedNode != null)
-                {
-                    // 记录当前选中的节点信息
-                    var selectedFullPath = tvwFiles.SelectedNode.FullPath;
+                // 记录当前选中的节点信息
+                var selectedFullPath = tvwFiles.SelectedNode.FullPath;
 
-                    // 重新加载文件
-                    LoadFileTree(packPath);
+                // 重新加载文件
+                LoadFileTree(packPath);
 
-                    // 选择刚刚选中的节点
-                    SelectNodeFromTextAndLevel(selectedFullPath);
-                }
+                // 选择刚刚选中的节点
+                SelectNodeFromTextAndLevel(selectedFullPath);
             }
         }
 
@@ -1262,7 +1283,7 @@ namespace DataMaker
                 if (tvwFiles.SelectedNode != null)
                 {
                     ProcessStartInfo info = new ProcessStartInfo("explorer.exe");
-                    if (((Item)tvwFiles.SelectedNode).Type == Type.File)
+                    if (IsFile(tvwFiles.SelectedNode))
                     {
                         // 选中的是文件
                         // 打开explorer.exe, 将光标定位在此文件
@@ -1300,10 +1321,11 @@ namespace DataMaker
 
                     var before = GetPathFromNode(e.Node);
                     var backup = e.Node.Text;
+                    var isFile = IsFile(e.Node);
                     e.Node.Text = e.Label;
                     var after = GetPathFromNode(e.Node);
 
-                    if (((Item)e.Node).Type == Type.File)
+                    if (isFile)
                     {
                         // 重命名文件
 
