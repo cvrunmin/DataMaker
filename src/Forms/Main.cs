@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using DataMaker.Properties;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace DataMaker
@@ -24,6 +25,13 @@ namespace DataMaker
     {
         public static string Lang(string key)
         {
+            var rm = new System.Resources.ResourceManager("DataMaker.Languages.zh_cn", typeof(Resources).Assembly);
+
+            if (rm.GetString(key) != null)
+            {
+                return rm.GetString(key);
+            }
+
             return key;
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataMaker.Properties;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -125,14 +126,30 @@ namespace DataMaker
                 }
             }
         }
-
         /// <summary>
         /// 通过节点获取该节点对应的文件路径
         /// </summary>
         /// <param name="node">指定节点</param>
         /// <returns>文件路径</returns>
         private string GetPathFromNode(TreeNode node)
-            => GetPathFromNode(node, out var isSuccessful);
+        {
+            var result = node.FullPath;
+
+            result = result.Replace(Lang("global_datapack") + "/", packPath + "/");
+            result = result.Replace("/" + Lang("global_data"), "/data");
+            result = result.Replace("/" + Lang("global_advancements"), "/advancements");
+            result = result.Replace("/" + Lang("global_function"), "/functions");
+            result = result.Replace("/" + Lang("global_structures"), "/structures");
+            result = result.Replace("/" + Lang("global_tags"), "/tags");
+            result = result.Replace("/" + Lang("global_loottables"), "/loot_tables");
+            result = result.Replace("/" + Lang("global_recipes"), "/recipes");
+            result = result.Replace("/" + Lang("global_settings"), "/pack");
+            result = result.Replace("/", "\\");
+            // 加后缀
+            result += ((Item)node).GetFileSuffix(false);
+
+            return result;
+        }
 
         /// <summary>
         /// 复制或剪切文件路径数组至剪贴板
@@ -164,35 +181,46 @@ namespace DataMaker
             // 获取剪贴板存储对象
             IDataObject data = Clipboard.GetDataObject();
 
-            // 获取DropEffect
-            MemoryStream memo = (MemoryStream)data.GetData("Preferred DropEffect");
-            var bytes = new byte[] { 0, 0, 0, 0 };
-            memo.Read(bytes, 0, bytes.Length);
-
-            var cutBytes = new byte[] { 2, 0, 0, 0 };
-
-            if (bytes[0] == cutBytes[0] &&
-                bytes[1] == cutBytes[1] &&
-                bytes[2] == cutBytes[2] &&
-                bytes[3] == cutBytes[3])
+            if (!(data is null))
             {
-                isCut = true;
-            }
-            else
-            {
-                isCut = false;
+                // 获取DropEffect
+                MemoryStream ms = (MemoryStream)data.GetData("Preferred DropEffect");
+                if (!(ms is null))
+                {
+                    // 判断DropEffect
+                    var bytes = new byte[] { 0, 0, 0, 0 };
+                    ms.Read(bytes, 0, bytes.Length);
+
+                    var cutBytes = new byte[] { 2, 0, 0, 0 };
+
+                    if (bytes[0] == cutBytes[0] &&
+                        bytes[1] == cutBytes[1] &&
+                        bytes[2] == cutBytes[2] &&
+                        bytes[3] == cutBytes[3])
+                    {
+                        isCut = true;
+                    }
+                    else
+                    {
+                        isCut = false;
+                    }
+
+                    // 获取文件名列表
+                    StringCollection sc = Clipboard.GetFileDropList();
+                    List<string> list = new List<string>();
+
+                    for (int i = 0; i < sc.Count; i++)
+                    {
+                        string listfileName = sc[i];
+                        list.Add(listfileName);
+                    }
+
+                    return list.ToArray();
+                }
             }
 
-            StringCollection sc = Clipboard.GetFileDropList();
-            List<string> list = new List<string>();
-
-            for (int i = 0; i < sc.Count; i++)
-            {
-                string listfileName = sc[i];
-                list.Add(listfileName);
-            }
-
-            return list.ToArray();
+            isCut = false;
+            return null;
         }
 
         /// <summary>
@@ -212,34 +240,15 @@ namespace DataMaker
         }
 
         /// <summary>
-        /// 通过节点获取该节点对应的文件路径
+        /// 根据文件路径获取可用的文件名
         /// </summary>
-        /// <param name="node">指定节点</param>
-        /// <param name="isExists">获取是否成功</param>
-        /// <returns>文件路径</returns>
-        private string GetPathFromNode(TreeNode node, out bool isExists)
+        private string GetAvailableFileName(string pathDir)
         {
-            var result = node.FullPath;
+            // 根据完整路径取得后缀和路径
+            var suffix = pathDir.Remove(0, pathDir.LastIndexOf("."));
+            var path = pathDir.Remove(pathDir.LastIndexOf("."));
 
-            result = result.Replace(Lang("数据包") + "/", packPath + "/");
-            result = result.Replace("/" + Lang("数据"), "/data");
-            result = result.Replace("/" + Lang("进度"), "/advancements");
-            result = result.Replace("/" + Lang("函数"), "/functions");
-            result = result.Replace("/" + Lang("结构"), "/structures");
-            result = result.Replace("/" + Lang("标签"), "/tags");
-            result = result.Replace("/" + Lang("战利品表"), "/loot_tables");
-            result = result.Replace(Lang("/配方/"), "/recipes/");
-            result = result.Replace(Lang("/设置"), "/pack");
-            result = result.Replace(Lang("/"), "\\");
-            // 加后缀
-            result = result.Insert(result.Length, ((Item)node).GetFileSuffix(false));
-
-            if (Directory.Exists(result))
-                isExists = true;
-            else
-                isExists = false;
-
-            return result;
+            return GetAvailableFileName(path, suffix);
         }
 
         /// <summary>
@@ -273,7 +282,7 @@ namespace DataMaker
 
         private void LoadImages()
         {
-            var rm = new System.Resources.ResourceManager("DataMaker.GlobalResource", GetType().Assembly);
+            var rm = new System.Resources.ResourceManager("DataMaker.GlobalResource", typeof(Resources).Assembly);
             tvwFiles.ImageList = new ImageList();
             tvwFiles.ImageList.Images.Add("Misc", (Image)rm.GetObject("Misc"));
             tvwFiles.ImageList.Images.Add("Directory", (Image)rm.GetObject("Directory"));
@@ -341,8 +350,10 @@ namespace DataMaker
         {
             if (isFile)
             {
+                // 是文件
+
                 node.Tag = new Item(Type.File, ((Item)node.Parent).Sort);
-                // 设置显示相关
+                // 设置显示文字和图片
                 if (((Item)node).GetFileSuffix(false) == ".json")
                 {
                     node.ImageKey = node.SelectedImageKey = "Json";
@@ -353,22 +364,24 @@ namespace DataMaker
                     node.ImageKey = node.SelectedImageKey = "Function";
                     node.Text = node.Text.Remove(node.Text.Length - ".mcfunction".Length);
                 }
-                else if (node.Level == 1 && ((Item)node).GetFileSuffix(false) == "pack.mcmeta")
+                else if (node.Level == 1 && node.Text == "pack.mcmeta")
                 {
                     node.ImageKey = node.SelectedImageKey = "Setting";
-                    node.Text = Lang("设置");
+                    node.Text = Lang("global_settings");
                 }
             }
             else
             {
+                // 是目录
+
                 switch (node.Level)
                 {
                     case 0:
                         // 根目录
                         node.ImageKey = node.SelectedImageKey = "Directory";
-                        node.Text = Lang("数据包");
-                        node.Expand();
+                        node.Text = Lang("global_datapack");
                         node.Tag = new Item(Type.DataPack, Sort.None);
+                        node.Expand();
                         break;
                     case 1:
                         // TODO: 数据包、数据的图标
@@ -377,7 +390,7 @@ namespace DataMaker
                         if (node.Text.Equals("data"))
                         {
                             node.ImageKey = node.SelectedImageKey = "Directory";
-                            node.Text = "数据";
+                            node.Text = Lang("global_data");
                             node.Tag = new Item(Type.Data, Sort.None);
                             node.Expand();
                         }
@@ -394,37 +407,37 @@ namespace DataMaker
                         {
                             case "advancements":
                                 node.ImageKey = node.SelectedImageKey = "Advancements";
-                                node.Text = Lang("进度");
+                                node.Text = Lang("global_advancements");
                                 node.Tag = new Item(Type.Root, Sort.Advancement);
                                 node.Expand();
                                 break;
                             case "functions":
                                 node.ImageKey = node.SelectedImageKey = "Functions";
-                                node.Text = Lang("函数");
+                                node.Text = Lang("global_functions");
                                 node.Tag = new Item(Type.Root, Sort.Function);
                                 node.Expand();
                                 break;
                             case "loot_tables":
                                 node.ImageKey = node.SelectedImageKey = "LootTables";
-                                node.Text = Lang("战利品表");
+                                node.Text = Lang("global_loottables");
                                 node.Tag = new Item(Type.Root, Sort.LootTable);
                                 node.Expand();
                                 break;
                             case "structures":
                                 node.ImageKey = node.SelectedImageKey = "Structures";
-                                node.Text = Lang("结构");
+                                node.Text = Lang("global_structures");
                                 node.Tag = new Item(Type.Root, Sort.Structure);
                                 node.Expand();
                                 break;
                             case "recipes":
                                 node.ImageKey = node.SelectedImageKey = "Recipes";
-                                node.Text = Lang("配方");
+                                node.Text = Lang("global_recipes");
                                 node.Tag = new Item(Type.Root, Sort.Recipe);
                                 node.Expand();
                                 break;
                             case "tags":
                                 node.ImageKey = node.SelectedImageKey = "Tags";
-                                node.Text = Lang("标签");
+                                node.Text = Lang("global_tags");
                                 node.Tag = new Item(Type.Root, Sort.Tag);
                                 node.Expand();
                                 break;
@@ -484,21 +497,30 @@ namespace DataMaker
             smnuPaste.Enabled = true;
             smnuProperty.Enabled = true;
             smnuRename.Enabled = true;
-            smnuCopy.Text = Lang("复制");
-            smnuCut.Text = Lang("剪切");
-            smnuDelete.Text = Lang("删除");
-            smnuAdd.Text = Lang("添加");
-            smnuAddDirectory.Text = Lang("文件夹");
-            smnuAddFile.Text = Lang("文件");
-            smnuPaste.Text = Lang("粘贴");
-            smnuProperty.Text = Lang("属性");
-            smnuRename.Text = Lang("重命名");
+            smnuRefresh.Enabled = true;
+            smnuExplorer.Enabled = true;
+            smnuVisualizationEditor.Enabled = true;
+            smnuJsonEditor.Enabled = true;
+            smnuFunctionEditor.Enabled = true;
+            smnuCopy.Text = Lang("filetree_copy");
+            smnuCut.Text = Lang("filetree_cut");
+            smnuDelete.Text = Lang("filetree_delete");
+            smnuAdd.Text = Lang("filetree_add");
+            smnuAddDirectory.Text = Lang("filetree_folder");
+            smnuAddFile.Text = Lang("filetree_file");
+            smnuPaste.Text = Lang("filetree_paste");
+            smnuProperty.Text = Lang("filetree_property");
+            smnuRename.Text = Lang("filetree_rename");
+
             if (tvwFiles.SelectedNode != null)
             {
+                // 更换“收起”“展开”
                 if (tvwFiles.SelectedNode.IsExpanded)
-                    smnuOpen.Text = Lang("收起");
+                    smnuOpen.Text = Lang("filetree_collapse");
                 else
-                    smnuOpen.Text = Lang("展开");
+                    smnuOpen.Text = Lang("filetree_expand");
+
+                // 更改普遍可用性
                 switch (((Item)tvwFiles.SelectedNode).Type)
                 {
                     case Type.DataPack:
@@ -507,7 +529,7 @@ namespace DataMaker
                         smnuRename.Enabled = false;
                         break;
                     case Type.Data:
-                        smnuAddDirectory.Text = Lang("命名空间");
+                        smnuAddDirectory.Text = Lang("global_namespace");
                         smnuDelete.Enabled = false;
                         smnuAddFile.Enabled = false;
                         smnuRename.Enabled = false;
@@ -520,32 +542,70 @@ namespace DataMaker
                         smnuRename.Enabled = false;
                         break;
                     case Type.File:
-                        smnuOpen.Text = Lang("编辑");
+                        smnuOpen.Text = Lang("filetree_edit");
                         break;
                     default:
                         break;
                 }
+
+                // 更改“粘贴”可用性
+                // TODO 文件类型匹配
+                if (GetClipboardList(out var isCut) is null)
+                {
+                    smnuPaste.Enabled = false;
+                }
+
+                // 更改“添加文件”名字
                 switch (((Item)tvwFiles.SelectedNode).Sort)
                 {
                     case Sort.Advancement:
-                        smnuAddFile.Text = Lang("进度文件");
+                        smnuAddFile.Text = Lang("global_advancements");
                         break;
                     case Sort.Function:
-                        smnuAddFile.Text = Lang("函数文件");
+                        smnuAddFile.Text = Lang("global_functions");
                         break;
                     case Sort.LootTable:
-                        smnuAddFile.Text = Lang("战利品表文件");
+                        smnuAddFile.Text = Lang("global_loottables");
                         break;
                     case Sort.Recipe:
-                        smnuAddFile.Text = Lang("配方文件");
+                        smnuAddFile.Text = Lang("global_recipes");
                         break;
                     case Sort.Structure:
-                        smnuAddFile.Text = Lang("结构文件");
+                        smnuAddFile.Text = Lang("global_structures");
                         break;
                     case Sort.Tag:
-                        smnuAddFile.Text = Lang("标签文件");
+                        smnuAddFile.Text = Lang("global_tags");
                         break;
                     default:
+                        break;
+                }
+
+                // 更改编辑器可用性
+                switch (((Item)tvwFiles.SelectedNode).Type)
+                {
+                    case Type.File:
+                        switch (((Item)tvwFiles.SelectedNode).Sort)
+                        {
+                            case Sort.Advancement:
+                            case Sort.LootTable:
+                            case Sort.Recipe:
+                            case Sort.Tag:
+                                smnuFunctionEditor.Enabled = false;
+                                break;
+                            case Sort.Function:
+                                smnuJsonEditor.Enabled = false;
+                                break;
+                            default:
+                                smnuVisualizationEditor.Enabled = false;
+                                smnuJsonEditor.Enabled = false;
+                                smnuFunctionEditor.Enabled = false;
+                                break;
+                        }
+                        break;
+                    default:
+                        smnuVisualizationEditor.Enabled = false;
+                        smnuJsonEditor.Enabled = false;
+                        smnuFunctionEditor.Enabled = false;
                         break;
                 }
             }
@@ -583,6 +643,10 @@ namespace DataMaker
                 case Keys.F2:
                     e.SuppressKeyPress = true;
                     RenameItem();
+                    break;
+                case Keys.F5:
+                    e.SuppressKeyPress = true;
+                    RefreshItems();
                     break;
                 case Keys.V:
                     if (e.Control)
@@ -658,9 +722,9 @@ namespace DataMaker
                 if (tvwFiles.SelectedNode != null)
                 {
                     MessageBox.Show(
-                        Lang("名称") + ": " + tvwFiles.SelectedNode.Text + "\n" +
-                        Lang("类型") + ": " + tvwFiles.SelectedNode.Tag + "\n" +
-                        Lang("路径") + ": " + GetPathFromNode(tvwFiles.SelectedNode) + "\n"
+                        Lang("filetree_properties_name") + ": " + tvwFiles.SelectedNode.Text + "\n" +
+                        Lang("filetree_properties_type") + ": " + tvwFiles.SelectedNode.Tag + "\n" +
+                        Lang("filetree_properties_path") + ": " + GetPathFromNode(tvwFiles.SelectedNode) + "\n"
                         );
                 }
             }
@@ -786,7 +850,8 @@ namespace DataMaker
                 if (tvwFiles.SelectedNode != null)
                 {
                     // 提示
-                    var result = MessageBox.Show(this, Lang("你确定要删除 ") + tvwFiles.SelectedNode.Text + " ?",
+                    var result = MessageBox.Show(this, Lang("filetree_msgbox_suretodelete")
+                        .Replace("{0}", tvwFiles.SelectedNode.Text),
                         Application.ProductName, MessageBoxButtons.OKCancel);
 
                     if (result == DialogResult.OK)
@@ -863,59 +928,146 @@ namespace DataMaker
                 if (tvwFiles.SelectedNode != null)
                 {
                     var list = GetClipboardList(out var isCut);
-
-                    Debug.Print("vvv - IsCut: " + isCut.ToString());
-                    foreach (var source in list)
+                    if (list is null)
                     {
-                        Debug.Print(source);
-
-                        string destination;
-
-                        if (((Item)tvwFiles.SelectedNode).Type == Type.File)
-                        {
-                            // 选择的是文件
-                            // 粘贴到上一级目录
-                            destination = GetPathFromNode(tvwFiles.SelectedNode.Parent);
-                        }
-                        else
-                        {
-                            // 选择的是目录
-                            // 粘贴到本级下面
-                            destination = GetPathFromNode(tvwFiles.SelectedNode);
-                        }
-                        destination += source.Remove(0, source.LastIndexOf("\\"));
-
-                        if (File.Exists(source))
-                        {
-                            // 是文件
-                            if (isCut)
-                            {
-                                // 剪切
-                                File.Move(source, destination);
-                            }
-                            else
-                            {
-                                // 复制
-                                File.Copy(source, destination);
-                            }
-                        }
-                        else if (Directory.Exists(source))
-                        {
-                            // 是目录
-                            if (isCut)
-                            {
-                                // 剪切
-                                Directory.Move(source, destination);
-                            }
-                            else
-                            {
-                                // 复制
-                                CopyDirectory(source, destination);
-                            }
-                        }
-
+                        return;
                     }
-                    Debug.Print("^^^");
+
+                    PasteInDisk(list, isCut);
+                    RefreshItems();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 在磁盘目录上粘贴文件或目录
+        /// </summary>
+        /// <param name="list">被粘贴的文件路径数组</param>
+        /// <param name="isCut">指定是否是剪切</param>
+        private void PasteInDisk(string[] list, bool isCut)
+        {
+            foreach (var source in list)
+            {
+                string destination;
+
+                // 设定粘贴路径
+                if (((Item)tvwFiles.SelectedNode).Type == Type.File)
+                {
+                    // 选择的是文件
+                    // 粘贴到上一级目录
+                    destination = GetPathFromNode(tvwFiles.SelectedNode.Parent);
+                }
+                else
+                {
+                    // 选择的是目录
+                    // 粘贴到本级下面
+                    destination = GetPathFromNode(tvwFiles.SelectedNode);
+                }
+                destination += source.Remove(0, source.LastIndexOf("\\"));
+                destination = destination.Remove(destination.LastIndexOf("\\") + 1) + GetAvailableFileName(destination);
+
+                // 粘贴
+                if (File.Exists(source))
+                {
+                    // 是文件
+
+                    if (isCut)
+                    {
+                        // 剪切文件
+                        File.Move(source, destination);
+                    }
+                    else
+                    {
+                        // 复制文件
+                        File.Copy(source, destination);
+                    }
+                }
+                else if (Directory.Exists(source))
+                {
+                    // 是目录
+
+                    if (isCut)
+                    {
+                        // 剪切目录
+                        Directory.Move(source, destination);
+                    }
+                    else
+                    {
+                        // 复制目录
+                        CopyDirectory(source, destination);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 刷新
+        /// </summary>
+        private void RefreshItems()
+        {
+            if (smnuRefresh.Enabled)
+            {
+                if (tvwFiles.SelectedNode != null)
+                {
+                    // FIXME: 不知为何这里执行后所有的节点都是收缩状态…
+                    LoadFileTree(packPath);
+                    tvwFiles.ExpandAll();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 用可视编辑器打开
+        /// </summary>
+        private void OpenWithVisualizatonEditor()
+        {
+            if (smnuVisualizationEditor.Enabled)
+            {
+                if (tvwFiles.SelectedNode != null)
+                {
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// 用Json编辑器打开
+        /// </summary>
+        private void OpenWithJsonEditor()
+        {
+            if (smnuJsonEditor.Enabled)
+            {
+                if (tvwFiles.SelectedNode != null)
+                {
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// 用函数编辑器打开
+        /// </summary>
+        private void OpenWithFunctionEditor()
+        {
+            if (smnuFunctionEditor.Enabled)
+            {
+                if (tvwFiles.SelectedNode != null)
+                {
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// 用文件资源管理器打开
+        /// </summary>
+        private void OpenWithExplorer()
+        {
+            if (smnuExplorer.Enabled)
+            {
+                if (tvwFiles.SelectedNode != null)
+                {
+
                 }
             }
         }
@@ -926,9 +1078,12 @@ namespace DataMaker
         {
             // 取消命名 后续命名由代码手动实现
             e.CancelEdit = true;
-
-            if (e.Label != null)
+            
+            if (e.Label != null && e.Label != e.Node.Text)
             {
+                // 确实改名了
+
+                // 匹配包含非法字符的字符串
                 var pattern = @"[^(a-z0-9\-_\.)]";
 
                 if (Regex.IsMatch(e.Label, pattern))
@@ -939,11 +1094,12 @@ namespace DataMaker
                      * 自由、平等、公正、法治
                      * 爱国、敬业、诚信、友善
                      */
-                    MessageBox.Show(Lang("文件名只能包含abcdefghijklmnopqrstuvwxyz0123456789.-_"));
+                    MessageBox.Show(Lang("filetree_msgbox_name"));
                 }
                 else
                 {
                     // 合法文件名
+
                     var before = GetPathFromNode(e.Node);
                     var backup = e.Node.Text;
                     e.Node.Text = e.Label;
@@ -952,10 +1108,11 @@ namespace DataMaker
                     if (((Item)e.Node).Type == Type.File)
                     {
                         // 重命名文件
+
                         if (File.Exists(after))
                         {
                             // 命名后的文件存在 这可坏了
-                            MessageBox.Show(Lang("已存在" + ": " + e.Node.Text));
+                            MessageBox.Show(Lang("filetree_msgbox_exist").Replace("{0}", e.Node.Text));
                             e.Node.Text = backup;
                         }
                         else if (File.Exists(before))
@@ -972,10 +1129,11 @@ namespace DataMaker
                     else
                     {
                         // 重命名目录
+
                         if (Directory.Exists(after))
                         {
                             // 命名后的目录存在 这可坏了
-                            MessageBox.Show(Lang("已存在" + ": " + e.Node.Text));
+                            MessageBox.Show(Lang("filetree_msgbox_exist").Replace("{0}", e.Node.Text));
                             e.Node.Text = backup;
                         }
                         else if (Directory.Exists(before))
@@ -1037,6 +1195,31 @@ namespace DataMaker
         private void smnuDelete_Click(object sender, EventArgs e)
         {
             DeleteItem();
+        }
+
+        private void smnuVisualizationEditor_Click(object sender, EventArgs e)
+        {
+            OpenWithVisualizatonEditor();
+        }
+
+        private void smnuJsonEditor_Click(object sender, EventArgs e)
+        {
+            OpenWithJsonEditor();
+        }
+
+        private void smnuFunctionEditor_Click(object sender, EventArgs e)
+        {
+            OpenWithFunctionEditor();
+        }
+
+        private void smnuExplorer_Click(object sender, EventArgs e)
+        {
+            OpenWithExplorer();
+        }
+
+        private void smnuRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshItems();
         }
 
         #endregion

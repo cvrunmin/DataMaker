@@ -42,6 +42,12 @@
             this.smnuRename = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuProperty = new System.Windows.Forms.ToolStripMenuItem();
             this.lblSizeChanger = new System.Windows.Forms.Label();
+            this.smnuOpenWith = new System.Windows.Forms.ToolStripMenuItem();
+            this.smnuVisualizationEditor = new System.Windows.Forms.ToolStripMenuItem();
+            this.smnuJsonEditor = new System.Windows.Forms.ToolStripMenuItem();
+            this.smnuFunctionEditor = new System.Windows.Forms.ToolStripMenuItem();
+            this.smnuExplorer = new System.Windows.Forms.ToolStripMenuItem();
+            this.smnuRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.cmnuItem.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +71,9 @@
             this.cmnuItem.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.cmnuItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.smnuOpen,
+            this.smnuOpenWith,
             this.smnuAdd,
+            this.smnuRefresh,
             this.smnuCopy,
             this.smnuCut,
             this.smnuPaste,
@@ -73,7 +81,7 @@
             this.smnuRename,
             this.smnuProperty});
             this.cmnuItem.Name = "cmnuItem";
-            this.cmnuItem.Size = new System.Drawing.Size(146, 180);
+            this.cmnuItem.Size = new System.Drawing.Size(146, 224);
             // 
             // smnuOpen
             // 
@@ -95,14 +103,14 @@
             // smnuAddDirectory
             // 
             this.smnuAddDirectory.Name = "smnuAddDirectory";
-            this.smnuAddDirectory.Size = new System.Drawing.Size(112, 22);
+            this.smnuAddDirectory.Size = new System.Drawing.Size(152, 22);
             this.smnuAddDirectory.Text = "文件夹";
             this.smnuAddDirectory.Click += new System.EventHandler(this.smnuAddDirectory_Click);
             // 
             // smnuAddFile
             // 
             this.smnuAddFile.Name = "smnuAddFile";
-            this.smnuAddFile.Size = new System.Drawing.Size(112, 22);
+            this.smnuAddFile.Size = new System.Drawing.Size(152, 22);
             this.smnuAddFile.Text = "文件";
             this.smnuAddFile.Click += new System.EventHandler(this.smnuAddFile_Click);
             // 
@@ -168,6 +176,53 @@
             this.lblSizeChanger.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lblSizeChanger_MouseMove);
             this.lblSizeChanger.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblSizeChanger_MouseUp);
             // 
+            // smnuOpenWith
+            // 
+            this.smnuOpenWith.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.smnuVisualizationEditor,
+            this.smnuJsonEditor,
+            this.smnuFunctionEditor,
+            this.smnuExplorer});
+            this.smnuOpenWith.Name = "smnuOpenWith";
+            this.smnuOpenWith.Size = new System.Drawing.Size(152, 22);
+            this.smnuOpenWith.Text = "打开方式";
+            // 
+            // smnuVisualizationEditor
+            // 
+            this.smnuVisualizationEditor.Name = "smnuVisualizationEditor";
+            this.smnuVisualizationEditor.Size = new System.Drawing.Size(160, 22);
+            this.smnuVisualizationEditor.Text = "可视编辑器";
+            this.smnuVisualizationEditor.Click += new System.EventHandler(this.smnuVisualizationEditor_Click);
+            // 
+            // smnuJsonEditor
+            // 
+            this.smnuJsonEditor.Name = "smnuJsonEditor";
+            this.smnuJsonEditor.Size = new System.Drawing.Size(160, 22);
+            this.smnuJsonEditor.Text = "Json编辑器";
+            this.smnuJsonEditor.Click += new System.EventHandler(this.smnuJsonEditor_Click);
+            // 
+            // smnuFunctionEditor
+            // 
+            this.smnuFunctionEditor.Name = "smnuFunctionEditor";
+            this.smnuFunctionEditor.Size = new System.Drawing.Size(160, 22);
+            this.smnuFunctionEditor.Text = "函数编辑器";
+            this.smnuFunctionEditor.Click += new System.EventHandler(this.smnuFunctionEditor_Click);
+            // 
+            // smnuExplorer
+            // 
+            this.smnuExplorer.Name = "smnuExplorer";
+            this.smnuExplorer.Size = new System.Drawing.Size(160, 22);
+            this.smnuExplorer.Text = "文件资源管理器";
+            this.smnuExplorer.Click += new System.EventHandler(this.smnuExplorer_Click);
+            // 
+            // smnuRefresh
+            // 
+            this.smnuRefresh.Name = "smnuRefresh";
+            this.smnuRefresh.ShortcutKeyDisplayString = "F5";
+            this.smnuRefresh.Size = new System.Drawing.Size(145, 22);
+            this.smnuRefresh.Text = "刷新";
+            this.smnuRefresh.Click += new System.EventHandler(this.smnuRefresh_Click);
+            // 
             // FileTree
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -203,5 +258,11 @@
         private System.Windows.Forms.ToolStripMenuItem smnuProperty;
         private System.Windows.Forms.ToolStripMenuItem smnuDelete;
         private System.Windows.Forms.Label lblSizeChanger;
+        private System.Windows.Forms.ToolStripMenuItem smnuOpenWith;
+        private System.Windows.Forms.ToolStripMenuItem smnuVisualizationEditor;
+        private System.Windows.Forms.ToolStripMenuItem smnuJsonEditor;
+        private System.Windows.Forms.ToolStripMenuItem smnuFunctionEditor;
+        private System.Windows.Forms.ToolStripMenuItem smnuExplorer;
+        private System.Windows.Forms.ToolStripMenuItem smnuRefresh;
     }
 }
