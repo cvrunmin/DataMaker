@@ -1,4 +1,6 @@
-﻿using DataMaker.Properties;
+﻿using DataMaker.DataClasses;
+using DataMaker.Properties;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -28,7 +30,7 @@ namespace DataMaker
 
         private enum Type { DataPack, Data, Namespace, Root, Directory, File, Unknown }
 
-        private enum Sort { Advancement, Function, LootTable, Recipe, Structure, Tag, None }
+        private enum Sort { Advancement, Function, LootTable, Recipe, Structure, Tag, Mcmeta, None }
         
         private struct Item
         {
@@ -383,6 +385,10 @@ namespace DataMaker
         {
             // 一级
             Directory.CreateDirectory(packPath + @"\data");
+            if (!File.Exists(packPath + @"\pack.mcmeta"))
+            {
+                File.WriteAllText(packPath + @"\pack.mcmeta", JsonConvert.SerializeObject(new PackMcmeta()));
+            }
 
             // 补全命名空间下的目录
             foreach (var i in Directory.GetDirectories(packPath + @"\data"))
@@ -465,6 +471,7 @@ namespace DataMaker
                     else if (node.Level == 1 && node.Text == "pack.mcmeta")
                     {
                         node.ImageKey = node.SelectedImageKey = "Setting";
+                        node.Tag = new Item(Type.File, Sort.Mcmeta);
                         node.Text = Lang("global_settings");
                     }
                     else
@@ -495,8 +502,6 @@ namespace DataMaker
                         break;
 
                     case 1:
-                        // TODO: 数据包、数据的图标
-
                         // 数据
                         if (node.Text.Equals("data"))
                         {
@@ -749,6 +754,9 @@ namespace DataMaker
                     case Sort.Tag:
                         smnuAddFile.Text = Lang("global_tag");
                         break;
+                    // 不允许删除配置文件
+                    case Sort.Mcmeta:
+                        smnuDelete.Enabled = false;
                     default:
                         break;
                 }
@@ -763,6 +771,7 @@ namespace DataMaker
                             case Sort.LootTable:
                             case Sort.Recipe:
                             case Sort.Tag:
+                            case Sort.Mcmeta:
                                 smnuFunctionEditor.Enabled = false;
                                 break;
                             case Sort.Function:
@@ -789,49 +798,44 @@ namespace DataMaker
         /// </summary>
         private void RespondShortcutKeys(object sender, KeyEventArgs e)
         {
+            // 不要瞎出声
+            e.SuppressKeyPress = true;
+            // 不要跟你爸爸 FormMain 抢事件
+            e.Handled = false;
+
             SetSmnus();
             switch (e.KeyCode)
             {
                 case Keys.C:
                     if (e.Control)
                     {
-                        // 避免按键后的警报声
-                        e.SuppressKeyPress = true;
-
                         CopyItem();
                     }
                     break;
                 case Keys.Delete:
-                    e.SuppressKeyPress = true;
                     DeleteItem();
                     break;
                 case Keys.Enter:
-                    e.SuppressKeyPress = true;
                     OpenItem();
                     break;
                 case Keys.F1:
-                    e.SuppressKeyPress = true;
                     SeeProperty();
                     break;
                 case Keys.F2:
-                    e.SuppressKeyPress = true;
                     RenameItem();
                     break;
                 case Keys.F5:
-                    e.SuppressKeyPress = true;
                     RefreshItems();
                     break;
                 case Keys.V:
                     if (e.Control)
                     {
-                        e.SuppressKeyPress = true;
                         PasteItem();
                     }
                     break;
                 case Keys.X:
                     if (e.Control)
                     {
-                        e.SuppressKeyPress = true;
                         CutItem();
                     }
                     break;
