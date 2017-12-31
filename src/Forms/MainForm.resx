@@ -117,137 +117,127 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="menuTop.Text" xml:space="preserve">
-    <value>menuStrip1</value>
-  </data>
-  <data name="&gt;&gt;smnuLoadFolder.Name" xml:space="preserve">
-    <value>smnuLoadFolder</value>
-  </data>
-  <data name="&gt;&gt;menuTop.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <metadata name="menuTop.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="smnuLoadFolder.ShortcutKeyDisplayString" xml:space="preserve">
+    <value>Ctrl+L</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="smnuExportZip.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="smnuLoadFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>179, 22</value>
-  </data>
-  <data name="&gt;&gt;smnuDataPack.Name" xml:space="preserve">
-    <value>smnuDataPack</value>
-  </data>
-  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 6</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
-    <value>DataMaker.BetterControls.BetterToolStripSeparator, DataMaker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;folderBrowser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="smnuUnzip.Text" xml:space="preserve">
-    <value>解压zip</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 5, 4, 5</value>
-  </data>
-  <data name="&gt;&gt;smnuExportZip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 20</value>
-  </data>
-  <data name="menuTop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>962, 25</value>
-  </data>
-  <data name="smnuDataPack.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
   </data>
   <data name="smnuLoadFolder.Text" xml:space="preserve">
     <value>加载文件夹</value>
   </data>
-  <data name="smnuExit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>176, 6</value>
   </data>
-  <data name="&gt;&gt;smnuDataPack.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterScreen</value>
-  </data>
-  <data name="&gt;&gt;smnuExportZip.Name" xml:space="preserve">
-    <value>smnuExportZip</value>
-  </data>
-  <data name="&gt;&gt;smnuLoadFolder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
-    <value>toolStripSeparator3</value>
-  </data>
-  <data name="smnuExportZip.ShortcutKeyDisplayString" xml:space="preserve">
-    <value>Ctrl+E</value>
-  </data>
-  <data name="smnuExportZip.Text" xml:space="preserve">
-    <value>导出zip</value>
-  </data>
-  <data name="&gt;&gt;menuTop.Name" xml:space="preserve">
-    <value>menuTop</value>
-  </data>
-  <data name="&gt;&gt;smnuUnzip.Name" xml:space="preserve">
-    <value>smnuUnzip</value>
-  </data>
-  <data name="&gt;&gt;folderBrowser.Name" xml:space="preserve">
-    <value>folderBrowser</value>
+  <data name="smnuSaveFile.ShortcutKeyDisplayString" xml:space="preserve">
+    <value>Ctrl+S</value>
   </data>
   <data name="smnuSaveFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>179, 22</value>
   </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>微软雅黑, 10.5pt</value>
+  <data name="smnuSaveFile.Text" xml:space="preserve">
+    <value>保存文件</value>
   </data>
-  <data name="smnuAbout.Text" xml:space="preserve">
-    <value>关于</value>
-  </data>
-  <data name="&gt;&gt;smnuUnzip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>176, 6</value>
   </data>
-  <data name="&gt;&gt;smnuHelp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="smnuUnzip.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="smnuAbout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+  <data name="smnuUnzip.ShortcutKeyDisplayString" xml:space="preserve">
+    <value>Ctrl+D</value>
   </data>
-  <data name="&gt;&gt;smnuSaveFile.Name" xml:space="preserve">
-    <value>smnuSaveFile</value>
+  <data name="smnuUnzip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
   </data>
-  <data name="smnuHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 21</value>
+  <data name="smnuUnzip.Text" xml:space="preserve">
+    <value>解压zip</value>
   </data>
-  <data name="menuTop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="smnuExportZip.ShortcutKeyDisplayString" xml:space="preserve">
+    <value>Ctrl+E</value>
+  </data>
+  <data name="smnuExportZip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
+  <data name="smnuExportZip.Text" xml:space="preserve">
+    <value>导出zip</value>
+  </data>
+  <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>176, 6</value>
   </data>
   <data name="smnuExit.ShortcutKeyDisplayString" xml:space="preserve">
     <value>Alt+F4</value>
   </data>
+  <data name="smnuExit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
+  </data>
   <data name="smnuExit.Text" xml:space="preserve">
     <value>退出</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="smnuDataPack.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 21</value>
+  </data>
+  <data name="smnuDataPack.Text" xml:space="preserve">
+    <value>数据包</value>
+  </data>
+  <data name="smnuHelp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 21</value>
+  </data>
+  <data name="smnuHelp.Text" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="menuTop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="menuTop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>962, 25</value>
+  </data>
   <data name="menuTop.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="smnuLoadFolder.ShortcutKeyDisplayString" xml:space="preserve">
-    <value>Ctrl+L</value>
+  <data name="menuTop.Text" xml:space="preserve">
+    <value>menuStrip1</value>
   </data>
-  <data name="&gt;&gt;smnuAbout.Name" xml:space="preserve">
-    <value>smnuAbout</value>
+  <data name="&gt;&gt;menuTop.Name" xml:space="preserve">
+    <value>menuTop</value>
+  </data>
+  <data name="&gt;&gt;menuTop.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;menuTop.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="smnuDataPack.Text" xml:space="preserve">
-    <value>数据包</value>
+  <data name="&gt;&gt;menuTop.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="smnuAbout.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 22</value>
+  </data>
+  <data name="smnuAbout.Text" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <metadata name="folderBrowser.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>125, 17</value>
+  </metadata>
+  <metadata name="zipSaver.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>259, 17</value>
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>8, 20</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>962, 628</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 10.5pt</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1381,73 +1371,95 @@
         //AP///////////////////8P/////////8=
 </value>
   </data>
-  <data name="&gt;&gt;smnuExit.Name" xml:space="preserve">
-    <value>smnuExit</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 5, 4, 5</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>Main</value>
+  <data name="&gt;&gt;smnuDataPack.Name" xml:space="preserve">
+    <value>smnuDataPack</value>
   </data>
-  <data name="smnuUnzip.ShortcutKeyDisplayString" xml:space="preserve">
-    <value>Ctrl+D</value>
-  </data>
-  <data name="smnuSaveFile.Text" xml:space="preserve">
-    <value>保存文件</value>
-  </data>
-  <data name="smnuUnzip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
-  </data>
-  <data name="&gt;&gt;menuTop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="smnuSaveFile.ShortcutKeyDisplayString" xml:space="preserve">
-    <value>Ctrl+S</value>
-  </data>
-  <data name="&gt;&gt;smnuAbout.Type" xml:space="preserve">
+  <data name="&gt;&gt;smnuDataPack.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 6</value>
+  <data name="&gt;&gt;smnuLoadFolder.Name" xml:space="preserve">
+    <value>smnuLoadFolder</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
-    <value>DataMaker.BetterControls.BetterToolStripSeparator, DataMaker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;smnuLoadFolder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
     <value>toolStripSeparator1</value>
   </data>
-  <data name="smnuLoadFolder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 22</value>
-  </data>
-  <data name="smnuHelp.Text" xml:space="preserve">
-    <value>帮助</value>
-  </data>
   <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
     <value>DataMaker.BetterControls.BetterToolStripSeparator, DataMaker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
-    <value>toolStripSeparator2</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>962, 628</value>
-  </data>
-  <data name="&gt;&gt;smnuHelp.Name" xml:space="preserve">
-    <value>smnuHelp</value>
+  <data name="&gt;&gt;smnuSaveFile.Name" xml:space="preserve">
+    <value>smnuSaveFile</value>
   </data>
   <data name="&gt;&gt;smnuSaveFile.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>DataMaker.BetterControls.BetterToolStripSeparator, DataMaker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;smnuUnzip.Name" xml:space="preserve">
+    <value>smnuUnzip</value>
+  </data>
+  <data name="&gt;&gt;smnuUnzip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;smnuExportZip.Name" xml:space="preserve">
+    <value>smnuExportZip</value>
+  </data>
+  <data name="&gt;&gt;smnuExportZip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">
+    <value>toolStripSeparator3</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator3.Type" xml:space="preserve">
+    <value>DataMaker.BetterControls.BetterToolStripSeparator, DataMaker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;smnuExit.Name" xml:space="preserve">
+    <value>smnuExit</value>
+  </data>
   <data name="&gt;&gt;smnuExit.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <metadata name="menuTop.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="folderBrowser.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>125, 17</value>
-  </metadata>
+  <data name="&gt;&gt;smnuHelp.Name" xml:space="preserve">
+    <value>smnuHelp</value>
+  </data>
+  <data name="&gt;&gt;smnuHelp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;smnuAbout.Name" xml:space="preserve">
+    <value>smnuAbout</value>
+  </data>
+  <data name="&gt;&gt;smnuAbout.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;folderBrowser.Name" xml:space="preserve">
+    <value>folderBrowser</value>
+  </data>
+  <data name="&gt;&gt;folderBrowser.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;zipSaver.Name" xml:space="preserve">
+    <value>zipSaver</value>
+  </data>
+  <data name="&gt;&gt;zipSaver.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SaveFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

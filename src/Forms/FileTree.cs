@@ -18,7 +18,7 @@ namespace DataMaker
         /// <summary>
         /// 要加载的文件夹路径
         /// </summary>
-        public string Datapack
+        public string DatapackPath
         {
             get => packPath;
             set
@@ -757,6 +757,7 @@ namespace DataMaker
                     // 不允许删除配置文件
                     case Sort.Mcmeta:
                         smnuDelete.Enabled = false;
+                        break;
                     default:
                         break;
                 }

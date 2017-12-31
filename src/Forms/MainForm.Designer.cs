@@ -42,20 +42,20 @@
             this.smnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.zipSaver = new System.Windows.Forms.SaveFileDialog();
             this.menuTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuTop
             // 
-            resources.ApplyResources(this.menuTop, "menuTop");
             this.menuTop.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.smnuDataPack,
             this.smnuHelp});
+            resources.ApplyResources(this.menuTop, "menuTop");
             this.menuTop.Name = "menuTop";
             // 
             // smnuDataPack
             // 
-            resources.ApplyResources(this.smnuDataPack, "smnuDataPack");
             this.smnuDataPack.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.smnuLoadFolder,
             this.toolStripSeparator1,
@@ -66,27 +66,29 @@
             this.toolStripSeparator3,
             this.smnuExit});
             this.smnuDataPack.Name = "smnuDataPack";
+            resources.ApplyResources(this.smnuDataPack, "smnuDataPack");
+            this.smnuDataPack.DropDownOpening += new System.EventHandler(this.smnuDataPack_DropDownOpening);
             // 
             // smnuLoadFolder
             // 
-            resources.ApplyResources(this.smnuLoadFolder, "smnuLoadFolder");
             this.smnuLoadFolder.Name = "smnuLoadFolder";
+            resources.ApplyResources(this.smnuLoadFolder, "smnuLoadFolder");
             this.smnuLoadFolder.Click += new System.EventHandler(this.smnuLoadFolder_Click);
             // 
             // toolStripSeparator1
             // 
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
             // smnuSaveFile
             // 
-            resources.ApplyResources(this.smnuSaveFile, "smnuSaveFile");
             this.smnuSaveFile.Name = "smnuSaveFile";
+            resources.ApplyResources(this.smnuSaveFile, "smnuSaveFile");
             // 
             // toolStripSeparator2
             // 
-            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             this.toolStripSeparator2.Name = "toolStripSeparator2";
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             // 
             // smnuUnzip
             // 
@@ -95,36 +97,33 @@
             // 
             // smnuExportZip
             // 
-            resources.ApplyResources(this.smnuExportZip, "smnuExportZip");
             this.smnuExportZip.Name = "smnuExportZip";
+            resources.ApplyResources(this.smnuExportZip, "smnuExportZip");
+            this.smnuExportZip.Click += new System.EventHandler(this.smnuExportZip_Click);
             // 
             // toolStripSeparator3
             // 
-            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
             this.toolStripSeparator3.Name = "toolStripSeparator3";
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
             // 
             // smnuExit
             // 
-            resources.ApplyResources(this.smnuExit, "smnuExit");
             this.smnuExit.Name = "smnuExit";
+            resources.ApplyResources(this.smnuExit, "smnuExit");
             this.smnuExit.Click += new System.EventHandler(this.smnuExit_Click);
             // 
             // smnuHelp
             // 
-            resources.ApplyResources(this.smnuHelp, "smnuHelp");
             this.smnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.smnuAbout});
             this.smnuHelp.Name = "smnuHelp";
+            resources.ApplyResources(this.smnuHelp, "smnuHelp");
             // 
             // smnuAbout
             // 
-            resources.ApplyResources(this.smnuAbout, "smnuAbout");
             this.smnuAbout.Name = "smnuAbout";
+            resources.ApplyResources(this.smnuAbout, "smnuAbout");
             this.smnuAbout.Click += new System.EventHandler(this.smnuAbout_Click);
-            // 
-            // folderBrowser
-            // 
-            resources.ApplyResources(this.folderBrowser, "folderBrowser");
             // 
             // Main
             // 
@@ -137,7 +136,7 @@
             this.Name = "Main";
             this.Text = this.ProductName;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.RespondShortcutKeys);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RespondShortcutKeys);
             this.menuTop.ResumeLayout(false);
             this.menuTop.PerformLayout();
             this.ResumeLayout(false);
@@ -160,6 +159,7 @@
         private System.Windows.Forms.ToolStripMenuItem smnuHelp;
         private System.Windows.Forms.ToolStripMenuItem smnuAbout;
         private System.Windows.Forms.FolderBrowserDialog folderBrowser;
+        private System.Windows.Forms.SaveFileDialog zipSaver;
     }
 }
 

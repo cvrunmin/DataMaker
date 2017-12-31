@@ -223,6 +223,15 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
+        ///   查找类似 zip文件已成功导出到 {0} 的本地化字符串。
+        /// </summary>
+        internal static string formmain_msgbox_exportzipsuccessfully {
+            get {
+                return ResourceManager.GetString("formmain_msgbox_exportzipsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 进度 的本地化字符串。
         /// </summary>
         internal static string global_advancement {

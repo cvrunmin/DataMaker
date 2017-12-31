@@ -1,6 +1,8 @@
 ﻿using DataMaker.Properties;
 using System;
 using System.Drawing;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -139,14 +141,27 @@ namespace DataMaker
         }
 
         #region 事件处理
+        private void SetSmnus()
+        {
+            smnuExportZip.Enabled = true;
+            if (fileTree.DatapackPath == null || fileTree.DatapackPath == "")
+                smnuExportZip.Enabled = false;
+        }
+
         private void RespondShortcutKeys(object sender, KeyEventArgs e)
         {
+            // 别出声
+            e.SuppressKeyPress = true;
+            // 别跟你的儿子们抢按键
+            e.Handled = false;
+
+            SetSmnus();
+
             if (e.Alt)
             {
                 switch (e.KeyCode)
                 {
                     case Keys.F4:
-                        e.SuppressKeyPress = true;
                         ExitApplication();
                         break;
                     default:
@@ -158,19 +173,15 @@ namespace DataMaker
                 switch (e.KeyCode)
                 {
                     case Keys.D:
-                        e.SuppressKeyPress = true;
-
+                        // TODO: Unzip.
                         break;
                     case Keys.E:
-                        e.SuppressKeyPress = true;
-
+                        ExportZip();
                         break;
                     case Keys.L:
-                        e.SuppressKeyPress = true;
                         SelectDatapackFolder();
                         break;
                     case Keys.S:
-                        e.SuppressKeyPress = true;
 
                         break;
                     default:
@@ -193,17 +204,43 @@ namespace DataMaker
         {
             var result = folderBrowser.ShowDialog();
             if (result != DialogResult.Cancel)
+                fileTree.DatapackPath = folderBrowser.SelectedPath;
+        }
+        
+        private void ExportZip()
+        {
+            if (smnuExportZip.Enabled)
             {
-                fileTree.Datapack = folderBrowser.SelectedPath;
+                zipSaver.Filter = Lang("global_datapack") + " | *.zip";
+                zipSaver.FileName = "unnamed.zip";
+
+                var result = zipSaver.ShowDialog();
+                var name = zipSaver.FileName;
+                if (result != DialogResult.Cancel)
+                {
+                    // 已存在 删除
+                    if (File.Exists(name))
+                    {
+                        File.Delete(name);
+                    }
+
+                    // 开始压缩
+                    ZipFile.CreateFromDirectory(fileTree.DatapackPath, name);
+
+                    // 通知
+                    MessageBox.Show(Lang("formmain_msgbox_exportzipsuccessfully").Replace("{0}", name));
+                }
             }
         }
 
         #region 响应事件
+        private void smnuDataPack_DropDownOpening(object sender, EventArgs e) => SetSmnus();
         private void smnuExit_Click(object sender, EventArgs e) => ExitApplication();
         private void smnuAbout_Click(object sender, EventArgs e) => ShowAboutBox();
         private void smnuLoadFolder_Click(object sender, EventArgs e) => SelectDatapackFolder();
-        #endregion
+        private void smnuExportZip_Click(object sender, EventArgs e) => ExportZip();
         #endregion
 
+        #endregion
     }
 }

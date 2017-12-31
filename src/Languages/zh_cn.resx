@@ -207,4 +207,7 @@
   <data name="global_item" xml:space="preserve">
     <value>物品</value>
   </data>
+  <data name="formmain_msgbox_exportzipsuccessfully" xml:space="preserve">
+    <value>zip文件已成功导出到 {0}</value>
+  </data>
 </root>
