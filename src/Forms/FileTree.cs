@@ -13,6 +13,19 @@ namespace DataMaker
 {
     public partial class FileTree : Form
     {
+        /// <summary>
+        /// 要加载的文件夹路径
+        /// </summary>
+        public string Datapack
+        {
+            get => packPath;
+            set
+            {
+                packPath = value;
+                LoadFileTree(packPath);
+            }
+        }
+
         private enum Type { DataPack, Data, Namespace, Root, Directory, File, Unknown }
 
         private enum Sort { Advancement, Function, LootTable, Recipe, Structure, Tag, None }
@@ -90,10 +103,7 @@ namespace DataMaker
                 return new Item(type, sort);
             }
         }
-
-        /// <summary>
-        /// 数据包路径
-        /// </summary>
+        
         private string packPath;
 
         /// <summary>
@@ -151,11 +161,11 @@ namespace DataMaker
                 .Replace("/" + Lang("global_structure"), "/structures")
                 .Replace("/" + Lang("global_loottable"), "/loot_tables")
                 .Replace("/" + Lang("global_recipe"), "/recipes")
-                .Replace("/" + Lang("global_settings"), "/pack")
                 .Replace("/" + Lang("global_tag"), "/tags")
                 .Replace("/" + Lang("global_block"), "/blocks")
                 .Replace("/" + Lang("global_item"), "/items")
                 .Replace("/" + Lang("global_function"), "/functions")
+                .Replace("/" + Lang("global_settings"), "/pack.mcmeta")
                 .Replace("/", "\\");
             // 加后缀
             result += ((Item)node).GetFileSuffix(false);
@@ -325,8 +335,6 @@ namespace DataMaker
             Theme.Initialize(this);
 
             LoadImages();
-            packPath = $@"{Environment.CurrentDirectory}\我是正经数据包";
-            LoadFileTree(packPath);
         }
 
         private void LoadImages()
@@ -335,6 +343,7 @@ namespace DataMaker
             tvwFiles.ImageList = new ImageList();
             tvwFiles.ImageList.Images.Add("Misc", (Image)rm.GetObject("Misc"));
             tvwFiles.ImageList.Images.Add("Directory", (Image)rm.GetObject("Directory"));
+            tvwFiles.ImageList.Images.Add("DataPack", (Image)rm.GetObject("DataPack"));
             tvwFiles.ImageList.Images.Add("Function", (Image)rm.GetObject("Function"));
             tvwFiles.ImageList.Images.Add("Json", (Image)rm.GetObject("Json"));
             tvwFiles.ImageList.Images.Add("Picture", (Image)rm.GetObject("Picture"));
@@ -479,7 +488,7 @@ namespace DataMaker
                 {
                     case 0:
                         // 根目录
-                        node.ImageKey = node.SelectedImageKey = "Directory";
+                        node.ImageKey = node.SelectedImageKey = "DataPack";
                         node.Text = Lang("global_datapack");
                         node.Tag = new Item(Type.DataPack, Sort.None);
                         //node.Expand();
@@ -673,11 +682,12 @@ namespace DataMaker
 
             if (tvwFiles.SelectedNode != null)
             {
-                //// 更换“收起”“展开”
+                // 更换“收起”“展开”
                 //if (tvwFiles.SelectedNode.IsExpanded)
                 //    smnuOpen.Text = Lang("filetree_collapse");
                 //else
                 //    smnuOpen.Text = Lang("filetree_expand");
+                smnuOpen.Enabled = false;
 
                 // 更改普遍可用性
                 switch (SelectedItem.Type)
@@ -706,13 +716,13 @@ namespace DataMaker
                         break;
                     case Type.File:
                         smnuOpen.Text = Lang("filetree_edit");
+                        smnuOpen.Enabled = true;
                         break;
                     default:
                         break;
                 }
 
                 // 更改“粘贴”可用性
-                // TODO 文件类型匹配
                 if (GetClipboardList(out var isCut) is null)
                 {
                     smnuPaste.Enabled = false;

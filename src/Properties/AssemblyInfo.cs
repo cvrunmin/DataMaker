@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("DataMaker")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A windows program written in c# that can help users make minecraft data packs.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("SPGoding")]
 [assembly: AssemblyProduct("DataMaker")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
