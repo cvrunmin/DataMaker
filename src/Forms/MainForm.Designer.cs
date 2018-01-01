@@ -32,17 +32,17 @@
             this.menuTop = new System.Windows.Forms.MenuStrip();
             this.smnuDataPack = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuLoadFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.smnuSaveFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.smnuUnzip = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuExportZip = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.smnuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.zipSaver = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,10 +75,20 @@
             resources.ApplyResources(this.smnuLoadFolder, "smnuLoadFolder");
             this.smnuLoadFolder.Click += new System.EventHandler(this.smnuLoadFolder_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            // 
             // smnuSaveFile
             // 
             this.smnuSaveFile.Name = "smnuSaveFile";
             resources.ApplyResources(this.smnuSaveFile, "smnuSaveFile");
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             // 
             // smnuUnzip
             // 
@@ -90,6 +100,11 @@
             this.smnuExportZip.Name = "smnuExportZip";
             resources.ApplyResources(this.smnuExportZip, "smnuExportZip");
             this.smnuExportZip.Click += new System.EventHandler(this.smnuExportZip_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
             // 
             // smnuExit
             // 
@@ -110,21 +125,6 @@
             resources.ApplyResources(this.smnuAbout, "smnuAbout");
             this.smnuAbout.Click += new System.EventHandler(this.smnuAbout_Click);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
-            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
@@ -138,6 +138,7 @@
             this.Text = this.ProductName;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RespondShortcutKeys);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.menuTop.ResumeLayout(false);
             this.menuTop.PerformLayout();
             this.ResumeLayout(false);

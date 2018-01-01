@@ -1,5 +1,7 @@
 ﻿using DataMaker.BetterControls;
+using DataMaker.Forms;
 using DataMaker.Properties;
+using Newtonsoft.Json;
 using System;
 using System.Drawing;
 using System.IO;
@@ -118,7 +120,7 @@ namespace DataMaker
         }
         #endregion
 
-        public 
+        public Form WorkSpace;
 
         private FileTree fileTree;
 
@@ -133,8 +135,14 @@ namespace DataMaker
                 MdiParent = this,
                 Dock = DockStyle.Right
             };
-
             fileTree.Show();
+
+            WorkSpace = new JsonEditor()
+            {
+                MdiParent = this,
+                Dock = DockStyle.Left
+            };
+            WorkSpace.Show();
         }
 
         #region 事件处理
@@ -147,8 +155,6 @@ namespace DataMaker
 
         private void RespondShortcutKeys(object sender, KeyEventArgs e)
         {
-            // 别出声
-            e.SuppressKeyPress = true;
             // 别跟你的儿子们抢按键
             e.Handled = false;
 
@@ -239,5 +245,13 @@ namespace DataMaker
         #endregion
 
         #endregion
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (fileTree != null)
+            {
+                WorkSpace.Width = Width - fileTree.Width;
+            }
+        }
     }
 }
