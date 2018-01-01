@@ -1,17 +1,20 @@
-﻿namespace DataMaker.DataClasses
-{
-#pragma warning disable IDE1006
+﻿using Newtonsoft.Json;
+using System.ComponentModel;
 
+namespace DataMaker.DataClasses
+{
     public class PackMcmeta
     {
-        public Pack pack = new Pack();
+        [JsonProperty(PropertyName = "pack")]
+        public Pack Pack = new Pack();
     }
 
     public class Pack
     {
-        public int pack_format = 1;
-        public string description = "";
-    }
+        [JsonProperty(PropertyName = "pack_format")]
+        public int PackFormat = 1;
 
-#pragma warning restore IDE1006
+        [JsonProperty(PropertyName = "description")]
+        public string Description = "";
+    }
 }

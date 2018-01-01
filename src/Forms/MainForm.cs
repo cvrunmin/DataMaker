@@ -61,6 +61,13 @@ namespace DataMaker
 
             throw new ApplicationException("No Lang: " + key);
         }
+
+        /// <summary>
+        /// 将指定对象序列化为Json文本
+        /// </summary>
+        /// <param name="obj">指定对象</param>
+        /// <returns></returns>
+        public static string SerializeToJson(object obj) => JsonConvert.SerializeObject(obj, Formatting.Indented);
         #endregion
 
         #region 设置主题样式
@@ -110,6 +117,8 @@ namespace DataMaker
             base.OnLoad(e);
         }
         #endregion
+
+        public 
 
         private FileTree fileTree;
 
@@ -194,7 +203,7 @@ namespace DataMaker
             if (result != DialogResult.Cancel)
                 fileTree.DatapackPath = folderBrowser.SelectedPath;
         }
-        
+
         private void ExportZip()
         {
             if (smnuExportZip.Enabled)

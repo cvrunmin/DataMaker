@@ -400,7 +400,7 @@ namespace DataMaker
             Directory.CreateDirectory(dataPackPath + @"\data");
             if (!File.Exists(dataPackPath + @"\pack.mcmeta"))
             {
-                File.WriteAllText(dataPackPath + @"\pack.mcmeta", JsonConvert.SerializeObject(new PackMcmeta()));
+                File.WriteAllText(dataPackPath + @"\pack.mcmeta", SerializeToJson(new PackMcmeta()));
             }
 
             // 补全命名空间下的目录
