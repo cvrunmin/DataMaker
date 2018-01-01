@@ -7,7 +7,7 @@ namespace DataMaker
 {
     static class Program
     {
-        public static Main FrmMain;
+        public static MainForm FrmMain;
 
         /// <summary>
         /// 应用程序的主入口点。
@@ -17,7 +17,7 @@ namespace DataMaker
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            FrmMain = new Main();
+            FrmMain = new MainForm();
             Application.Run(FrmMain);
         }
     }

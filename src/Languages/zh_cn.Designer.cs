@@ -160,6 +160,15 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
+        ///   查找类似 {0} 不是空的文件夹，也不像一个数据包，是否继续？ 的本地化字符串。
+        /// </summary>
+        internal static string filetree_msgbox_notadatapack {
+            get {
+                return ResourceManager.GetString("filetree_msgbox_notadatapack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 你确定要删除 {0} ？ 的本地化字符串。
         /// </summary>
         internal static string filetree_msgbox_suretodelete {

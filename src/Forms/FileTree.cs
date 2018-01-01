@@ -9,7 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using static DataMaker.Main;
+using static DataMaker.MainForm;
 
 namespace DataMaker
 {
@@ -20,23 +20,35 @@ namespace DataMaker
         /// </summary>
         public string DatapackPath
         {
-            get => packPath;
+            get => dataPackPath;
             set
             {
-                packPath = value;
-                LoadFileTree(packPath);
+                if (!File.Exists(value + @"\pack.mcmeta") && (
+                    Directory.GetDirectories(value).Length > 0 ||
+                    Directory.GetFiles(value).Length > 0)
+                    )
+                {
+                    // 不是空的，且不像是数据包
+                    var result = MessageBox.Show(this,
+                        Lang("filetree_msgbox_notadatapack").Replace("{0}", value),
+                        Application.ProductName, MessageBoxButtons.YesNo);
+                    if (result == DialogResult.No)
+                        return;
+                }
+                dataPackPath = value;
+                LoadFileTree(DatapackPath);
             }
         }
 
         private enum Type { DataPack, Data, Namespace, Root, Directory, File, Unknown }
 
         private enum Sort { Advancement, Function, LootTable, Recipe, Structure, Tag, Mcmeta, None }
-        
+
         private struct Item
         {
             public Type Type { get; set; }
             public Sort Sort { get; set; }
-            
+
             public Item(Type type, Sort sort)
             {
                 Type = type;
@@ -105,8 +117,8 @@ namespace DataMaker
                 return new Item(type, sort);
             }
         }
-        
-        private string packPath;
+
+        private string dataPackPath;
 
         /// <summary>
         /// 是否正在新建文件夹
@@ -156,7 +168,7 @@ namespace DataMaker
         private string GetPathFromNode(TreeNode node)
         {
             var result = node.FullPath;
-            result = result.Replace(Lang("global_datapack"), packPath)
+            result = result.Replace(Lang("global_datapack"), dataPackPath)
                 .Replace("/" + Lang("global_data"), "/data")
                 .Replace("/" + Lang("global_advancement"), "/advancements")
                 .Replace("/" + Lang("global_function"), "/functions")
@@ -368,6 +380,7 @@ namespace DataMaker
         {
             // 根目录
             tvwFiles.Nodes.Clear();
+
             var rootNode = tvwFiles.Nodes.Add("dataPack");
             InitializeNode(rootNode, false);
 
@@ -384,14 +397,14 @@ namespace DataMaker
         private void CompleteDirectory()
         {
             // 一级
-            Directory.CreateDirectory(packPath + @"\data");
-            if (!File.Exists(packPath + @"\pack.mcmeta"))
+            Directory.CreateDirectory(dataPackPath + @"\data");
+            if (!File.Exists(dataPackPath + @"\pack.mcmeta"))
             {
-                File.WriteAllText(packPath + @"\pack.mcmeta", JsonConvert.SerializeObject(new PackMcmeta()));
+                File.WriteAllText(dataPackPath + @"\pack.mcmeta", JsonConvert.SerializeObject(new PackMcmeta()));
             }
 
             // 补全命名空间下的目录
-            foreach (var i in Directory.GetDirectories(packPath + @"\data"))
+            foreach (var i in Directory.GetDirectories(dataPackPath + @"\data"))
             {
                 Directory.CreateDirectory(i + @"\advancements");
                 Directory.CreateDirectory(i + @"\functions");
@@ -1199,14 +1212,18 @@ namespace DataMaker
         {
             if (smnuRefresh.Enabled)
             {
-                // 记录当前选中的节点信息
-                var selectedFullPath = tvwFiles.SelectedNode.FullPath;
+                string selectedFullPath = null;
+
+                if (tvwFiles.SelectedNode != null)
+                    // 记录当前选中的节点信息
+                    selectedFullPath = tvwFiles.SelectedNode.FullPath;
 
                 // 重新加载文件
-                LoadFileTree(packPath);
+                LoadFileTree(DatapackPath);
 
-                // 选择刚刚选中的节点
-                SelectNodeFromTextAndLevel(selectedFullPath);
+                if (selectedFullPath != null)
+                    // 选择刚刚选中的节点
+                    SelectNodeFromTextAndLevel(selectedFullPath);
             }
         }
 
@@ -1471,5 +1488,6 @@ namespace DataMaker
         #endregion
 
         #endregion
+
     }
 }

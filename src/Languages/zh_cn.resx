@@ -210,4 +210,7 @@
   <data name="formmain_msgbox_exportzipsuccessfully" xml:space="preserve">
     <value>zip文件已成功导出到 {0}</value>
   </data>
+  <data name="filetree_msgbox_notadatapack" xml:space="preserve">
+    <value>{0} 不是空的文件夹，也不像一个数据包，是否继续？</value>
+  </data>
 </root>

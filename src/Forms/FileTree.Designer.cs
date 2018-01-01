@@ -57,8 +57,8 @@
             // 
             // tvwFiles
             // 
+            this.tvwFiles.BorderStyle = System.Windows.Forms.BorderStyle.None;
             resources.ApplyResources(this.tvwFiles, "tvwFiles");
-            this.tvwFiles.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tvwFiles.HideSelection = false;
             this.tvwFiles.LabelEdit = true;
             this.tvwFiles.Name = "tvwFiles";
@@ -70,7 +70,6 @@
             // 
             // cmnuItem
             // 
-            resources.ApplyResources(this.cmnuItem, "cmnuItem");
             this.cmnuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.cmnuItem.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.cmnuItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -88,6 +87,7 @@
             this.toolStripSeparator2,
             this.smnuProperty});
             this.cmnuItem.Name = "cmnuItem";
+            resources.ApplyResources(this.cmnuItem, "cmnuItem");
             // 
             // smnuOpen
             // 
@@ -151,8 +151,8 @@
             // 
             // toolStripSeparator3
             // 
-            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
             this.toolStripSeparator3.Name = "toolStripSeparator3";
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
             // 
             // smnuRefresh
             // 
@@ -162,8 +162,8 @@
             // 
             // toolStripSeparator1
             // 
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
             // smnuCopy
             // 
@@ -197,8 +197,8 @@
             // 
             // toolStripSeparator2
             // 
-            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             this.toolStripSeparator2.Name = "toolStripSeparator2";
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             // 
             // smnuProperty
             // 
@@ -208,9 +208,9 @@
             // 
             // lblSizeChanger
             // 
-            resources.ApplyResources(this.lblSizeChanger, "lblSizeChanger");
             this.lblSizeChanger.BackColor = System.Drawing.Color.Aqua;
             this.lblSizeChanger.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            resources.ApplyResources(this.lblSizeChanger, "lblSizeChanger");
             this.lblSizeChanger.Name = "lblSizeChanger";
             this.lblSizeChanger.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblSizeChanger_MouseDown);
             this.lblSizeChanger.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lblSizeChanger_MouseMove);

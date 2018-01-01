@@ -1,6 +1,6 @@
 ﻿namespace DataMaker
 {
-    partial class Main
+    partial class MainForm
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -28,21 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuTop = new System.Windows.Forms.MenuStrip();
             this.smnuDataPack = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuLoadFolder = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new DataMaker.BetterControls.BetterToolStripSeparator();
             this.smnuSaveFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new DataMaker.BetterControls.BetterToolStripSeparator();
             this.smnuUnzip = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuExportZip = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new DataMaker.BetterControls.BetterToolStripSeparator();
             this.smnuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.zipSaver = new System.Windows.Forms.SaveFileDialog();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,20 +75,10 @@
             resources.ApplyResources(this.smnuLoadFolder, "smnuLoadFolder");
             this.smnuLoadFolder.Click += new System.EventHandler(this.smnuLoadFolder_Click);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
-            // 
             // smnuSaveFile
             // 
             this.smnuSaveFile.Name = "smnuSaveFile";
             resources.ApplyResources(this.smnuSaveFile, "smnuSaveFile");
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             // 
             // smnuUnzip
             // 
@@ -100,11 +90,6 @@
             this.smnuExportZip.Name = "smnuExportZip";
             resources.ApplyResources(this.smnuExportZip, "smnuExportZip");
             this.smnuExportZip.Click += new System.EventHandler(this.smnuExportZip_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
             // 
             // smnuExit
             // 
@@ -125,15 +110,31 @@
             resources.ApplyResources(this.smnuAbout, "smnuAbout");
             this.smnuAbout.Click += new System.EventHandler(this.smnuAbout_Click);
             // 
-            // Main
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
+            // 
+            // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.menuTop);
+            this.DoubleBuffered = true;
             this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuTop;
-            this.Name = "Main";
+            this.Name = "MainForm";
             this.Text = this.ProductName;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RespondShortcutKeys);
@@ -151,15 +152,15 @@
         private System.Windows.Forms.ToolStripMenuItem smnuUnzip;
         private System.Windows.Forms.ToolStripMenuItem smnuLoadFolder;
         private System.Windows.Forms.ToolStripMenuItem smnuExit;
-        private BetterControls.BetterToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem smnuExportZip;
-        private BetterControls.BetterToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem smnuSaveFile;
-        private BetterControls.BetterToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem smnuHelp;
         private System.Windows.Forms.ToolStripMenuItem smnuAbout;
         private System.Windows.Forms.FolderBrowserDialog folderBrowser;
         private System.Windows.Forms.SaveFileDialog zipSaver;
+        private System.Windows.Forms.ToolStripMenuItem smnuExportZip;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 

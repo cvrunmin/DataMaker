@@ -1,4 +1,5 @@
-﻿using DataMaker.Properties;
+﻿using DataMaker.BetterControls;
+using DataMaker.Properties;
 using System;
 using System.Drawing;
 using System.IO;
@@ -11,9 +12,13 @@ namespace DataMaker
     public struct Theme
     {
         public static Color PressedColor = Color.FromArgb(27, 27, 28);
+        public static SolidBrush PressedBrush = new SolidBrush(PressedColor);
         public static Color BackColor = Color.FromArgb(37, 37, 37);
+        public static SolidBrush BackBrush = new SolidBrush(BackColor);
         public static Color ForeColor = Color.FromArgb(245, 245, 245);
+        public static SolidBrush ForeBrush = new SolidBrush(ForeColor);
         public static Color HoverColor = Color.FromArgb(51, 51, 52);
+        public static SolidBrush HoverBrush = new SolidBrush(HoverColor);
         public static Font Font = new Font("微软雅黑", 10f, GraphicsUnit.Point);
 
         public static void Initialize(ContainerControl container)
@@ -37,7 +42,7 @@ namespace DataMaker
         }
     }
 
-    public partial class Main : Form
+    public partial class MainForm : Form
     {
         #region 公共函数
         /// <summary>
@@ -62,7 +67,7 @@ namespace DataMaker
         private void SetTheme()
         {
             Theme.Initialize(this);
-            menuTop.Renderer = new ThemeRenderer();
+            menuTop.Renderer = new BetterMenuStripRenderer();
 
             foreach (ToolStripItem i in menuTop.Items)
             {
@@ -81,23 +86,6 @@ namespace DataMaker
             }
         }
 
-        private class ThemeRenderer : ToolStripProfessionalRenderer
-        {
-            public ThemeRenderer() : base(new ProfessionalColorTable()) { }
-
-            protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
-            {
-                var rc = new Rectangle(Point.Empty, e.Item.Size);
-                if (e.Item.Selected)
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(Theme.HoverColor), rc);
-                }
-                else
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(Theme.BackColor), rc);
-                }
-            }
-        }
 
         /// <summary>
         /// 重载OnLoad 去边框
@@ -125,7 +113,7 @@ namespace DataMaker
 
         private FileTree fileTree;
 
-        public Main()
+        public MainForm()
         {
             InitializeComponent();
             SetTheme();

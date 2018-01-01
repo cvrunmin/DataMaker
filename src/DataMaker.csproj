@@ -78,15 +78,13 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BetterControls\BetterMenuStripRenderer.cs" />
     <Compile Include="DataClasses\PackMcmeta.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BetterControls\BetterToolStripSeparator.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ExtraTreeView.cs">
       <SubType>Component</SubType>
