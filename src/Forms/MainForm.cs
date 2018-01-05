@@ -1,13 +1,12 @@
 ﻿using DataMaker.BetterControls;
 using DataMaker.Forms;
-using DataMaker.Properties;
-using Newtonsoft.Json;
 using System;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Windows.Forms;
+using static DataMaker.Tools;
 
 namespace DataMaker
 {
@@ -46,32 +45,6 @@ namespace DataMaker
 
     public partial class MainForm : Form
     {
-        #region 公共函数
-        /// <summary>
-        /// 依据指定key从资源文件读取文字
-        /// </summary>
-        /// <param name="key">指定key</param>
-        public static string Lang(string key)
-        {
-
-            var rm = new System.Resources.ResourceManager("DataMaker.Languages." + "zh_cn", typeof(Resources).Assembly);
-
-            if (rm.GetString(key) != null)
-            {
-                return rm.GetString(key);
-            }
-
-            throw new ApplicationException("No Lang: " + key);
-        }
-
-        /// <summary>
-        /// 将指定对象序列化为Json文本
-        /// </summary>
-        /// <param name="obj">指定对象</param>
-        /// <returns></returns>
-        public static string SerializeToJson(object obj) => JsonConvert.SerializeObject(obj, Formatting.Indented);
-        #endregion
-
         #region 设置主题样式
         private void SetTheme()
         {
@@ -94,7 +67,6 @@ namespace DataMaker
                 i.ForeColor = ForeColor;
             }
         }
-
 
         /// <summary>
         /// 重载OnLoad 去边框
@@ -121,11 +93,10 @@ namespace DataMaker
         #endregion
 
         public Form WorkSpace;
-
         private FileTree fileTree;
         private PropertyEditor propertyEditor;
 
-        public MainForm()
+        private MainForm()
         {
             InitializeComponent();
             SetTheme();
@@ -138,13 +109,8 @@ namespace DataMaker
             fileTree.Show();
             fileTree.Resize += Form_Resize;
 
-            // 显示属性列表
-            propertyEditor = new PropertyEditor()
-            {
-                MdiParent = this
-            };
-            propertyEditor.Show();
-            propertyEditor.Resize += Form_Resize;
+            // 显示属性区
+            ShowPropertyEditor(null);
 
             // 显示工作区
             WorkSpace = new JsonEditor()
@@ -154,6 +120,35 @@ namespace DataMaker
             WorkSpace.Show();
 
             // 手动排列窗体
+            LayoutForms();
+        }
+
+        private static MainForm mainForm;
+
+        public static MainForm GetInstance()
+        {
+            if (mainForm == null)
+                mainForm = new MainForm();
+
+            return mainForm;
+        }
+
+        public void EditNode(TreeNode node)
+        {
+            ShowPropertyEditor(Factories.GetDataClass(node));
+            //WorkSpace = Factories.GetEditor(node);
+        }
+
+        private void ShowPropertyEditor(object obj)
+        {
+            propertyEditor.Resize -= Form_Resize;
+            propertyEditor.Close();
+            propertyEditor = new PropertyEditor(obj)
+            {
+                MdiParent = this
+            };
+            propertyEditor.Resize += Form_Resize;
+            propertyEditor.Show();
             LayoutForms();
         }
 
@@ -250,7 +245,7 @@ namespace DataMaker
 
         private void LayoutForms()
         {
-            if (fileTree != null)
+            if (fileTree != null && propertyEditor != null && WorkSpace != null)
             {
                 fileTree.Left = ClientSize.Width - fileTree.ClientSize.Width;
                 fileTree.Top = 0;

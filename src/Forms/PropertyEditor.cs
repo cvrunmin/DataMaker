@@ -1,18 +1,26 @@
-﻿using DataMaker.DataClasses;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace DataMaker.Forms
 {
     public partial class PropertyEditor : Form
     {
-        public PropertyEditor()
+        private object selectedObject;
+
+        public PropertyEditor(object obj)
         {
             InitializeComponent();
+            SetTheme();
 
+            selectedObject = obj;
+
+            propertyGrid.SelectedObject = selectedObject;
+            propertyGrid.PropertySort = PropertySort.Categorized;
+        }
+
+        private void SetTheme()
+        {
             Theme.Initialize(this);
             lblSizeChanger.BackColor = Theme.HoverColor;
-
-            propertyGrid.SelectedObject = new PackMcmeta();
         }
 
         #region 修改窗体大小

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace DataMaker.Forms
 {
-    public partial class JsonEditor : Form
+    public partial class JsonEditor : Form, IEditor
     {
         public JsonEditor()
         {
@@ -58,7 +58,7 @@ namespace DataMaker.Forms
             var beginPattern = @".*{$";
             var endPattern = @"^\s*}.*";
 
-            if (Regex.IsMatch( e.LineText, beginPattern))
+            if (Regex.IsMatch(e.LineText, beginPattern))
             {
                 e.ShiftNextLines = e.TabLength;
                 return;

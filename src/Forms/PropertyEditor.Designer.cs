@@ -40,6 +40,7 @@
             this.propertyGrid.Name = "propertyGrid";
             this.propertyGrid.Size = new System.Drawing.Size(177, 484);
             this.propertyGrid.TabIndex = 0;
+            this.propertyGrid.ToolbarVisible = false;
             // 
             // lblSizeChanger
             // 
@@ -66,6 +67,7 @@
             this.Controls.Add(this.propertyGrid);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(100, 0);
             this.Name = "PropertyEditor";
             this.ResumeLayout(false);

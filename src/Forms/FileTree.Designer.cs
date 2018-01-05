@@ -33,14 +33,10 @@
             this.tvwFiles = new System.Windows.Forms.TreeView();
             this.cmnuItem = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.smnuOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.smnuOpenWith = new System.Windows.Forms.ToolStripMenuItem();
-            this.smnuVisualizationEditor = new System.Windows.Forms.ToolStripMenuItem();
-            this.smnuJsonEditor = new System.Windows.Forms.ToolStripMenuItem();
-            this.smnuFunctionEditor = new System.Windows.Forms.ToolStripMenuItem();
-            this.smnuExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuAddDirectory = new System.Windows.Forms.ToolStripMenuItem();
             this.smnuAddFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.smnuExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.smnuRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -67,6 +63,7 @@
             this.tvwFiles.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.tvwFiles_AfterLabelEdit);
             this.tvwFiles.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvwFiles_AfterCollapse);
             this.tvwFiles.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.ShowMenu);
+            this.tvwFiles.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvwFiles_NodeMouseDoubleClick);
             // 
             // cmnuItem
             // 
@@ -74,8 +71,8 @@
             this.cmnuItem.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.cmnuItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.smnuOpen,
-            this.smnuOpenWith,
             this.smnuAdd,
+            this.smnuExplorer,
             this.toolStripSeparator3,
             this.smnuRefresh,
             this.toolStripSeparator1,
@@ -94,40 +91,6 @@
             resources.ApplyResources(this.smnuOpen, "smnuOpen");
             this.smnuOpen.Name = "smnuOpen";
             this.smnuOpen.Click += new System.EventHandler(this.smnuOpen_Click);
-            // 
-            // smnuOpenWith
-            // 
-            resources.ApplyResources(this.smnuOpenWith, "smnuOpenWith");
-            this.smnuOpenWith.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.smnuVisualizationEditor,
-            this.smnuJsonEditor,
-            this.smnuFunctionEditor,
-            this.smnuExplorer});
-            this.smnuOpenWith.Name = "smnuOpenWith";
-            // 
-            // smnuVisualizationEditor
-            // 
-            resources.ApplyResources(this.smnuVisualizationEditor, "smnuVisualizationEditor");
-            this.smnuVisualizationEditor.Name = "smnuVisualizationEditor";
-            this.smnuVisualizationEditor.Click += new System.EventHandler(this.smnuVisualizationEditor_Click);
-            // 
-            // smnuJsonEditor
-            // 
-            resources.ApplyResources(this.smnuJsonEditor, "smnuJsonEditor");
-            this.smnuJsonEditor.Name = "smnuJsonEditor";
-            this.smnuJsonEditor.Click += new System.EventHandler(this.smnuJsonEditor_Click);
-            // 
-            // smnuFunctionEditor
-            // 
-            resources.ApplyResources(this.smnuFunctionEditor, "smnuFunctionEditor");
-            this.smnuFunctionEditor.Name = "smnuFunctionEditor";
-            this.smnuFunctionEditor.Click += new System.EventHandler(this.smnuFunctionEditor_Click);
-            // 
-            // smnuExplorer
-            // 
-            resources.ApplyResources(this.smnuExplorer, "smnuExplorer");
-            this.smnuExplorer.Name = "smnuExplorer";
-            this.smnuExplorer.Click += new System.EventHandler(this.smnuExplorer_Click);
             // 
             // smnuAdd
             // 
@@ -148,6 +111,11 @@
             resources.ApplyResources(this.smnuAddFile, "smnuAddFile");
             this.smnuAddFile.Name = "smnuAddFile";
             this.smnuAddFile.Click += new System.EventHandler(this.smnuAddFile_Click);
+            // 
+            // smnuExplorer
+            // 
+            resources.ApplyResources(this.smnuExplorer, "smnuExplorer");
+            this.smnuExplorer.Name = "smnuExplorer";
             // 
             // toolStripSeparator3
             // 
@@ -248,14 +216,10 @@
         private System.Windows.Forms.ToolStripMenuItem smnuProperty;
         private System.Windows.Forms.ToolStripMenuItem smnuDelete;
         private System.Windows.Forms.Label lblSizeChanger;
-        private System.Windows.Forms.ToolStripMenuItem smnuOpenWith;
-        private System.Windows.Forms.ToolStripMenuItem smnuVisualizationEditor;
-        private System.Windows.Forms.ToolStripMenuItem smnuJsonEditor;
-        private System.Windows.Forms.ToolStripMenuItem smnuFunctionEditor;
-        private System.Windows.Forms.ToolStripMenuItem smnuExplorer;
         private System.Windows.Forms.ToolStripMenuItem smnuRefresh;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem smnuExplorer;
     }
 }

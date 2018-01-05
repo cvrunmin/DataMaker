@@ -162,51 +162,6 @@
   <data name="smnuOpen.Text" xml:space="preserve">
     <value>打开</value>
   </data>
-  <data name="smnuOpenWith.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="smnuVisualizationEditor.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="smnuVisualizationEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
-  </data>
-  <data name="smnuVisualizationEditor.Text" xml:space="preserve">
-    <value>可视编辑器</value>
-  </data>
-  <data name="smnuJsonEditor.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="smnuJsonEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
-  </data>
-  <data name="smnuJsonEditor.Text" xml:space="preserve">
-    <value>Json编辑器</value>
-  </data>
-  <data name="smnuFunctionEditor.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="smnuFunctionEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
-  </data>
-  <data name="smnuFunctionEditor.Text" xml:space="preserve">
-    <value>函数编辑器</value>
-  </data>
-  <data name="smnuExplorer.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="smnuExplorer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 22</value>
-  </data>
-  <data name="smnuExplorer.Text" xml:space="preserve">
-    <value>文件资源管理器</value>
-  </data>
-  <data name="smnuOpenWith.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
-  </data>
-  <data name="smnuOpenWith.Text" xml:space="preserve">
-    <value>打开方式</value>
-  </data>
   <data name="smnuAdd.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -234,8 +189,17 @@
   <data name="smnuAdd.Text" xml:space="preserve">
     <value>添加</value>
   </data>
+  <data name="smnuExplorer.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="smnuExplorer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>160, 22</value>
+  </data>
+  <data name="smnuExplorer.Text" xml:space="preserve">
+    <value>用资源管理器打开</value>
+  </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 6</value>
+    <value>169, 6</value>
   </data>
   <data name="smnuRefresh.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -250,7 +214,7 @@
     <value>刷新</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 6</value>
+    <value>169, 6</value>
   </data>
   <data name="smnuCopy.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -313,7 +277,7 @@
     <value>重命名</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 6</value>
+    <value>169, 6</value>
   </data>
   <data name="smnuProperty.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -328,7 +292,7 @@
     <value>属性</value>
   </data>
   <data name="cmnuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 242</value>
+    <value>173, 242</value>
   </data>
   <data name="&gt;&gt;cmnuItem.Name" xml:space="preserve">
     <value>cmnuItem</value>
@@ -381,36 +345,6 @@
   <data name="&gt;&gt;smnuOpen.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;smnuOpenWith.Name" xml:space="preserve">
-    <value>smnuOpenWith</value>
-  </data>
-  <data name="&gt;&gt;smnuOpenWith.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;smnuVisualizationEditor.Name" xml:space="preserve">
-    <value>smnuVisualizationEditor</value>
-  </data>
-  <data name="&gt;&gt;smnuVisualizationEditor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;smnuJsonEditor.Name" xml:space="preserve">
-    <value>smnuJsonEditor</value>
-  </data>
-  <data name="&gt;&gt;smnuJsonEditor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;smnuFunctionEditor.Name" xml:space="preserve">
-    <value>smnuFunctionEditor</value>
-  </data>
-  <data name="&gt;&gt;smnuFunctionEditor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;smnuExplorer.Name" xml:space="preserve">
-    <value>smnuExplorer</value>
-  </data>
-  <data name="&gt;&gt;smnuExplorer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;smnuAdd.Name" xml:space="preserve">
     <value>smnuAdd</value>
   </data>
@@ -427,6 +361,12 @@
     <value>smnuAddFile</value>
   </data>
   <data name="&gt;&gt;smnuAddFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;smnuExplorer.Name" xml:space="preserve">
+    <value>smnuExplorer</value>
+  </data>
+  <data name="&gt;&gt;smnuExplorer.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator3.Name" xml:space="preserve">

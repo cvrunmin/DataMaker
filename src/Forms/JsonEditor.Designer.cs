@@ -83,6 +83,7 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.HelpButton = true;
+            this.KeyPreview = true;
             this.Name = "JsonEditor";
             ((System.ComponentModel.ISupportInitialize)(this.fctbJson)).EndInit();
             this.ResumeLayout(false);

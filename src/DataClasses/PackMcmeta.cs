@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace DataMaker.DataClasses
 {
-    public class PackMcmeta
+    public class PackMcmeta: IDataClass
     {
         [JsonProperty(PropertyName = "pack")]
         public Pack Pack { get; set; } = new Pack();

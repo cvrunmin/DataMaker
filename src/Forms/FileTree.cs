@@ -1,6 +1,5 @@
 ﻿using DataMaker.DataClasses;
 using DataMaker.Properties;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -9,7 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using static DataMaker.MainForm;
+using static DataMaker.Tools;
 
 namespace DataMaker
 {
@@ -40,11 +39,11 @@ namespace DataMaker
             }
         }
 
-        private enum Type { DataPack, Data, Namespace, Root, Directory, File, Unknown }
+        public enum Type { DataPack, Data, Namespace, Root, Directory, File, Unknown }
 
-        private enum Sort { Advancement, Function, LootTable, Recipe, Structure, Tag, Mcmeta, None }
+        public enum Sort { Advancement, Function, LootTable, Recipe, Structure, Tag, PackMcmeta, None }
 
-        private struct Item
+        public struct Item
         {
             public Type Type { get; set; }
             public Sort Sort { get; set; }
@@ -486,7 +485,7 @@ namespace DataMaker
                     else if (node.Level == 1 && node.Text == "pack.mcmeta")
                     {
                         node.ImageKey = node.SelectedImageKey = "Setting";
-                        node.Tag = new Item(Type.File, Sort.Mcmeta);
+                        node.Tag = new Item(Type.File, Sort.PackMcmeta);
                         node.Text = Lang("global_settings");
                     }
                     else
@@ -686,9 +685,6 @@ namespace DataMaker
             smnuRename.Enabled = true;
             smnuRefresh.Enabled = true;
             smnuExplorer.Enabled = true;
-            smnuVisualizationEditor.Enabled = true;
-            smnuJsonEditor.Enabled = true;
-            smnuFunctionEditor.Enabled = true;
             smnuCopy.Text = Lang("filetree_copy");
             smnuCut.Text = Lang("filetree_cut");
             smnuDelete.Text = Lang("filetree_delete");
@@ -770,40 +766,10 @@ namespace DataMaker
                         smnuAddFile.Text = Lang("global_tag");
                         break;
                     // 不允许删除配置文件
-                    case Sort.Mcmeta:
+                    case Sort.PackMcmeta:
                         smnuDelete.Enabled = false;
                         break;
                     default:
-                        break;
-                }
-
-                // 更改编辑器可用性
-                switch (SelectedItem.Type)
-                {
-                    case Type.File:
-                        switch (SelectedItem.Sort)
-                        {
-                            case Sort.Advancement:
-                            case Sort.LootTable:
-                            case Sort.Recipe:
-                            case Sort.Tag:
-                            case Sort.Mcmeta:
-                                smnuFunctionEditor.Enabled = false;
-                                break;
-                            case Sort.Function:
-                                smnuJsonEditor.Enabled = false;
-                                break;
-                            default:
-                                smnuVisualizationEditor.Enabled = false;
-                                smnuJsonEditor.Enabled = false;
-                                smnuFunctionEditor.Enabled = false;
-                                break;
-                        }
-                        break;
-                    default:
-                        smnuVisualizationEditor.Enabled = false;
-                        smnuJsonEditor.Enabled = false;
-                        smnuFunctionEditor.Enabled = false;
                         break;
                 }
             }
@@ -883,10 +849,17 @@ namespace DataMaker
             {
                 if (tvwFiles.SelectedNode != null)
                 {
-                    if (tvwFiles.SelectedNode.IsExpanded)
-                        tvwFiles.SelectedNode.Collapse(true);
+                    if (((Item)tvwFiles.SelectedNode).Type == Type.File)
+                    {
+                        MainForm.GetInstance().EditNode(tvwFiles.SelectedNode);
+                    }
                     else
-                        tvwFiles.SelectedNode.Expand();
+                    {
+                        //if (tvwFiles.SelectedNode.IsExpanded)
+                        //    tvwFiles.SelectedNode.Collapse(true);
+                        //else
+                        //    tvwFiles.SelectedNode.Expand();
+                    }
                 }
             }
         }
@@ -1265,48 +1238,6 @@ namespace DataMaker
         }
 
         /// <summary>
-        /// 用可视编辑器打开
-        /// </summary>
-        private void OpenWithVisualizatonEditor()
-        {
-            if (smnuVisualizationEditor.Enabled)
-            {
-                if (tvwFiles.SelectedNode != null)
-                {
-
-                }
-            }
-        }
-
-        /// <summary>
-        /// 用Json编辑器打开
-        /// </summary>
-        private void OpenWithJsonEditor()
-        {
-            if (smnuJsonEditor.Enabled)
-            {
-                if (tvwFiles.SelectedNode != null)
-                {
-
-                }
-            }
-        }
-
-        /// <summary>
-        /// 用函数编辑器打开
-        /// </summary>
-        private void OpenWithFunctionEditor()
-        {
-            if (smnuFunctionEditor.Enabled)
-            {
-                if (tvwFiles.SelectedNode != null)
-                {
-
-                }
-            }
-        }
-
-        /// <summary>
         /// 用文件资源管理器打开
         /// </summary>
         private void OpenWithExplorer()
@@ -1455,22 +1386,7 @@ namespace DataMaker
         {
             DeleteItem();
         }
-
-        private void smnuVisualizationEditor_Click(object sender, EventArgs e)
-        {
-            OpenWithVisualizatonEditor();
-        }
-
-        private void smnuJsonEditor_Click(object sender, EventArgs e)
-        {
-            OpenWithJsonEditor();
-        }
-
-        private void smnuFunctionEditor_Click(object sender, EventArgs e)
-        {
-            OpenWithFunctionEditor();
-        }
-
+        
         private void smnuExplorer_Click(object sender, EventArgs e)
         {
             OpenWithExplorer();
@@ -1486,9 +1402,13 @@ namespace DataMaker
             // 想收起？不存在的
             e.Node.Expand();
         }
+
+        private void tvwFiles_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            OpenItem();
+        }
         #endregion
 
         #endregion
-
     }
 }
