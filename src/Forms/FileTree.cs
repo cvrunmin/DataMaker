@@ -346,7 +346,9 @@ namespace DataMaker
         public FileTree()
         {
             InitializeComponent();
+
             Theme.Initialize(this);
+            lblSizeChanger.BackColor = Theme.HoverColor;
 
             LoadImages();
         }
@@ -975,7 +977,6 @@ namespace DataMaker
                 }
             }
         }
-
 
         /// <summary>
         /// 在项目下新建文件

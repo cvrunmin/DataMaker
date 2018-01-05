@@ -137,8 +137,9 @@
             this.Name = "MainForm";
             this.Text = this.ProductName;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RespondShortcutKeys);
-            this.Resize += new System.EventHandler(this.MainForm_Resize);
+            this.Resize += new System.EventHandler(this.Form_Resize);
             this.menuTop.ResumeLayout(false);
             this.menuTop.PerformLayout();
             this.ResumeLayout(false);

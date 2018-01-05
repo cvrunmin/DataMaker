@@ -6,15 +6,16 @@ namespace DataMaker.DataClasses
     public class PackMcmeta
     {
         [JsonProperty(PropertyName = "pack")]
-        public Pack Pack = new Pack();
+        public Pack Pack { get; set; } = new Pack();
     }
 
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class Pack
     {
         [JsonProperty(PropertyName = "pack_format")]
-        public int PackFormat = 1;
+        public int PackFormat { get; set; } = 1;
 
         [JsonProperty(PropertyName = "description")]
-        public string Description = "";
+        public string Description { get; set; } = "";
     }
 }

@@ -123,6 +123,7 @@ namespace DataMaker
         public Form WorkSpace;
 
         private FileTree fileTree;
+        private PropertyEditor propertyEditor;
 
         public MainForm()
         {
@@ -132,17 +133,28 @@ namespace DataMaker
             // 显示文件树
             fileTree = new FileTree()
             {
-                MdiParent = this,
-                Dock = DockStyle.Right
+                MdiParent = this
             };
             fileTree.Show();
+            fileTree.Resize += Form_Resize;
 
+            // 显示属性列表
+            propertyEditor = new PropertyEditor()
+            {
+                MdiParent = this
+            };
+            propertyEditor.Show();
+            propertyEditor.Resize += Form_Resize;
+
+            // 显示工作区
             WorkSpace = new JsonEditor()
             {
-                MdiParent = this,
-                Dock = DockStyle.Left
+                MdiParent = this
             };
             WorkSpace.Show();
+
+            // 手动排列窗体
+            LayoutForms();
         }
 
         #region 事件处理
@@ -236,22 +248,35 @@ namespace DataMaker
             }
         }
 
+        private void LayoutForms()
+        {
+            if (fileTree != null)
+            {
+                fileTree.Left = ClientSize.Width - fileTree.ClientSize.Width;
+                fileTree.Top = 0;
+                fileTree.Height = ClientSize.Height - menuTop.Height;
+
+                propertyEditor.Left = 0;
+                propertyEditor.Top = 0;
+                propertyEditor.Height = fileTree.Height;
+
+                WorkSpace.Width = ClientSize.Width - fileTree.Width - propertyEditor.Width;
+                WorkSpace.Left = propertyEditor.Width;
+                WorkSpace.Top = 0;
+                WorkSpace.Height = fileTree.Height;
+            }
+        }
+
         #region 响应事件
         private void smnuDataPack_DropDownOpening(object sender, EventArgs e) => SetSmnus();
         private void smnuExit_Click(object sender, EventArgs e) => ExitApplication();
         private void smnuAbout_Click(object sender, EventArgs e) => ShowAboutBox();
         private void smnuLoadFolder_Click(object sender, EventArgs e) => SelectDatapackFolder();
         private void smnuExportZip_Click(object sender, EventArgs e) => ExportZip();
+        private void MainForm_Load(object sender, EventArgs e) => LayoutForms();
+        private void Form_Resize(object sender, EventArgs e) => LayoutForms();
         #endregion
 
         #endregion
-
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            if (fileTree != null)
-            {
-                WorkSpace.Width = Width - fileTree.Width;
-            }
-        }
     }
 }

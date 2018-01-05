@@ -89,9 +89,6 @@
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExtraTreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Forms\FileTree.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +106,12 @@
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PropertyEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PropertyEditor.Designer.cs">
+      <DependentUpon>PropertyEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -139,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PropertyEditor.resx">
+      <DependentUpon>PropertyEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GlobalResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
