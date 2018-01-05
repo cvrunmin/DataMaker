@@ -73,6 +73,16 @@ namespace DataMaker {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap BlockTags {
+            get {
+                object obj = ResourceManager.GetObject("BlockTags", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap DataPack {
             get {
                 object obj = ResourceManager.GetObject("DataPack", resourceCulture);
@@ -113,9 +123,29 @@ namespace DataMaker {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap FunctionTags {
+            get {
+                object obj = ResourceManager.GetObject("FunctionTags", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap Icon {
             get {
                 object obj = ResourceManager.GetObject("Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap ItemTags {
+            get {
+                object obj = ResourceManager.GetObject("ItemTags", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

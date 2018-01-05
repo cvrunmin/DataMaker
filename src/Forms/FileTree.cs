@@ -370,6 +370,9 @@ namespace DataMaker
             tvwFiles.ImageList.Images.Add("Recipes", (Image)rm.GetObject("Recipes"));
             tvwFiles.ImageList.Images.Add("Structures", (Image)rm.GetObject("Structures"));
             tvwFiles.ImageList.Images.Add("Tags", (Image)rm.GetObject("Tags"));
+            tvwFiles.ImageList.Images.Add("BlockTags", (Image)rm.GetObject("BlockTags"));
+            tvwFiles.ImageList.Images.Add("ItemTags", (Image)rm.GetObject("ItemTags"));
+            tvwFiles.ImageList.Images.Add("FunctionTags", (Image)rm.GetObject("FunctionTags"));
             tvwFiles.ImageList.Images.Add("Nbt", (Image)rm.GetObject("Nbt"));
         }
 
@@ -594,12 +597,15 @@ namespace DataMaker
                             switch (node.Text)
                             {
                                 case "blocks":
+                                    node.ImageKey = node.SelectedImageKey = "BlockTags";
                                     node.Text = Lang("global_block");
                                     break;
                                 case "items":
+                                    node.ImageKey = node.SelectedImageKey = "ItemTags";
                                     node.Text = Lang("global_item");
                                     break;
                                 case "functions":
+                                    node.ImageKey = node.SelectedImageKey = "FunctionTags";
                                     node.Text = Lang("global_function");
                                     break;
                                 default:

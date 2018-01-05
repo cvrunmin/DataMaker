@@ -185,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <Content Include="Resources\FileTree\BlockTags.png" />
     <Content Include="Resources\FileTree\Advancements.png" />
     <Content Include="Resources\FileTree\DataPack.png" />
     <Content Include="Resources\FileTree\Directory.png" />
@@ -200,7 +201,9 @@
     <Content Include="Resources\FileTree\Namespace.png" />
     <Content Include="Resources\FileTree\Function.png" />
     <Content Include="Resources\FileTree\Tags.png" />
+    <Content Include="Resources\FileTree\FunctionTags.png" />
     <Content Include="Resources\Icon.png" />
+    <Content Include="Resources\FileTree\ItemTags.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

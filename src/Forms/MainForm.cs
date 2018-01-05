@@ -141,8 +141,11 @@ namespace DataMaker
 
         private void ShowPropertyEditor(object obj)
         {
-            propertyEditor.Resize -= Form_Resize;
-            propertyEditor.Close();
+            if (propertyEditor != null)
+            {
+                propertyEditor.Resize -= Form_Resize;
+                propertyEditor.Close();
+            }
             propertyEditor = new PropertyEditor(obj)
             {
                 MdiParent = this
