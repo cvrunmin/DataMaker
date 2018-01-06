@@ -1,4 +1,5 @@
 ﻿using DataMaker.BetterControls;
+using DataMaker.DataClasses;
 using DataMaker.Forms;
 using System;
 using System.Drawing;
@@ -96,6 +97,7 @@ namespace DataMaker
         private RawEditor rawEditor;
         private FileTree fileTree;
         private PropertyEditor propertyEditor;
+        private IDataClass editedDataClass;
 
         public RawEditor RawEditor
         {
@@ -112,7 +114,6 @@ namespace DataMaker
                 return rawEditor;
             }
         }
-
         public FileTree FileTree
         {
             get
@@ -128,7 +129,6 @@ namespace DataMaker
                 return fileTree;
             }
         }
-
         public PropertyEditor PropertyEditor
         {
             get
@@ -144,6 +144,16 @@ namespace DataMaker
                 return propertyEditor;
             }
         }
+        public IDataClass EditedDataClass
+        {
+            get => editedDataClass;
+            set
+            {
+                editedDataClass = value;
+                RawEditor.UpdateContent();
+                PropertyEditor.SelectObject();
+            }
+        } 
 
         private MainForm()
         {
@@ -176,8 +186,7 @@ namespace DataMaker
 
         public void EditNode(TreeNode node)
         {
-            PropertyEditor.SelectObject(GetDataClass(node));
-            RawEditor.EditObject(GetDataClass(node));
+            EditedDataClass = GetDataClass(node);
         }
 
         #region 事件处理

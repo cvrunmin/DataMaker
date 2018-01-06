@@ -8,8 +8,6 @@ namespace DataMaker.Forms
 {
     public partial class RawEditor : Form
     {
-        private object editedObject;
-
         public RawEditor()
         {
             InitializeComponent();
@@ -89,13 +87,7 @@ namespace DataMaker.Forms
 
         public void UpdateContent()
         {
-            fctbJson.Text = SerializeToJson(editedObject);
-        }
-
-        public void EditObject(object obj)
-        {
-            editedObject = obj;
-            UpdateContent();
+            fctbJson.Text = SerializeToJson(MainForm.GetInstance().EditedDataClass);
         }
     }
 }

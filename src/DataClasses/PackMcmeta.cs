@@ -9,7 +9,7 @@ namespace DataMaker.DataClasses
         public Pack Pack { get; set; } = new Pack();
     }
 
-    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectNoStringConverter))]
     public class Pack
     {
         [JsonProperty(PropertyName = "pack_format")]

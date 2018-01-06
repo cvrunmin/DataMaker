@@ -4,8 +4,6 @@ namespace DataMaker.Forms
 {
     public partial class PropertyEditor : Form
     {
-        private object selectedObject;
-
         public PropertyEditor()
         {
             InitializeComponent();
@@ -14,11 +12,14 @@ namespace DataMaker.Forms
             propertyGrid.PropertySort = PropertySort.Alphabetical;
         }
 
-        public void SelectObject(object obj)
+        public void SelectObject()
         {
-            // FIXME
-            selectedObject = obj;
-            propertyGrid.SelectedObject = selectedObject;
+            propertyGrid.SelectedObject = MainForm.GetInstance().EditedDataClass;
+        }
+
+        public void UpdateContent()
+        {
+            propertyGrid.Refresh();
         }
 
         private void SetTheme()

@@ -9,28 +9,26 @@ namespace DataMaker.DataClasses
     {
     }
 
-    public class JsonObjectConventer<T> : ExpandableObjectConverter
+    /// <summary>
+    /// 不允许被转换为String，或从String转换
+    /// 这样可以让 Json.Net 正确序列化
+    /// </summary>
+    public class ExpandableObjectNoStringConverter : ExpandableObjectConverter
     {
-        public override bool CanConvertTo
-            (ITypeDescriptorContext context, Type destinationType)
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (destinationType == typeof(T))
-                return true;
-
-            return base.CanConvertTo(context, destinationType);
+            if (sourceType == typeof(String))
+                return false;
+            else
+                return base.CanConvertFrom(context, sourceType);
         }
 
-        public override object ConvertTo
-            (ITypeDescriptorContext context, CultureInfo culture,
-            object value, Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            if (destinationType == typeof(String) &&
-                value is T)
-            {
-                return SerializeToJson((T)value);
-            }
-
-            return base.ConvertTo(context, culture, value, destinationType);
+            if (destinationType == typeof(String))
+                return false;
+            else
+                return base.CanConvertTo(context, destinationType);
         }
     }
 }
