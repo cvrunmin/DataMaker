@@ -303,30 +303,6 @@ namespace DataMaker
         }
 
         /// <summary>
-        /// 获取指定文件名是否合法
-        /// </summary>
-        /// <param name="str">文件名</param>
-        /// <returns></returns>
-        private bool IsNameLegal(string str)
-        {
-            // 匹配包含非法字符的字符串
-            var pattern = @"[^(a-z0-9\-_\.)]";
-
-            if (Regex.IsMatch(str, pattern))
-            {
-                /* 
-                 * 文件名不符合社会主义核心价值观
-                 * 富强、民主、文明、和谐
-                 * 自由、平等、公正、法治
-                 * 爱国、敬业、诚信、友善
-                 */
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// 获取被选中的节点对应的Item
         /// </summary>
         private Item SelectedItem { get => (Item)tvwFiles.SelectedNode; }
@@ -1283,7 +1259,7 @@ namespace DataMaker
 
                 if (!IsNameLegal(e.Label))
                 {
-                    MessageBox.Show(Lang("filetree_msgbox_name"));
+                    MessageBox.Show(Lang("formmain_msgbox_notalegalname").Replace("{0}", e.Label));
                 }
                 else
                 {

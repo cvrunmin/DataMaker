@@ -165,24 +165,6 @@
   <data name="smnuAdd.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="smnuAddDirectory.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="smnuAddDirectory.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
-  </data>
-  <data name="smnuAddDirectory.Text" xml:space="preserve">
-    <value>文件夹</value>
-  </data>
-  <data name="smnuAddFile.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="smnuAddFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
-  </data>
-  <data name="smnuAddFile.Text" xml:space="preserve">
-    <value>文件</value>
-  </data>
   <data name="smnuAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 22</value>
   </data>
@@ -292,13 +274,31 @@
     <value>属性</value>
   </data>
   <data name="cmnuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>173, 242</value>
+    <value>173, 264</value>
   </data>
   <data name="&gt;&gt;cmnuItem.Name" xml:space="preserve">
     <value>cmnuItem</value>
   </data>
   <data name="&gt;&gt;cmnuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="smnuAddDirectory.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="smnuAddDirectory.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="smnuAddDirectory.Text" xml:space="preserve">
+    <value>文件夹</value>
+  </data>
+  <data name="smnuAddFile.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="smnuAddFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="smnuAddFile.Text" xml:space="preserve">
+    <value>文件</value>
   </data>
   <data name="lblSizeChanger.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Left</value>

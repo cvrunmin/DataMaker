@@ -116,6 +116,7 @@
             // 
             resources.ApplyResources(this.smnuExplorer, "smnuExplorer");
             this.smnuExplorer.Name = "smnuExplorer";
+            this.smnuExplorer.Click += new System.EventHandler(this.smnuExplorer_Click);
             // 
             // toolStripSeparator3
             // 

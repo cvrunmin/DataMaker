@@ -174,8 +174,8 @@
   <data name="filetree_msgbox_exist" xml:space="preserve">
     <value>已存在：{0}</value>
   </data>
-  <data name="filetree_msgbox_name" xml:space="preserve">
-    <value>文件名只能包含abcdefghijklmnopqrstuvwxyz0123456789.-_</value>
+  <data name="formmain_msgbox_notalegalname" xml:space="preserve">
+    <value>文件名 {0} 不合法，文件名只能包含小写字母、数字、点“.”、下划线“_” 和 横线“-”。不建议使用拼音</value>
   </data>
   <data name="filetree_msgbox_suretodelete" xml:space="preserve">
     <value>你确定要删除 {0} ？</value>

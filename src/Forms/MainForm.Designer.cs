@@ -43,6 +43,7 @@
             this.smnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.zipSaver = new System.Windows.Forms.SaveFileDialog();
+            this.lblFuckGdi = new System.Windows.Forms.Label();
             this.menuTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -125,10 +126,18 @@
             resources.ApplyResources(this.smnuAbout, "smnuAbout");
             this.smnuAbout.Click += new System.EventHandler(this.smnuAbout_Click);
             // 
+            // lblFuckGdi
+            // 
+            this.lblFuckGdi.BackColor = System.Drawing.Color.Aqua;
+            this.lblFuckGdi.Cursor = System.Windows.Forms.Cursors.Default;
+            resources.ApplyResources(this.lblFuckGdi, "lblFuckGdi");
+            this.lblFuckGdi.Name = "lblFuckGdi";
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblFuckGdi);
             this.Controls.Add(this.menuTop);
             this.DoubleBuffered = true;
             this.IsMdiContainer = true;
@@ -163,6 +172,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.Label lblFuckGdi;
     }
 }
 

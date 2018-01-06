@@ -151,15 +151,6 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
-        ///   查找类似 文件名只能包含abcdefghijklmnopqrstuvwxyz0123456789.-_ 的本地化字符串。
-        /// </summary>
-        internal static string filetree_msgbox_name {
-            get {
-                return ResourceManager.GetString("filetree_msgbox_name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 {0} 不是空的文件夹，也不像一个数据包，是否继续？ 的本地化字符串。
         /// </summary>
         internal static string filetree_msgbox_notadatapack {
@@ -237,6 +228,15 @@ namespace DataMaker.Languages {
         internal static string formmain_msgbox_exportzipsuccessfully {
             get {
                 return ResourceManager.GetString("formmain_msgbox_exportzipsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 文件名 {0} 不合法，文件名只能包含小写字母、数字、点“.”、下划线“_” 和 横线“-”。不建议使用拼音 的本地化字符串。
+        /// </summary>
+        internal static string formmain_msgbox_notalegalname {
+            get {
+                return ResourceManager.GetString("formmain_msgbox_notalegalname", resourceCulture);
             }
         }
         

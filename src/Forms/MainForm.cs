@@ -50,6 +50,7 @@ namespace DataMaker
         {
             Theme.Initialize(this);
             menuTop.Renderer = new BetterMenuStripRenderer();
+            lblFuckGdi.BackColor = Theme.HoverColor;
 
             foreach (ToolStripItem i in menuTop.Items)
             {
@@ -92,9 +93,57 @@ namespace DataMaker
         }
         #endregion
 
-        public Form WorkSpace;
+        private RawEditor rawEditor;
         private FileTree fileTree;
         private PropertyEditor propertyEditor;
+
+        public RawEditor RawEditor
+        {
+            get
+            {
+                if (rawEditor == null)
+                {
+                    rawEditor = new RawEditor()
+                    {
+                        MdiParent = this
+                    };
+                }
+
+                return rawEditor;
+            }
+        }
+
+        public FileTree FileTree
+        {
+            get
+            {
+                if (fileTree == null)
+                {
+                    fileTree = new FileTree()
+                    {
+                        MdiParent = this
+                    };
+                }
+
+                return fileTree;
+            }
+        }
+
+        public PropertyEditor PropertyEditor
+        {
+            get
+            {
+                if (propertyEditor == null)
+                {
+                    propertyEditor = new PropertyEditor()
+                    {
+                        MdiParent = this
+                    };
+                }
+
+                return propertyEditor;
+            }
+        }
 
         private MainForm()
         {
@@ -102,24 +151,16 @@ namespace DataMaker
             SetTheme();
 
             // 显示文件树
-            fileTree = new FileTree()
-            {
-                MdiParent = this
-            };
-            fileTree.Show();
-            fileTree.Resize += Form_Resize;
+            FileTree.Show();
+            FileTree.Resize += Form_Resize;
 
             // 显示属性区
-            ShowPropertyEditor(null);
+            PropertyEditor.Show();
+            PropertyEditor.Resize += Form_Resize;
 
-            // 显示工作区
-            WorkSpace = new JsonEditor()
-            {
-                MdiParent = this
-            };
-            WorkSpace.Show();
+            // 显示原文本编辑器
+            RawEditor.Show();
 
-            // 手动排列窗体
             LayoutForms();
         }
 
@@ -135,31 +176,15 @@ namespace DataMaker
 
         public void EditNode(TreeNode node)
         {
-            ShowPropertyEditor(Factories.GetDataClass(node));
-            //WorkSpace = Factories.GetEditor(node);
-        }
-
-        private void ShowPropertyEditor(object obj)
-        {
-            if (propertyEditor != null)
-            {
-                propertyEditor.Resize -= Form_Resize;
-                propertyEditor.Close();
-            }
-            propertyEditor = new PropertyEditor(obj)
-            {
-                MdiParent = this
-            };
-            propertyEditor.Resize += Form_Resize;
-            propertyEditor.Show();
-            LayoutForms();
+            PropertyEditor.SelectObject(GetDataClass(node));
+            RawEditor.EditObject(GetDataClass(node));
         }
 
         #region 事件处理
         private void SetSmnus()
         {
             smnuExportZip.Enabled = true;
-            if (fileTree.DatapackPath == null || fileTree.DatapackPath == "")
+            if (FileTree.DatapackPath == null || FileTree.DatapackPath == "")
                 smnuExportZip.Enabled = false;
         }
 
@@ -217,28 +242,36 @@ namespace DataMaker
         {
             var result = folderBrowser.ShowDialog();
             if (result != DialogResult.Cancel)
-                fileTree.DatapackPath = folderBrowser.SelectedPath;
+                FileTree.DatapackPath = folderBrowser.SelectedPath;
         }
 
         private void ExportZip()
         {
             if (smnuExportZip.Enabled)
             {
+                selectFile:
                 zipSaver.Filter = Lang("global_datapack") + " | *.zip";
-                zipSaver.FileName = "unnamed.zip";
+                zipSaver.FileName = Path.GetFileName(zipSaver.FileName);
 
                 var result = zipSaver.ShowDialog();
                 var name = zipSaver.FileName;
                 if (result != DialogResult.Cancel)
                 {
-                    // 已存在 删除
-                    if (File.Exists(name))
+                    if (!IsNameLegal(Path.GetFileNameWithoutExtension(name)))
                     {
-                        File.Delete(name);
+                        // 数据包名不合法
+                        MessageBox.Show(Lang("formmain_msgbox_notalegalname")
+                            .Replace("{0}", Path.GetFileNameWithoutExtension(name)));
+
+                        goto selectFile;
                     }
 
+                    // 已存在 删除
+                    if (File.Exists(name))
+                        File.Delete(name);
+
                     // 开始压缩
-                    ZipFile.CreateFromDirectory(fileTree.DatapackPath, name);
+                    ZipFile.CreateFromDirectory(FileTree.DatapackPath, name);
 
                     // 通知
                     MessageBox.Show(Lang("formmain_msgbox_exportzipsuccessfully").Replace("{0}", name));
@@ -248,21 +281,15 @@ namespace DataMaker
 
         private void LayoutForms()
         {
-            if (fileTree != null && propertyEditor != null && WorkSpace != null)
-            {
-                fileTree.Left = ClientSize.Width - fileTree.ClientSize.Width;
-                fileTree.Top = 0;
-                fileTree.Height = ClientSize.Height - menuTop.Height;
+            FileTree.Left = ClientSize.Width - FileTree.ClientSize.Width;
+            FileTree.Top = PropertyEditor.Top = RawEditor.Top = 0;
 
-                propertyEditor.Left = 0;
-                propertyEditor.Top = 0;
-                propertyEditor.Height = fileTree.Height;
+            FileTree.Height = PropertyEditor.Height = RawEditor.Height = ClientSize.Height - menuTop.Height - 5;
 
-                WorkSpace.Width = ClientSize.Width - fileTree.Width - propertyEditor.Width;
-                WorkSpace.Left = propertyEditor.Width;
-                WorkSpace.Top = 0;
-                WorkSpace.Height = fileTree.Height;
-            }
+            PropertyEditor.Left = 0;
+            RawEditor.Left = PropertyEditor.Width;
+
+            RawEditor.Width = ClientSize.Width - FileTree.Width - PropertyEditor.Width;
         }
 
         #region 响应事件
@@ -271,6 +298,7 @@ namespace DataMaker
         private void smnuAbout_Click(object sender, EventArgs e) => ShowAboutBox();
         private void smnuLoadFolder_Click(object sender, EventArgs e) => SelectDatapackFolder();
         private void smnuExportZip_Click(object sender, EventArgs e) => ExportZip();
+
         private void MainForm_Load(object sender, EventArgs e) => LayoutForms();
         private void Form_Resize(object sender, EventArgs e) => LayoutForms();
         #endregion

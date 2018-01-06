@@ -1,6 +1,6 @@
 ﻿namespace DataMaker.Forms
 {
-    partial class JsonEditor
+    partial class RawEditor
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(JsonEditor));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RawEditor));
             this.fctbJson = new FastColoredTextBoxNS.FastColoredTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.fctbJson)).BeginInit();
             this.SuspendLayout();
@@ -55,6 +55,7 @@
             this.fctbJson.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fctbJson.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fctbJson.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fctbJson.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fctbJson.ImeMode = System.Windows.Forms.ImeMode.On;
             this.fctbJson.IsReplaceMode = false;
             this.fctbJson.LeftBracket = '{';
@@ -69,6 +70,7 @@
             this.fctbJson.ShowFoldingLines = true;
             this.fctbJson.Size = new System.Drawing.Size(893, 512);
             this.fctbJson.TabIndex = 0;
+            this.fctbJson.TabLength = 2;
             this.fctbJson.Zoom = 100;
             this.fctbJson.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fctbJson_TextChanged);
             this.fctbJson.AutoIndentNeeded += new System.EventHandler<FastColoredTextBoxNS.AutoIndentEventArgs>(this.fctbJson_AutoIndentNeeded);

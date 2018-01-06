@@ -1,14 +1,16 @@
 ﻿using FastColoredTextBoxNS;
-using System.Collections;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static DataMaker.Tools;
 
 namespace DataMaker.Forms
 {
-    public partial class JsonEditor : Form, IEditor
+    public partial class RawEditor : Form
     {
-        public JsonEditor()
+        private object editedObject;
+
+        public RawEditor()
         {
             InitializeComponent();
             
@@ -27,6 +29,8 @@ namespace DataMaker.Forms
             fctbJson.ServiceColors.ExpandMarkerBorderColor = Theme.ForeColor;
             fctbJson.ServiceColors.ExpandMarkerBorderColor = Theme.ForeColor;
             fctbJson.IndentBackColor = Theme.BackColor;
+
+            fctbJson.ChangeFontSize(6);
         }
         
         TextStyle stringStyle = new TextStyle(Brushes.Orange, null, FontStyle.Regular);
@@ -55,21 +59,43 @@ namespace DataMaker.Forms
 
         private void fctbJson_AutoIndentNeeded(object sender, AutoIndentEventArgs e)
         {
-            var beginPattern = @".*{$";
-            var endPattern = @"^\s*}.*";
-
-            if (Regex.IsMatch(e.LineText, beginPattern))
-            {
-                e.ShiftNextLines = e.TabLength;
-                return;
-            }
-
-            if (Regex.IsMatch(e.LineText, endPattern))
+            /* 标准Json格式
+             * 
+             * {
+             *     "criteria":{
+             *         "a":{
+             *             "trigger": "minecraft:tick"
+             *         }
+             *     },
+             *     "rewards":{
+             *         "function": "system:start"
+             *     }
+             * }
+             * 
+             */
+            if (Regex.IsMatch(e.LineText, @"[}\]],?[{\[]?$"))
             {
                 e.Shift = -e.TabLength;
                 e.ShiftNextLines = -e.TabLength;
                 return;
             }
+
+            if (Regex.IsMatch(e.LineText, @"[{\[]$"))
+            {
+                e.ShiftNextLines = e.TabLength;
+                return;
+            }
+        }
+
+        public void UpdateContent()
+        {
+            fctbJson.Text = SerializeToJson(editedObject);
+        }
+
+        public void EditObject(object obj)
+        {
+            editedObject = obj;
+            UpdateContent();
         }
     }
 }

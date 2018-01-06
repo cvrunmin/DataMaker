@@ -6,15 +6,19 @@ namespace DataMaker.Forms
     {
         private object selectedObject;
 
-        public PropertyEditor(object obj)
+        public PropertyEditor()
         {
             InitializeComponent();
             SetTheme();
 
-            selectedObject = obj;
+            propertyGrid.PropertySort = PropertySort.Alphabetical;
+        }
 
+        public void SelectObject(object obj)
+        {
+            // FIXME
+            selectedObject = obj;
             propertyGrid.SelectedObject = selectedObject;
-            propertyGrid.PropertySort = PropertySort.Categorized;
         }
 
         private void SetTheme()
@@ -38,7 +42,7 @@ namespace DataMaker.Forms
             if (isResizing)
             {
                 Width += initialX + e.X;
-                Width = System.Math.Max(MinimumSize.Width , Width);
+                Width = System.Math.Max(MinimumSize.Width, Width);
                 propertyGrid.Width = ClientSize.Width - lblSizeChanger.Width;
             }
         }
@@ -48,5 +52,10 @@ namespace DataMaker.Forms
             isResizing = false;
         }
         #endregion
+
+        private void PropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            MainForm.GetInstance().RawEditor.UpdateContent();
+        }
     }
 }

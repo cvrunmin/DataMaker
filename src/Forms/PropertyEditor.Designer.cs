@@ -23,7 +23,7 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        /// Required method for Designer support - do not modify
+        /// Required method for Designer support - why can't modify?
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
@@ -37,8 +37,9 @@
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Left;
             this.propertyGrid.LineColor = System.Drawing.SystemColors.ControlDark;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
+            this.propertyGrid.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(177, 484);
+            this.propertyGrid.Size = new System.Drawing.Size(356, 791);
             this.propertyGrid.TabIndex = 0;
             this.propertyGrid.ToolbarVisible = false;
             // 
@@ -48,10 +49,10 @@
             this.lblSizeChanger.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this.lblSizeChanger.Dock = System.Windows.Forms.DockStyle.Right;
             this.lblSizeChanger.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblSizeChanger.Location = new System.Drawing.Point(183, 0);
-            this.lblSizeChanger.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.lblSizeChanger.Location = new System.Drawing.Point(356, 0);
+            this.lblSizeChanger.Margin = new System.Windows.Forms.Padding(0);
             this.lblSizeChanger.Name = "lblSizeChanger";
-            this.lblSizeChanger.Size = new System.Drawing.Size(5, 484);
+            this.lblSizeChanger.Size = new System.Drawing.Size(5, 791);
             this.lblSizeChanger.TabIndex = 2;
             this.lblSizeChanger.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblSizeChanger_MouseDown);
             this.lblSizeChanger.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lblSizeChanger_MouseMove);
@@ -61,7 +62,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(188, 484);
+            this.ClientSize = new System.Drawing.Size(361, 791);
             this.ControlBox = false;
             this.Controls.Add(this.lblSizeChanger);
             this.Controls.Add(this.propertyGrid);
@@ -71,7 +72,7 @@
             this.MinimumSize = new System.Drawing.Size(100, 0);
             this.Name = "PropertyEditor";
             this.ResumeLayout(false);
-
+            this.propertyGrid.PropertyValueChanged += PropertyGrid_PropertyValueChanged;
         }
 
         #endregion
