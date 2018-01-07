@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System.ComponentModel;
 using static DataMaker.Tools;
 
@@ -11,17 +11,12 @@ namespace DataMaker.DataClasses
     }
 
     [TypeConverter(typeof(ExpandableObjectNoStringConverter))]
-    public class Pack
+    public class Pack: DataClass
     {
         [JsonProperty(PropertyName = "pack_format")]
         public int PackFormat { get; set; } = 1;
 
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; } = "";
-
-        public override string ToString()
-        {
-            return SerializeObjectToJson(this);
-        }
     }
 }
