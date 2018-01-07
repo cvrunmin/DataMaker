@@ -1,11 +1,13 @@
 ﻿using DataMaker.DataClasses;
 using DataMaker.Properties;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static DataMaker.Tools;
@@ -124,13 +126,52 @@ namespace DataMaker
         /// </summary>
         private bool isAddingFolder;
 
+        #region 单例模式
+        private static FileTree fileTree;
+
+        /// <summary>
+        /// 获取 <see cref="FileTree"/> 的唯一实例
+        /// </summary>
+        public static FileTree GetInstance()
+        {
+            if (fileTree == null)
+                fileTree = new FileTree();
+
+            return fileTree;
+        }
+        #endregion
+
         #region 定义函数
+        /// <summary>
+        /// 将指定数据类的内容保存到指定节点
+        /// </summary>
+        /// <param name="dataClass">指定数据类</param>
+        public void SaveFile(DataClass dataClass, TreeNode node)
+        {
+            var path = GetPathFromNode(node);
+            File.WriteAllText(path, dataClass.ToString());
+        }
+
+        /// <summary>
+        /// 将指定节点对应的文件反序列化为数据类
+        /// </summary>
+        /// <typeparam name="T">数据类类型</typeparam>
+        /// <param name="node">指定节点</param>
+        /// <returns></returns>
+        public T LoadFile<T>(TreeNode node) where T : DataClass
+        {
+            var path = GetPathFromNode(node);
+            var content = File.ReadAllText(path);
+
+            return JsonConvert.DeserializeObject<T>(content);
+        }
+
         /// <summary>
         /// 复制文件夹及文件夹下所有子文件夹和文件
         /// </summary>
         /// <param name="sourcePath">待复制的文件夹路径</param>
         /// <param name="destinationPath">目标路径</param>
-        public static void CopyDirectory(string sourcePath, string destinationPath)
+        private void CopyDirectory(string sourcePath, string destinationPath)
         {
             // 防止复制到自身
             if ((destinationPath + "\\").Contains(sourcePath + "\\"))
@@ -166,7 +207,8 @@ namespace DataMaker
         /// <returns>文件路径</returns>
         private string GetPathFromNode(TreeNode node)
         {
-            var result = node.FullPath;
+            // FIXME: 效率奇低，还tm可能出错
+            StringBuilder result = new StringBuilder(node.FullPath);
             result = result.Replace(Lang("global_datapack"), dataPackPath)
                 .Replace("/" + Lang("global_data"), "/data")
                 .Replace("/" + Lang("global_advancement"), "/advancements")
@@ -181,9 +223,9 @@ namespace DataMaker
                 .Replace("/" + Lang("global_settings"), "/pack.mcmeta")
                 .Replace("/", "\\");
             // 加后缀
-            result += ((Item)node).GetFileSuffix(false);
+            result.Append(((Item)node).GetFileSuffix(false));
 
-            return result;
+            return result.ToString();
         }
 
         /// <summary>
@@ -318,7 +360,7 @@ namespace DataMaker
         #endregion
 
         #region 启动时初始化
-        public FileTree()
+        private FileTree()
         {
             InitializeComponent();
 
@@ -380,7 +422,7 @@ namespace DataMaker
             Directory.CreateDirectory(dataPackPath + @"\data");
             if (!File.Exists(dataPackPath + @"\pack.mcmeta"))
             {
-                File.WriteAllText(dataPackPath + @"\pack.mcmeta", SerializeToJson(new PackMcmeta()));
+                File.WriteAllText(dataPackPath + @"\pack.mcmeta", SerializeObjectToJson(new PackMcmeta()));
             }
 
             // 补全命名空间下的目录

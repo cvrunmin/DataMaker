@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel;
+using static DataMaker.Tools;
 
 namespace DataMaker.DataClasses
 {
-    public class PackMcmeta: IDataClass
+    public class PackMcmeta: DataClass
     {
         [JsonProperty(PropertyName = "pack")]
         public Pack Pack { get; set; } = new Pack();
@@ -17,5 +18,10 @@ namespace DataMaker.DataClasses
 
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; } = "";
+
+        public override string ToString()
+        {
+            return SerializeObjectToJson(this);
+        }
     }
 }

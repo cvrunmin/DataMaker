@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Globalization;
 using static DataMaker.Tools;
 
 namespace DataMaker.DataClasses
 {
-    public interface IDataClass
+    public class DataClass
     {
+        public override string ToString() => SerializeObjectToJson(this);
     }
 
     /// <summary>
@@ -17,7 +17,7 @@ namespace DataMaker.DataClasses
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (sourceType == typeof(String))
+            if (sourceType == typeof(string))
                 return false;
             else
                 return base.CanConvertFrom(context, sourceType);
@@ -25,7 +25,7 @@ namespace DataMaker.DataClasses
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            if (destinationType == typeof(String))
+            if (destinationType == typeof(string))
                 return false;
             else
                 return base.CanConvertTo(context, destinationType);

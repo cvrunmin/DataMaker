@@ -6,9 +6,9 @@ using static DataMaker.Tools;
 
 namespace DataMaker.Forms
 {
-    public partial class RawEditor : Form
+    public partial class FunctionEditor : Form
     {
-        public RawEditor()
+        public FunctionEditor()
         {
             InitializeComponent();
             
@@ -87,7 +87,7 @@ namespace DataMaker.Forms
 
         public void UpdateContent()
         {
-            fctbJson.Text = SerializeToJson(MainForm.GetInstance().EditedDataClass);
+            fctbJson.Text = SerializeObjectToJson(MainForm.GetInstance().EditedDataClass);
         }
     }
 }

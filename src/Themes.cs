@@ -13,7 +13,7 @@ namespace DataMaker
         public static SolidBrush ForeBrush = new SolidBrush(ForeColor);
         public static Color HoverColor = Color.FromArgb(51, 51, 52);
         public static SolidBrush HoverBrush = new SolidBrush(HoverColor);
-        public static Font Font = new Font("微软雅黑", 10f, GraphicsUnit.Point);
+        public static Font Font = new Font("微软雅黑", 12f, GraphicsUnit.Point);
 
         public static void Initialize(ContainerControl container)
         {

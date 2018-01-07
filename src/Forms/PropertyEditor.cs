@@ -17,11 +17,6 @@ namespace DataMaker.Forms
             propertyGrid.SelectedObject = MainForm.GetInstance().EditedDataClass;
         }
 
-        public void UpdateContent()
-        {
-            propertyGrid.Refresh();
-        }
-
         private void SetTheme()
         {
             DarkTheme.Initialize(this);
@@ -53,10 +48,26 @@ namespace DataMaker.Forms
             isResizing = false;
         }
         #endregion
+        
+        #region 单例模式
+        private static PropertyEditor propertyEditor;
 
-        private void PropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        /// <summary>
+        /// 获取 <see cref="PropertyEditor"/> 的唯一实例
+        /// </summary>
+        public static PropertyEditor GetInstance()
         {
-            MainForm.GetInstance().RawEditor.UpdateContent();
+            if (propertyEditor == null)
+                propertyEditor = new PropertyEditor();
+
+            return propertyEditor;
+        }
+        #endregion
+
+        private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            MainForm.GetInstance().IsChanged = true;
+            propertyGrid.Refresh();
         }
     }
 }

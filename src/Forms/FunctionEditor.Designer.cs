@@ -1,6 +1,6 @@
 ﻿namespace DataMaker.Forms
 {
-    partial class RawEditor
+    partial class FunctionEditor
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RawEditor));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FunctionEditor));
             this.fctbJson = new FastColoredTextBoxNS.FastColoredTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.fctbJson)).BeginInit();
             this.SuspendLayout();

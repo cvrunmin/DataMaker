@@ -23,7 +23,7 @@
         #region Windows 窗体设计器生成的代码
 
         /// <summary>
-        /// 设计器支持所需的方法 - 不要修改
+        /// 设计器支持所需的方法 - 我就偏要修改
         /// 使用代码编辑器修改此方法的内容。
         /// </summary>
         private void InitializeComponent()
@@ -85,6 +85,7 @@
             // 
             this.smnuSaveFile.Name = "smnuSaveFile";
             resources.ApplyResources(this.smnuSaveFile, "smnuSaveFile");
+            this.smnuSaveFile.Click += new System.EventHandler(this.smnuSaveFile_Click);
             // 
             // toolStripSeparator2
             // 
@@ -144,7 +145,6 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuTop;
             this.Name = "MainForm";
-            this.Text = this.ProductName;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RespondShortcutKeys);

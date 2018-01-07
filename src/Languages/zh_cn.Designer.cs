@@ -223,24 +223,6 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
-        ///   查找类似 zip文件已成功导出到 {0} 的本地化字符串。
-        /// </summary>
-        internal static string formmain_msgbox_exportzipsuccessfully {
-            get {
-                return ResourceManager.GetString("formmain_msgbox_exportzipsuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 文件名 {0} 不合法，文件名只能包含小写字母、数字、下划线“_” 和 横线“-”。不建议使用拼音 的本地化字符串。
-        /// </summary>
-        internal static string formmain_msgbox_notalegalname {
-            get {
-                return ResourceManager.GetString("formmain_msgbox_notalegalname", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 进度 的本地化字符串。
         /// </summary>
         internal static string global_advancement {
@@ -345,6 +327,33 @@ namespace DataMaker.Languages {
         internal static string global_tag {
             get {
                 return ResourceManager.GetString("global_tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 zip文件已成功导出到 {0} 的本地化字符串。
+        /// </summary>
+        internal static string mainform_msgbox_exportzipsuccessfully {
+            get {
+                return ResourceManager.GetString("mainform_msgbox_exportzipsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 文件名 {0} 不合法，文件名只能包含小写字母、数字、下划线“_” 和 横线“-”。不建议使用拼音 的本地化字符串。
+        /// </summary>
+        internal static string mainform_msgbox_notalegalname {
+            get {
+                return ResourceManager.GetString("mainform_msgbox_notalegalname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 是否将你所作的更改保存到 {0} ？ 的本地化字符串。
+        /// </summary>
+        internal static string mainform_msgbox_savechangedornot {
+            get {
+                return ResourceManager.GetString("mainform_msgbox_savechangedornot", resourceCulture);
             }
         }
     }

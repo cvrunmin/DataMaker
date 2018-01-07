@@ -34,7 +34,7 @@ namespace DataMaker
         /// </summary>
         /// <param name="obj">指定对象</param>
         /// <returns></returns>
-        public static string SerializeToJson(object obj)
+        public static string SerializeObjectToJson(object obj)
         {
             return JsonConvert.SerializeObject(obj, Formatting.Indented);
         }
@@ -43,9 +43,9 @@ namespace DataMaker
         /// 根据指定节点获取数据类
         /// </summary>
         /// <param name="node">指定节点</param>
-        public static IDataClass GetDataClass(TreeNode node)
+        public static DataClass GetDataClass(TreeNode node)
         {
-            IDataClass result = null;
+            DataClass result = null;
 
             switch (((Item)node).Sort)
             {
@@ -62,40 +62,7 @@ namespace DataMaker
                 case Sort.Tag:
                     break;
                 case Sort.PackMcmeta:
-                    result = new PackMcmeta();
-                    break;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// 根据指定节点获取应用的编辑器
-        /// </summary>
-        /// <param name="node">指定节点</param>
-        public static Form GetEditor(TreeNode node)
-        {
-            Form result = null;
-
-            switch (((Item)node).Sort)
-            {
-                case Sort.Advancement:
-                    break;
-                case Sort.Function:
-                    break;
-                case Sort.LootTable:
-                    break;
-                case Sort.Recipe:
-                    break;
-                case Sort.Structure:
-                    break;
-                case Sort.Tag:
-                    break;
-                case Sort.PackMcmeta:
-                    result = new RawEditor()
-                    {
-                        MdiParent = MainForm.GetInstance()
-                    };
+                    result = FileTree.GetInstance().LoadFile<PackMcmeta>(node);
                     break;
             }
 
@@ -123,6 +90,34 @@ namespace DataMaker
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// 显示MessageBox
+        /// </summary>
+        /// <param name="text">显示的文字</param>
+        /// <param name="buttons">显示的按钮</param>
+        /// <param name="replacers">要替换文字中{0}{1}...的参数</param>
+        /// <returns></returns>
+        public static DialogResult ShowMessagebox(string text, 
+            MessageBoxButtons buttons = MessageBoxButtons.OK, params string[] replacers)
+        {
+            var showText = text;
+            for (int i = 0; i < replacers.Length; i++)
+                showText = showText.Replace($"{{{i}}}", replacers[i]);
+
+            return MessageBox.Show(MainForm.GetInstance(), showText, Application.ProductName, buttons);
+        }
+        
+        /// <summary>
+        /// 显示MessageBox
+        /// </summary>
+        /// <param name="text">显示的文字</param>
+        /// <param name="replacers">要替换文字中{0}{1}...的参数</param>
+        /// <returns></returns>
+        public static DialogResult ShowMessagebox(string text, params string[] replacers)
+        {
+            return ShowMessagebox(text, replacers: replacers);
         }
     }
 }

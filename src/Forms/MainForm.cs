@@ -61,88 +61,68 @@ namespace DataMaker
         }
         #endregion
 
-        private RawEditor rawEditor;
-        private FileTree fileTree;
-        private PropertyEditor propertyEditor;
-        private IDataClass editedDataClass;
+        private DataClass editedDataClass;
+        private TreeNode editedNode;
+        private bool isChanged;
+        private string title;
 
-        public RawEditor RawEditor
-        {
-            get
-            {
-                if (rawEditor == null)
-                {
-                    rawEditor = new RawEditor()
-                    {
-                        MdiParent = this
-                    };
-                }
-
-                return rawEditor;
-            }
-        }
-        public FileTree FileTree
-        {
-            get
-            {
-                if (fileTree == null)
-                {
-                    fileTree = new FileTree()
-                    {
-                        MdiParent = this
-                    };
-                }
-
-                return fileTree;
-            }
-        }
-        public PropertyEditor PropertyEditor
-        {
-            get
-            {
-                if (propertyEditor == null)
-                {
-                    propertyEditor = new PropertyEditor()
-                    {
-                        MdiParent = this
-                    };
-                }
-
-                return propertyEditor;
-            }
-        }
-        public IDataClass EditedDataClass
+        public DataClass EditedDataClass
         {
             get => editedDataClass;
             set
             {
                 editedDataClass = value;
-                RawEditor.UpdateContent();
-                PropertyEditor.SelectObject();
+                PropertyEditor.GetInstance().SelectObject();
             }
-        } 
+        }
+        public TreeNode EditedNode
+        {
+            get => editedNode;
+            set
+            {
+                editedNode = value;
+                title = EditedNode.Text + " - " + Application.CompanyName + " " + Application.ProductName;
+            }
+        }
+        public bool IsChanged
+        {
+            get => isChanged;
+            set
+            {
+                isChanged = value;
+                if (IsChanged) Text = title + "*";
+                else Text = title;
+            }
+        }
 
         private MainForm()
         {
             InitializeComponent();
             SetTheme();
 
+            // 设置标题
+            title = Application.CompanyName + " " + Application.ProductName;
+            IsChanged = false;
+
             // 显示文件树
-            FileTree.Show();
-            FileTree.Resize += Form_Resize;
+            FileTree.GetInstance().MdiParent = this;
+            FileTree.GetInstance().Show();
+            FileTree.GetInstance().Resize += Form_Resize;
 
             // 显示属性区
-            PropertyEditor.Show();
-            PropertyEditor.Resize += Form_Resize;
-
-            // 显示原文本编辑器
-            RawEditor.Show();
+            PropertyEditor.GetInstance().MdiParent = this;
+            PropertyEditor.GetInstance().Show();
+            PropertyEditor.GetInstance().Resize += Form_Resize;
 
             LayoutForms();
         }
 
+        #region 单例模式
         private static MainForm mainForm;
 
+        /// <summary>
+        /// 获取 <see cref="MainForm"/> 的唯一实例
+        /// </summary>
         public static MainForm GetInstance()
         {
             if (mainForm == null)
@@ -150,9 +130,33 @@ namespace DataMaker
 
             return mainForm;
         }
+        #endregion
 
         public void EditNode(TreeNode node)
         {
+            if (IsChanged)
+            {
+                var result = ShowMessagebox(
+                    Lang("mainform_msgbox_savechangedornot"), 
+                    MessageBoxButtons.YesNoCancel,
+                    node.Text);
+
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        // 保存
+                        SaveFile();
+                        break;
+                    case DialogResult.Cancel:
+                        // 取消读取
+                        return;
+                    default:
+                        break;
+                }
+            }
+
+            // 关闭原有，编辑新的
+            EditedNode = node;
             EditedDataClass = GetDataClass(node);
         }
 
@@ -160,7 +164,7 @@ namespace DataMaker
         private void SetSmnus()
         {
             smnuExportZip.Enabled = true;
-            if (FileTree.DatapackPath == null || FileTree.DatapackPath == "")
+            if (FileTree.GetInstance().DatapackPath == null || FileTree.GetInstance().DatapackPath == "")
                 smnuExportZip.Enabled = false;
         }
 
@@ -196,7 +200,7 @@ namespace DataMaker
                         SelectDatapackFolder();
                         break;
                     case Keys.S:
-
+                        SaveFile();
                         break;
                     default:
                         break;
@@ -218,7 +222,7 @@ namespace DataMaker
         {
             var result = folderBrowser.ShowDialog();
             if (result != DialogResult.Cancel)
-                FileTree.DatapackPath = folderBrowser.SelectedPath;
+                FileTree.GetInstance().DatapackPath = folderBrowser.SelectedPath;
         }
 
         private void ExportZip()
@@ -236,8 +240,9 @@ namespace DataMaker
                     if (!IsNameLegal(Path.GetFileNameWithoutExtension(name)))
                     {
                         // 数据包名不合法
-                        MessageBox.Show(Lang("formmain_msgbox_notalegalname")
-                            .Replace("{0}", Path.GetFileNameWithoutExtension(name)));
+                        ShowMessagebox(
+                            Lang("mainform_msgbox_notalegalname"), 
+                            Path.GetFileNameWithoutExtension(name));
 
                         goto selectFile;
                     }
@@ -247,25 +252,30 @@ namespace DataMaker
                         File.Delete(name);
 
                     // 开始压缩
-                    ZipFile.CreateFromDirectory(FileTree.DatapackPath, name);
+                    ZipFile.CreateFromDirectory(FileTree.GetInstance().DatapackPath, name);
 
                     // 通知
-                    MessageBox.Show(Lang("formmain_msgbox_exportzipsuccessfully").Replace("{0}", name));
+                    ShowMessagebox(
+                        Lang("mainform_msgbox_exportzipsuccessfully"), 
+                        name);
                 }
             }
         }
 
         private void LayoutForms()
         {
-            FileTree.Left = ClientSize.Width - FileTree.ClientSize.Width;
-            FileTree.Top = PropertyEditor.Top = RawEditor.Top = 0;
+            FileTree.GetInstance().Left = ClientSize.Width - FileTree.GetInstance().ClientSize.Width;
+            FileTree.GetInstance().Top = PropertyEditor.GetInstance().Top = 0;
 
-            FileTree.Height = PropertyEditor.Height = RawEditor.Height = ClientSize.Height - menuTop.Height - 5;
+            FileTree.GetInstance().Height = PropertyEditor.GetInstance().Height = ClientSize.Height - menuTop.Height - 5;
 
-            PropertyEditor.Left = 0;
-            RawEditor.Left = PropertyEditor.Width;
+            PropertyEditor.GetInstance().Left = 0;
+        }
 
-            RawEditor.Width = ClientSize.Width - FileTree.Width - PropertyEditor.Width;
+        private void SaveFile()
+        {
+            FileTree.GetInstance().SaveFile(EditedDataClass, EditedNode);
+            IsChanged = false;
         }
 
         #region 响应事件
@@ -280,5 +290,10 @@ namespace DataMaker
         #endregion
 
         #endregion
+
+        private void smnuSaveFile_Click(object sender, EventArgs e)
+        {
+            SaveFile();
+        }
     }
 }
