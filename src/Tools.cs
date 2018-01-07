@@ -3,6 +3,7 @@ using DataMaker.Forms;
 using DataMaker.Properties;
 using Newtonsoft.Json;
 using System;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static DataMaker.FileTree;
@@ -33,7 +34,10 @@ namespace DataMaker
         /// </summary>
         /// <param name="obj">指定对象</param>
         /// <returns></returns>
-        public static string SerializeToJson(object obj) => JsonConvert.SerializeObject(obj, Formatting.Indented);
+        public static string SerializeToJson(object obj)
+        {
+            return JsonConvert.SerializeObject(obj, Formatting.Indented);
+        }
 
         /// <summary>
         /// 根据指定节点获取数据类
@@ -105,7 +109,7 @@ namespace DataMaker
         public static bool IsNameLegal(string str)
         {
             // 匹配包含非法字符的字符串
-            var pattern = @"[^(a-z0-9\-\._)]";
+            var pattern = @"[^(a-z0-9\-_)]";
 
             if (Regex.IsMatch(str, pattern))
             {

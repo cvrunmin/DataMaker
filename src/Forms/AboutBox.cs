@@ -9,7 +9,7 @@ namespace DataMaker
         public AboutBox()
         {
             InitializeComponent();
-            Theme.Initialize(this);
+            DarkTheme.Initialize(this);
 
             Text = String.Format("关于 {0}", AssemblyTitle);
             labelProductName.Text = AssemblyProduct;

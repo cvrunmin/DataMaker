@@ -322,8 +322,8 @@ namespace DataMaker
         {
             InitializeComponent();
 
-            Theme.Initialize(this);
-            lblSizeChanger.BackColor = Theme.HoverColor;
+            DarkTheme.Initialize(this);
+            lblSizeChanger.BackColor = DarkTheme.HoverColor;
 
             LoadImages();
         }

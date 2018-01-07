@@ -11,8 +11,8 @@ namespace DataMaker.BetterControls
         {
             base.OnRenderSeparator(e);
 
-            var back = new SolidBrush(Theme.BackColor);
-            var line = new SolidBrush(Theme.ForeColor);
+            var back = new SolidBrush(DarkTheme.BackColor);
+            var line = new SolidBrush(DarkTheme.ForeColor);
             var rectBack = new Rectangle(0, 0, e.Item.Width, e.Item.Height);
             var rectLine = new Rectangle(32, 3, e.Item.Width - 32, 1);
             e.Graphics.FillRectangle(back, rectBack);
@@ -24,11 +24,11 @@ namespace DataMaker.BetterControls
             var rc = new Rectangle(Point.Empty, e.Item.Size);
             if (e.Item.Selected)
             {
-                e.Graphics.FillRectangle(new SolidBrush(Theme.HoverColor), rc);
+                e.Graphics.FillRectangle(new SolidBrush(DarkTheme.HoverColor), rc);
             }
             else
             {
-                e.Graphics.FillRectangle(new SolidBrush(Theme.BackColor), rc);
+                e.Graphics.FillRectangle(new SolidBrush(DarkTheme.BackColor), rc);
             }
         }
 

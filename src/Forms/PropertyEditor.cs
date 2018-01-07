@@ -24,8 +24,8 @@ namespace DataMaker.Forms
 
         private void SetTheme()
         {
-            Theme.Initialize(this);
-            lblSizeChanger.BackColor = Theme.HoverColor;
+            DarkTheme.Initialize(this);
+            lblSizeChanger.BackColor = DarkTheme.HoverColor;
         }
 
         #region 修改窗体大小

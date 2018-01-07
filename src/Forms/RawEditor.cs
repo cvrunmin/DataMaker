@@ -17,16 +17,16 @@ namespace DataMaker.Forms
 
         private void SetTheme()
         {
-            Theme.Initialize(this);
+            DarkTheme.Initialize(this);
 
-            fctbJson.BackColor = Theme.PressedColor;
-            fctbJson.ServiceColors.CollapseMarkerBackColor = Theme.BackColor;
-            fctbJson.ServiceColors.CollapseMarkerBorderColor = Theme.ForeColor;
-            fctbJson.ServiceColors.CollapseMarkerForeColor = Theme.ForeColor;
-            fctbJson.ServiceColors.ExpandMarkerBackColor = Theme.BackColor;
-            fctbJson.ServiceColors.ExpandMarkerBorderColor = Theme.ForeColor;
-            fctbJson.ServiceColors.ExpandMarkerBorderColor = Theme.ForeColor;
-            fctbJson.IndentBackColor = Theme.BackColor;
+            fctbJson.BackColor = DarkTheme.PressedColor;
+            fctbJson.ServiceColors.CollapseMarkerBackColor = DarkTheme.BackColor;
+            fctbJson.ServiceColors.CollapseMarkerBorderColor = DarkTheme.ForeColor;
+            fctbJson.ServiceColors.CollapseMarkerForeColor = DarkTheme.ForeColor;
+            fctbJson.ServiceColors.ExpandMarkerBackColor = DarkTheme.BackColor;
+            fctbJson.ServiceColors.ExpandMarkerBorderColor = DarkTheme.ForeColor;
+            fctbJson.ServiceColors.ExpandMarkerBorderColor = DarkTheme.ForeColor;
+            fctbJson.IndentBackColor = DarkTheme.BackColor;
 
             fctbJson.ChangeFontSize(6);
         }

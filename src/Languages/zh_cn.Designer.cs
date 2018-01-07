@@ -232,7 +232,7 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
-        ///   查找类似 文件名 {0} 不合法，文件名只能包含小写字母、数字、点“.”、下划线“_” 和 横线“-”。不建议使用拼音 的本地化字符串。
+        ///   查找类似 文件名 {0} 不合法，文件名只能包含小写字母、数字、下划线“_” 和 横线“-”。不建议使用拼音 的本地化字符串。
         /// </summary>
         internal static string formmain_msgbox_notalegalname {
             get {
