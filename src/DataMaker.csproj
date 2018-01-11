@@ -82,7 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BetterControls\BetterMenuStripRenderer.cs" />
-    <Compile Include="DataClasses\IDataClass.cs" />
+    <Compile Include="BetterControls\LangDescriptionAttribute.cs" />
+    <Compile Include="BetterControls\LangDisplayNameAttribute.cs" />
+    <Compile Include="DataClasses\DataClass.cs" />
     <Compile Include="DataClasses\PackMcmeta.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>

@@ -1,9 +1,7 @@
 ﻿using DataMaker.DataClasses;
-using DataMaker.Forms;
 using DataMaker.Properties;
 using Newtonsoft.Json;
 using System;
-using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static DataMaker.FileTree;
@@ -62,7 +60,7 @@ namespace DataMaker
                 case Sort.Tag:
                     break;
                 case Sort.PackMcmeta:
-                    result = FileTree.GetInstance().LoadFile<PackMcmeta>(node);
+                    result = GetInstance().LoadFile<PackMcmeta>(node);
                     break;
             }
 

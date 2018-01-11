@@ -61,6 +61,24 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
+        ///   查找类似 数据包的格式，当前版本下可以是任何数字 的本地化字符串。
+        /// </summary>
+        internal static string description_packmcmeta_packformat {
+            get {
+                return ResourceManager.GetString("description_packmcmeta_packformat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 数据包格式 的本地化字符串。
+        /// </summary>
+        internal static string displayname_packmcmeta_packformat {
+            get {
+                return ResourceManager.GetString("displayname_packmcmeta_packformat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 添加... 的本地化字符串。
         /// </summary>
         internal static string filetree_add {

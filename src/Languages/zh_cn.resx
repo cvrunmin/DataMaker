@@ -216,4 +216,10 @@
   <data name="mainform_msgbox_savechangedornot" xml:space="preserve">
     <value>是否将你所作的更改保存到 {0} ？</value>
   </data>
+  <data name="displayname_packmcmeta_packformat" xml:space="preserve">
+    <value>数据包格式</value>
+  </data>
+  <data name="description_packmcmeta_packformat" xml:space="preserve">
+    <value>数据包的格式，当前版本下可以是任何数字</value>
+  </data>
 </root>
