@@ -1,8 +1,8 @@
 # DataMaker
 [![GitHub top language](https://img.shields.io/github/languages/top/spgoding/datamaker.svg?style=flat-square)]()
 [![GitHub last commit](https://img.shields.io/github/last-commit/spgoding/datamaker.svg?style=flat-square)]()
-[![Require system](https://img.shields.io/badge/require%20system-windows-orange.svg)]()
-[![Require framework](https://img.shields.io/badge/require%20.net%20framework-4.5%20or%20later-red.svg)]()
+[![Require system](https://img.shields.io/badge/require%20system-windows-orange.svg?style=flat-square)]()
+[![Require framework](https://img.shields.io/badge/require%20.net%20framework-4.5%20or%20later-red.svg?style=flat-square)]()
 ---
 
 ## Goal and Philosophy
