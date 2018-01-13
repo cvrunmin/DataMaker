@@ -206,6 +206,17 @@ namespace DataMaker
                         break;
                 }
             }
+            else
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.F1:
+                        ShowAboutBox();
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         private void ShowAboutBox()
