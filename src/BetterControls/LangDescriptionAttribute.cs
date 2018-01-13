@@ -8,6 +8,6 @@ namespace DataMaker.BetterControls
         public LangDescriptionAttribute(string displayName) 
             : base(displayName) { }
 
-        public override string Description => Lang(base.Description);
+        public override string Description => Lang("description_" + base.Description);
     }
 }

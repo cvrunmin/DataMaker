@@ -4,6 +4,7 @@ using static DataMaker.Tools;
 
 namespace DataMaker.DataClasses
 {
+    [TypeConverter(typeof(ExpandableObjectNoStringConverter))]
     public class DataClass
     {
         public override string ToString() => SerializeObjectToJson(this);

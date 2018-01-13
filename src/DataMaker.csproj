@@ -86,6 +86,7 @@
     <Compile Include="BetterControls\LangDisplayNameAttribute.cs" />
     <Compile Include="DataClasses\DataClass.cs" />
     <Compile Include="DataClasses\PackMcmeta.cs" />
+    <Compile Include="DataClasses\Tag.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -206,6 +207,7 @@
     <Content Include="Resources\FileTree\FunctionTags.png" />
     <Content Include="Resources\Icon.png" />
     <Content Include="Resources\FileTree\ItemTags.png" />
+    <None Include="Resources\TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

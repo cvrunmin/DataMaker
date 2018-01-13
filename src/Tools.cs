@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using static DataMaker.FileTree;
 
 namespace DataMaker
 {
@@ -35,36 +34,6 @@ namespace DataMaker
         public static string SerializeObjectToJson(object obj)
         {
             return JsonConvert.SerializeObject(obj, Formatting.Indented);
-        }
-
-        /// <summary>
-        /// 根据指定节点获取数据类
-        /// </summary>
-        /// <param name="node">指定节点</param>
-        public static DataClass GetDataClass(TreeNode node)
-        {
-            DataClass result = null;
-
-            switch (((Item)node).Sort)
-            {
-                case Sort.Advancement:
-                    break;
-                case Sort.Function:
-                    break;
-                case Sort.LootTable:
-                    break;
-                case Sort.Recipe:
-                    break;
-                case Sort.Structure:
-                    break;
-                case Sort.Tag:
-                    break;
-                case Sort.PackMcmeta:
-                    result = GetInstance().LoadFile<PackMcmeta>(node);
-                    break;
-            }
-
-            return result;
         }
 
         /// <summary>

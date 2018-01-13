@@ -61,20 +61,110 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
-        ///   查找类似 数据包的格式，当前版本下可以是任何数字 的本地化字符串。
+        ///   查找类似  的本地化字符串。
         /// </summary>
-        internal static string description_packmcmeta_packformat {
+        internal static string description_ {
             get {
-                return ResourceManager.GetString("description_packmcmeta_packformat", resourceCulture);
+                return ResourceManager.GetString("description_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   查找类似 数据包格式 的本地化字符串。
+        ///   查找类似 一段描述，此字段可以为空。在数据包列表下，光标移动到对应的数据包时会显示描述。 的本地化字符串。
         /// </summary>
-        internal static string displayname_packmcmeta_packformat {
+        internal static string description_pack_description {
             get {
-                return ResourceManager.GetString("displayname_packmcmeta_packformat", resourceCulture);
+                return ResourceManager.GetString("description_pack_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 数据包版本，可以是任何数字。 的本地化字符串。
+        /// </summary>
+        internal static string description_pack_packformat {
+            get {
+                return ResourceManager.GetString("description_pack_packformat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 存放数据包信息。展开进行编辑。 的本地化字符串。
+        /// </summary>
+        internal static string description_packmcmeta_pack {
+            get {
+                return ResourceManager.GetString("description_packmcmeta_pack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 该标签是否要覆盖掉低优先级的数据包中的相同标签。设置为“否”将会把内容合并到该标签，而不是覆盖。 的本地化字符串。
+        /// </summary>
+        internal static string description_tag_replace {
+            get {
+                return ResourceManager.GetString("description_tag_replace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 一堆物品，方块或函数。可以放入其他同类型的标签。 的本地化字符串。
+        /// </summary>
+        internal static string description_tag_values {
+            get {
+                return ResourceManager.GetString("description_tag_values", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似  的本地化字符串。
+        /// </summary>
+        internal static string displayname_ {
+            get {
+                return ResourceManager.GetString("displayname_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 描述 的本地化字符串。
+        /// </summary>
+        internal static string displayname_pack_description {
+            get {
+                return ResourceManager.GetString("displayname_pack_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 版本 的本地化字符串。
+        /// </summary>
+        internal static string displayname_pack_packformat {
+            get {
+                return ResourceManager.GetString("displayname_pack_packformat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 信息 的本地化字符串。
+        /// </summary>
+        internal static string displayname_packmcmeta_pack {
+            get {
+                return ResourceManager.GetString("displayname_packmcmeta_pack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 覆盖 的本地化字符串。
+        /// </summary>
+        internal static string displayname_tag_replace {
+            get {
+                return ResourceManager.GetString("displayname_tag_replace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 值 的本地化字符串。
+        /// </summary>
+        internal static string displayname_tag_values {
+            get {
+                return ResourceManager.GetString("displayname_tag_values", resourceCulture);
             }
         }
         

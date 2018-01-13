@@ -139,7 +139,7 @@ namespace DataMaker
                 var result = ShowMessagebox(
                     Lang("mainform_msgbox_savechangedornot"), 
                     MessageBoxButtons.YesNoCancel,
-                    node.Text);
+                    EditedNode.Text);
 
                 switch (result)
                 {
@@ -157,7 +157,7 @@ namespace DataMaker
 
             // 关闭原有，编辑新的
             EditedNode = node;
-            EditedDataClass = GetDataClass(node);
+            EditedDataClass = FileTree.GetDataClass(node);
         }
 
         #region 事件处理
@@ -274,7 +274,7 @@ namespace DataMaker
 
         private void SaveFile()
         {
-            FileTree.GetInstance().SaveFile(EditedDataClass, EditedNode);
+            FileTree.SaveFile(EditedDataClass, EditedNode);
             IsChanged = false;
         }
 

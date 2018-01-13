@@ -13,6 +13,87 @@ using static DataMaker.Tools;
 
 namespace DataMaker
 {
+    public enum ItemType { DataPack, Data, Namespace, Root, Directory, File, Unknown }
+
+    public enum ItemSort { Advancement, Function, LootTable, Recipe, Structure, Tag, BlockTag, PackMcmeta, None }
+
+    /// <summary>
+    /// 代表一个项目(文件/文件夹)
+    /// </summary>
+    public struct Item
+    {
+        public ItemType Type { get; set; }
+        public ItemSort Sort { get; set; }
+
+        public Item(ItemType type, ItemSort sort)
+        {
+            Type = type;
+            Sort = sort;
+        }
+
+        public override string ToString()
+        {
+            return this;
+        }
+
+        /// <summary>
+        ///  获取文件后缀名
+        /// </summary>
+        /// <param name="canFolder">指定是否可以是一个文件夹</param>
+        public string GetFileSuffix(bool checkSubFile)
+        {
+            var suffix = "";
+
+            if (!checkSubFile && Type != ItemType.File)
+            {
+                return suffix;
+            }
+
+            switch (Sort)
+            {
+                case ItemSort.Advancement:
+                case ItemSort.LootTable:
+                case ItemSort.Recipe:
+                case ItemSort.Tag:
+                    suffix = ".json";
+                    break;
+                case ItemSort.Function:
+                    suffix = ".mcfunction";
+                    break;
+                case ItemSort.Structure:
+                    suffix = ".nbt";
+                    break;
+            }
+
+            return suffix;
+        }
+
+        public static implicit operator string(Item item)
+        {
+            return $"{item.Type}|{item.Sort}";
+        }
+
+        public static explicit operator Item(TreeNode node)
+        {
+            if (node.Tag == null)
+            {
+                return new Item(ItemType.Unknown, ItemSort.None);
+            }
+            var type = (ItemType)Enum.Parse(typeof(ItemType), node.Tag.ToString().Split('|')[0]);
+            var sort = (ItemSort)Enum.Parse(typeof(ItemSort), node.Tag.ToString().Split('|')[1]);
+
+            return new Item(type, sort);
+        }
+
+        public static explicit operator Item(string str)
+        {
+            var type = (ItemType)Enum.Parse(typeof(ItemType), str.Split('|')[0]);
+            var sort = (ItemSort)Enum.Parse(typeof(ItemSort), str.Split('|')[1]);
+
+            return new Item(type, sort);
+        }
+    }
+
     public partial class FileTree : Form
     {
         /// <summary>
@@ -39,91 +120,13 @@ namespace DataMaker
                 LoadFileTree(DatapackPath);
             }
         }
-
-        public enum Type { DataPack, Data, Namespace, Root, Directory, File, Unknown }
-
-        public enum Sort { Advancement, Function, LootTable, Recipe, Structure, Tag, PackMcmeta, None }
-
-        public struct Item
-        {
-            public Type Type { get; set; }
-            public Sort Sort { get; set; }
-
-            public Item(Type type, Sort sort)
-            {
-                Type = type;
-                Sort = sort;
-            }
-
-            public override string ToString()
-            {
-                return this;
-            }
-
-            /// <summary>
-            ///  获取文件后缀名
-            /// </summary>
-            /// <param name="canFolder">指定是否可以是一个文件夹</param>
-            public string GetFileSuffix(bool checkSubFile)
-            {
-                var suffix = "";
-
-                if (!checkSubFile && Type != Type.File)
-                {
-                    return suffix;
-                }
-
-                switch (Sort)
-                {
-                    case Sort.Advancement:
-                    case Sort.LootTable:
-                    case Sort.Recipe:
-                    case Sort.Tag:
-                        suffix = ".json";
-                        break;
-                    case Sort.Function:
-                        suffix = ".mcfunction";
-                        break;
-                    case Sort.Structure:
-                        suffix = ".nbt";
-                        break;
-                }
-
-                return suffix;
-            }
-
-            public static implicit operator string(Item item)
-            {
-                return $"{item.Type}|{item.Sort}";
-            }
-
-            public static explicit operator Item(TreeNode node)
-            {
-                if (node.Tag == null)
-                {
-                    return new Item(Type.Unknown, Sort.None);
-                }
-                var type = (Type)Enum.Parse(typeof(Type), node.Tag.ToString().Split('|')[0]);
-                var sort = (Sort)Enum.Parse(typeof(Sort), node.Tag.ToString().Split('|')[1]);
-
-                return new Item(type, sort);
-            }
-
-            public static explicit operator Item(string str)
-            {
-                var type = (Type)Enum.Parse(typeof(Type), str.Split('|')[0]);
-                var sort = (Sort)Enum.Parse(typeof(Sort), str.Split('|')[1]);
-
-                return new Item(type, sort);
-            }
-        }
-
-        private string dataPackPath;
+        
+        private static string dataPackPath;
 
         /// <summary>
         /// 是否正在新建文件夹
         /// </summary>
-        private bool isAddingFolder;
+        private static bool isAddingFolder;
 
         #region 单例模式
         private static FileTree fileTree;
@@ -141,11 +144,43 @@ namespace DataMaker
         #endregion
 
         #region 定义函数
+
+        /// <summary>
+        /// 根据指定节点获取数据类
+        /// </summary>
+        /// <param name="node">指定节点</param>
+        public static DataClass GetDataClass(TreeNode node)
+        {
+            DataClass result = null;
+
+            switch (((Item)node).Sort)
+            {
+                case ItemSort.Advancement:
+                    break;
+                case ItemSort.Function:
+                    break;
+                case ItemSort.LootTable:
+                    break;
+                case ItemSort.Recipe:
+                    break;
+                case ItemSort.Structure:
+                    break;
+                case ItemSort.Tag:
+                    result = LoadFile<Tag>(node);
+                    break;
+                case ItemSort.PackMcmeta:
+                    result = LoadFile<PackMcmeta>(node);
+                    break;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// 将指定数据类的内容保存到指定节点
         /// </summary>
         /// <param name="dataClass">指定数据类</param>
-        public void SaveFile(DataClass dataClass, TreeNode node)
+        public static void SaveFile(DataClass dataClass, TreeNode node)
         {
             var path = GetPathFromNode(node);
             File.WriteAllText(path, dataClass.ToString());
@@ -157,7 +192,7 @@ namespace DataMaker
         /// <typeparam name="T">数据类类型</typeparam>
         /// <param name="node">指定节点</param>
         /// <returns></returns>
-        public T LoadFile<T>(TreeNode node) where T : DataClass
+        private static T LoadFile<T>(TreeNode node) where T : DataClass
         {
             var path = GetPathFromNode(node);
             var content = File.ReadAllText(path);
@@ -170,7 +205,7 @@ namespace DataMaker
         /// </summary>
         /// <param name="sourcePath">待复制的文件夹路径</param>
         /// <param name="destinationPath">目标路径</param>
-        private void CopyDirectory(string sourcePath, string destinationPath)
+        private static void CopyDirectory(string sourcePath, string destinationPath)
         {
             // 防止复制到自身
             if ((destinationPath + "\\").Contains(sourcePath + "\\"))
@@ -204,7 +239,7 @@ namespace DataMaker
         /// </summary>
         /// <param name="node">指定节点</param>
         /// <returns>文件路径</returns>
-        private string GetPathFromNode(TreeNode node)
+        private static string GetPathFromNode(TreeNode node)
         {
             // FIXME: 效率奇低，还tm可能出错
             StringBuilder result = new StringBuilder(node.FullPath);
@@ -232,7 +267,7 @@ namespace DataMaker
         /// </summary>
         /// <param name="files">文件路径数组</param>
         /// <param name="cut">是否剪切</param>
-        private void SetClipboardList(string[] files, bool cut)
+        private static void SetClipboardList(string[] files, bool cut)
         {
             if (files != null)
             {
@@ -252,7 +287,7 @@ namespace DataMaker
         /// 获取剪贴板中的文件路径数组
         /// </summary>
         /// <returns>剪切板中文件路径数组</returns>
-        private string[] GetClipboardList(out bool isCut)
+        private static string[] GetClipboardList(out bool isCut)
         {
             // 获取剪贴板存储对象
             IDataObject data = Clipboard.GetDataObject();
@@ -302,7 +337,7 @@ namespace DataMaker
         /// <summary>
         /// 根据目录和文件名获取可用的文件名
         /// </summary>
-        private string GetAvailableFileName(string path, string suffix)
+        private static string GetAvailableFileName(string path, string suffix)
         {
             var file = path.Remove(0, path.LastIndexOf("\\") + 1);
             var dir = path.Remove(path.Length - file.Length - 1, path.Length - path.LastIndexOf("\\"));
@@ -318,7 +353,7 @@ namespace DataMaker
         /// <summary>
         /// 根据文件路径获取可用的文件名
         /// </summary>
-        private string GetAvailableFileName(string pathDir)
+        private static string GetAvailableFileName(string pathDir)
         {
             // 根据完整路径取得后缀和路径
             var suffix = pathDir.Remove(0, pathDir.LastIndexOf("."));
@@ -330,7 +365,7 @@ namespace DataMaker
         /// <summary>
         /// 根据目录和目录名获取可用的目录名
         /// </summary>
-        private string GetAvailableDirName(string path)
+        private static string GetAvailableDirName(string path)
         {
             var subDir = path.Remove(0, path.LastIndexOf("\\") + 1);
             var dir = path.Remove(path.Length - subDir.Length - 1, path.Length - path.LastIndexOf("\\"));
@@ -346,13 +381,13 @@ namespace DataMaker
         /// <summary>
         /// 获取被选中的节点对应的Item
         /// </summary>
-        private Item SelectedItem { get => (Item)tvwFiles.SelectedNode; }
+        private static Item SelectedItem { get => (Item)GetInstance().tvwFiles.SelectedNode; }
 
         /// <summary>
         /// 获取指定节点对应的路径是否是文件
         /// </summary>
         /// <param name="node">指定节点</param>
-        private bool IsFile(TreeNode node)
+        private static bool IsFile(TreeNode node)
         {
             return File.Exists(GetPathFromNode(node));
         }
@@ -478,7 +513,7 @@ namespace DataMaker
             {
                 // 是文件
 
-                node.Tag = new Item(Type.File, ((Item)node.Parent).Sort);
+                node.Tag = new Item(ItemType.File, ((Item)node.Parent).Sort);
 
                 // 设置显示文字和图片
                 var suffix = ((Item)node).GetFileSuffix(false);
@@ -505,20 +540,20 @@ namespace DataMaker
                     else if (node.Level == 1 && node.Text == "pack.mcmeta")
                     {
                         node.ImageKey = node.SelectedImageKey = "Setting";
-                        node.Tag = new Item(Type.File, Sort.PackMcmeta);
+                        node.Tag = new Item(ItemType.File, ItemSort.PackMcmeta);
                         node.Text = Lang("global_settings");
                     }
                     else
                     {
                         node.ImageKey = node.SelectedImageKey = "Misc";
-                        node.Tag = new Item(Type.Unknown, Sort.None);
+                        node.Tag = new Item(ItemType.Unknown, ItemSort.None);
                     }
                 }
                 else
                 {
                     // 文件类型不正确
                     node.ImageKey = node.SelectedImageKey = "Misc";
-                    node.Tag = new Item(Type.Unknown, Sort.None);
+                    node.Tag = new Item(ItemType.Unknown, ItemSort.None);
                 }
             }
             else
@@ -531,7 +566,7 @@ namespace DataMaker
                         // 根目录
                         node.ImageKey = node.SelectedImageKey = "DataPack";
                         node.Text = Lang("global_datapack");
-                        node.Tag = new Item(Type.DataPack, Sort.None);
+                        node.Tag = new Item(ItemType.DataPack, ItemSort.None);
                         //node.Expand();
                         break;
 
@@ -541,20 +576,20 @@ namespace DataMaker
                         {
                             node.ImageKey = node.SelectedImageKey = "Directory";
                             node.Text = Lang("global_data");
-                            node.Tag = new Item(Type.Data, Sort.None);
+                            node.Tag = new Item(ItemType.Data, ItemSort.None);
                             //node.Expand();
                         }
                         else
                         {
                             node.ImageKey = node.SelectedImageKey = "Misc";
-                            node.Tag = new Item(Type.Unknown, Sort.None);
+                            node.Tag = new Item(ItemType.Unknown, ItemSort.None);
                         }
                         break;
 
                     case 2:
                         // 命名空间
                         node.ImageKey = node.SelectedImageKey = "Namespace";
-                        node.Tag = new Item(Type.Namespace, Sort.None);
+                        node.Tag = new Item(ItemType.Namespace, ItemSort.None);
                         //node.Expand();
                         break;
 
@@ -565,52 +600,52 @@ namespace DataMaker
                             case "advancements":
                                 node.ImageKey = node.SelectedImageKey = "Advancements";
                                 node.Text = Lang("global_advancement");
-                                node.Tag = new Item(Type.Root, Sort.Advancement);
+                                node.Tag = new Item(ItemType.Root, ItemSort.Advancement);
                                 //node.Expand();
                                 break;
                             case "functions":
                                 node.ImageKey = node.SelectedImageKey = "Functions";
                                 node.Text = Lang("global_function");
-                                node.Tag = new Item(Type.Root, Sort.Function);
+                                node.Tag = new Item(ItemType.Root, ItemSort.Function);
                                 //node.Expand();
                                 break;
                             case "loot_tables":
                                 node.ImageKey = node.SelectedImageKey = "LootTables";
                                 node.Text = Lang("global_loottable");
-                                node.Tag = new Item(Type.Root, Sort.LootTable);
+                                node.Tag = new Item(ItemType.Root, ItemSort.LootTable);
                                 //node.Expand();
                                 break;
                             case "structures":
                                 node.ImageKey = node.SelectedImageKey = "Structures";
                                 node.Text = Lang("global_structure");
-                                node.Tag = new Item(Type.Root, Sort.Structure);
+                                node.Tag = new Item(ItemType.Root, ItemSort.Structure);
                                 //node.Expand();
                                 break;
                             case "recipes":
                                 node.ImageKey = node.SelectedImageKey = "Recipes";
                                 node.Text = Lang("global_recipe");
-                                node.Tag = new Item(Type.Root, Sort.Recipe);
+                                node.Tag = new Item(ItemType.Root, ItemSort.Recipe);
                                 //node.Expand();
                                 break;
                             case "tags":
                                 node.ImageKey = node.SelectedImageKey = "Tags";
                                 node.Text = Lang("global_tag");
-                                node.Tag = new Item(Type.Root, Sort.Tag);
+                                node.Tag = new Item(ItemType.Root, ItemSort.Tag);
                                 //node.Expand();
                                 break;
                             default:
                                 node.ImageKey = node.SelectedImageKey = "Misc";
-                                node.Tag = new Item(Type.Unknown, Sort.None);
+                                node.Tag = new Item(ItemType.Unknown, ItemSort.None);
                                 break;
                         }
                         break;
 
                     case 4:
                         // tags下细分类
-                        if (((Item)node.Parent).Sort == Sort.Tag)
+                        if (((Item)node.Parent).Sort == ItemSort.Tag)
                         {
                             node.ImageKey = node.SelectedImageKey = "Directory";
-                            node.Tag = new Item(Type.Root, Sort.Tag);
+                            node.Tag = new Item(ItemType.Root, ItemSort.Tag);
                             switch (node.Text)
                             {
                                 case "blocks":
@@ -627,7 +662,7 @@ namespace DataMaker
                                     break;
                                 default:
                                     node.ImageKey = node.SelectedImageKey = "Misc";
-                                    node.Tag = new Item(Type.Unknown, Sort.None);
+                                    node.Tag = new Item(ItemType.Unknown, ItemSort.None);
                                     break;
                             }
                         }
@@ -646,13 +681,13 @@ namespace DataMaker
                             // 合法
                             // 跟随父级目录的属性
                             node.ImageKey = node.SelectedImageKey = "Directory";
-                            node.Tag = new Item(Type.Directory, ((Item)node.Parent).Sort);
+                            node.Tag = new Item(ItemType.Directory, ((Item)node.Parent).Sort);
                         }
                         else
                         {
                             // 非法
                             node.ImageKey = node.SelectedImageKey = "Misc";
-                            node.Tag = new Item(Type.Unknown, Sort.None);
+                            node.Tag = new Item(ItemType.Unknown, ItemSort.None);
                         }
 
                         break;
@@ -731,29 +766,29 @@ namespace DataMaker
                 // 更改普遍可用性
                 switch (SelectedItem.Type)
                 {
-                    case Type.DataPack:
+                    case ItemType.DataPack:
                         smnuDelete.Enabled = false;
                         smnuAdd.Enabled = false;
                         smnuAddFile.Enabled = false;
                         smnuAddDirectory.Enabled = false;
                         smnuRename.Enabled = false;
                         break;
-                    case Type.Data:
+                    case ItemType.Data:
                         smnuAddDirectory.Text = Lang("global_namespace");
                         smnuDelete.Enabled = false;
                         smnuAddFile.Enabled = false;
                         smnuRename.Enabled = false;
                         break;
-                    case Type.Namespace:
+                    case ItemType.Namespace:
                         smnuAdd.Enabled = false;
                         smnuAddFile.Enabled = false;
                         smnuAddDirectory.Enabled = false;
                         break;
-                    case Type.Root:
+                    case ItemType.Root:
                         smnuDelete.Enabled = false;
                         smnuRename.Enabled = false;
                         break;
-                    case Type.File:
+                    case ItemType.File:
                         smnuOpen.Text = Lang("filetree_edit");
                         smnuOpen.Enabled = true;
                         break;
@@ -770,26 +805,26 @@ namespace DataMaker
                 // 更改“添加文件”名字
                 switch (SelectedItem.Sort)
                 {
-                    case Sort.Advancement:
+                    case ItemSort.Advancement:
                         smnuAddFile.Text = Lang("global_advancement");
                         break;
-                    case Sort.Function:
+                    case ItemSort.Function:
                         smnuAddFile.Text = Lang("global_function");
                         break;
-                    case Sort.LootTable:
+                    case ItemSort.LootTable:
                         smnuAddFile.Text = Lang("global_loottable");
                         break;
-                    case Sort.Recipe:
+                    case ItemSort.Recipe:
                         smnuAddFile.Text = Lang("global_recipe");
                         break;
-                    case Sort.Structure:
+                    case ItemSort.Structure:
                         smnuAddFile.Text = Lang("global_structure");
                         break;
-                    case Sort.Tag:
+                    case ItemSort.Tag:
                         smnuAddFile.Text = Lang("global_tag");
                         break;
                     // 不允许删除配置文件
-                    case Sort.PackMcmeta:
+                    case ItemSort.PackMcmeta:
                         smnuDelete.Enabled = false;
                         break;
                     default:
@@ -872,7 +907,7 @@ namespace DataMaker
             {
                 if (tvwFiles.SelectedNode != null)
                 {
-                    if (((Item)tvwFiles.SelectedNode).Type == Type.File)
+                    if (((Item)tvwFiles.SelectedNode).Type == ItemType.File)
                     {
                         MainForm.GetInstance().EditNode(tvwFiles.SelectedNode);
                     }
@@ -1014,7 +1049,7 @@ namespace DataMaker
                     try
                     {
                         // 尝试创建文件
-                        File.WriteAllText(GetPathFromNode(node), "");
+                        File.WriteAllText(GetPathFromNode(node), GetDataClass(node).ToString());
                         node.BeginEdit();
                     }
                     catch (Exception ex)
