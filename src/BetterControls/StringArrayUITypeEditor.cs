@@ -8,7 +8,7 @@ using System.Windows.Forms.Design;
 
 namespace DataMaker.BetterControls
 {
-    class ArrayUITypeEditor : UITypeEditor
+    class StringArrayUITypeEditor : UITypeEditor
     {
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
             => UITypeEditorEditStyle.Modal;
@@ -20,7 +20,7 @@ namespace DataMaker.BetterControls
                 provider.GetService(typeof(IWindowsFormsEditorService))
                 != null)
             {
-                var editor = new ArrayEditor()
+                var editor = new StringArrayEditor()
                 {
                     EditedObject = (string[])value
                 };

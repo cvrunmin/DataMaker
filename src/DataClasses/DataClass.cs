@@ -5,6 +5,7 @@ using static DataMaker.Tools;
 namespace DataMaker.DataClasses
 {
     [TypeConverter(typeof(ExpandableObjectNoStringConverter))]
+    [Obsolete("别tm硬编码了", true)]
     public class DataClass
     {
         public override string ToString() => SerializeObjectToJson(this);

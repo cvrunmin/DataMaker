@@ -1,6 +1,7 @@
 ﻿using DataMaker.DataClasses;
 using DataMaker.Properties;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -86,5 +87,7 @@ namespace DataMaker
         {
             return ShowMessagebox(text, replacers: replacers);
         }
+
+        public static JToken GetJToken(string json) => (JObject)JsonConvert.DeserializeObject(json);
     }
 }

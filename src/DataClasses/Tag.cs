@@ -1,11 +1,13 @@
 ﻿using DataMaker.BetterControls;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 
 namespace DataMaker.DataClasses
 {
+    [Obsolete("FUCK HARDCODE", true)]
     class Tag : DataClass
     {
         [JsonProperty(PropertyName = "replace")]
@@ -14,7 +16,7 @@ namespace DataMaker.DataClasses
 
         [JsonProperty(PropertyName = "values")]
         [LangDisplayName("tag_values"), LangDescription("tag_values")]
-        [Editor(typeof(ArrayUITypeEditor), typeof(UITypeEditor))]
+        [Editor(typeof(StringArrayUITypeEditor), typeof(UITypeEditor))]
         public string[] Values { get; set; }
     }
 }

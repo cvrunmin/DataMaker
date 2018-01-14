@@ -1,0 +1,27 @@
+{
+	"Name": "NaN",
+	"LangKey": "NaN",
+	"Type": "Json",
+	"Children": [
+		{
+			"Name": "pack",
+			"Type": "Json",
+			"LangKey": "packmcmeta_pack",
+			"Children": [
+				{
+					"Name": "pack_format",
+					"Type": "Int",
+					"LangKey": "pack_packformat",
+					"Default": 3,
+					"Min": 1
+				},
+				{
+					"Name": "description",
+					"Type": "String",
+					"LangKey": "pack_description",
+					"Default": "A data pack."
+				}
+			]
+		}
+	]
+}

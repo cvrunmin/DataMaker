@@ -2,7 +2,7 @@
 
 namespace DataMaker.Forms
 {
-    partial class ArrayEditor
+    partial class StringArrayEditor
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace DataMaker.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ArrayEditor));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StringArrayEditor));
             this.listValues = new System.Windows.Forms.ListBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
@@ -38,6 +38,7 @@ namespace DataMaker.Forms
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.btnSubmit = new System.Windows.Forms.Button();
             this.txtKeyName = new System.Windows.Forms.TextBox();
+            this.betterComboBox1 = new DataMaker.BetterControls.BetterComboBox();
             this.SuspendLayout();
             // 
             // listValues
@@ -88,10 +89,18 @@ namespace DataMaker.Forms
             this.txtKeyName.Name = "txtKeyName";
             this.txtKeyName.TextChanged += new System.EventHandler(this.txtKeyName_TextChanged);
             // 
-            // ArrayEditor
+            // betterComboBox1
+            // 
+            this.betterComboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            resources.ApplyResources(this.betterComboBox1, "betterComboBox1");
+            this.betterComboBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
+            this.betterComboBox1.Name = "betterComboBox1";
+            // 
+            // StringArrayEditor
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.betterComboBox1);
             this.Controls.Add(this.txtKeyName);
             this.Controls.Add(this.btnSubmit);
             this.Controls.Add(this.propertyGrid);
@@ -101,7 +110,7 @@ namespace DataMaker.Forms
             this.Controls.Add(this.listValues);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "ArrayEditor";
+            this.Name = "StringArrayEditor";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -116,5 +125,6 @@ namespace DataMaker.Forms
         private System.Windows.Forms.PropertyGrid propertyGrid;
         private System.Windows.Forms.Button btnSubmit;
         private TextBox txtKeyName;
+        private BetterControls.BetterComboBox betterComboBox1;
     }
 }

@@ -81,24 +81,31 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BetterControls\BetterComboBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BetterControls\BetterComboBox.Designer.cs">
+      <DependentUpon>BetterComboBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="BetterControls\BetterMenuStripRenderer.cs" />
-    <Compile Include="BetterControls\ArrayUITypeEditor.cs" />
+    <Compile Include="BetterControls\StringArrayUITypeEditor.cs" />
     <Compile Include="BetterControls\LangDescriptionAttribute.cs" />
     <Compile Include="BetterControls\LangDisplayNameAttribute.cs" />
     <Compile Include="DataClasses\DataClass.cs" />
     <Compile Include="DataClasses\PackMcmeta.cs" />
     <Compile Include="DataClasses\Tag.cs" />
+    <Compile Include="DataStructures\DataStructure.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ArrayEditor.cs">
+    <Compile Include="Forms\StringArrayEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ArrayEditor.Designer.cs">
-      <DependentUpon>ArrayEditor.cs</DependentUpon>
+    <Compile Include="Forms\StringArrayEditor.Designer.cs">
+      <DependentUpon>StringArrayEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileTree.cs">
       <SubType>Form</SubType>
@@ -139,11 +146,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Themes.cs" />
     <Compile Include="Tools.cs" />
+    <EmbeddedResource Include="BetterControls\BetterComboBox.resx">
+      <DependentUpon>BetterComboBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ArrayEditor.resx">
-      <DependentUpon>ArrayEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\StringArrayEditor.resx">
+      <DependentUpon>StringArrayEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileTree.en.resx">
       <DependentUpon>FileTree.cs</DependentUpon>
@@ -183,6 +193,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="DataStructures\PackMcmeta.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

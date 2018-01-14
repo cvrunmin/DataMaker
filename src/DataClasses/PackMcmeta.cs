@@ -1,9 +1,11 @@
 ﻿using DataMaker.BetterControls;
 using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 
 namespace DataMaker.DataClasses
 {
+    [Obsolete("别tm硬编码了", true)]
     public class PackMcmeta: DataClass
     {
         [JsonProperty(PropertyName = "pack")]
@@ -11,7 +13,8 @@ namespace DataMaker.DataClasses
         public Pack Pack { get; set; } = new Pack();
     }
     
-    public class Pack: DataClass
+    [Obsolete("别tm硬编码了", true)]
+    public class Pack : DataClass
     {
         [JsonProperty(PropertyName = "pack_format")]
         [LangDisplayName("pack_packformat"), LangDescription("pack_packformat")]

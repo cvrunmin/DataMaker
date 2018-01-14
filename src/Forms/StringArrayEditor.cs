@@ -1,12 +1,13 @@
-﻿using System.Collections;
+﻿using DataMaker.DataClasses;
+using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Linq;
-using System.Collections.Generic;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace DataMaker.Forms
 {
-    public partial class ArrayEditor : Form, IEditor
+    public partial class StringArrayEditor : Form, IEditor
     {
         private object[] editedObject;
         public object[] EditedObject
@@ -24,10 +25,14 @@ namespace DataMaker.Forms
             }
         }
 
-        public ArrayEditor()
+        public StringArrayEditor()
         {
             InitializeComponent();
             SetTheme();
+
+            for (int i = 65; i < 65 + 26; i++)
+                for (int j = 65; j < 65 + 26; j++)
+                    betterComboBox1.Items.Add(char.ConvertFromUtf32(i) + char.ConvertFromUtf32(j));
         }
 
         private void SetTheme()
@@ -36,24 +41,28 @@ namespace DataMaker.Forms
             lblTitle.Font = new Font(Font.FontFamily, 18f);
         }
 
-        private void btnSubmit_Click(object sender, System.EventArgs e)
+        private void btnSubmit_Click(object sender, EventArgs e)
         {
             editedObject = listValues.Items.Cast<string>().ToArray();
             Close();
         }
 
-        private void btnAdd_Click(object sender, System.EventArgs e)
+        private void btnAdd_Click(object sender, EventArgs e)
         {
-            listValues.Items.Add("new");
+            //var instance = Assembly.GetExecutingAssembly().CreateInstance(EditedObject[0].GetType().Name);
+
+            listValues.SelectedIndex = listValues.Items.Add("");
         }
 
-        private void btnRemove_Click(object sender, System.EventArgs e)
+        private void btnRemove_Click(object sender, EventArgs e)
         {
+            var index = listValues.SelectedIndex;
             if (listValues.SelectedItem != null)
                 listValues.Items.Remove(listValues.SelectedItem);
+            listValues.SelectedIndex = Math.Max(index - 1, -1);
         }
 
-        private void listValues_SelectedIndexChanged(object sender, System.EventArgs e)
+        private void listValues_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listValues.SelectedItem != null)
             {
@@ -62,9 +71,10 @@ namespace DataMaker.Forms
             }
         }
 
-        private void txtKeyName_TextChanged(object sender, System.EventArgs e)
+        private void txtKeyName_TextChanged(object sender, EventArgs e)
         {
-            listValues.Items[listValues.SelectedIndex] = txtKeyName.Text;
+            if (listValues.SelectedIndex >= 0)
+                listValues.Items[listValues.SelectedIndex] = txtKeyName.Text;
         }
     }
 }
