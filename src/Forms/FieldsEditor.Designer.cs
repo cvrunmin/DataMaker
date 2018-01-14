@@ -1,6 +1,6 @@
 ﻿namespace DataMaker.Forms
 {
-    partial class PropertyEditor
+    partial class FieldsEditor
     {
         /// <summary>
         /// Required designer variable.
@@ -40,7 +40,7 @@
             this.propertyGrid.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.propertyGrid.Name = "propertyGrid";
             this.propertyGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGrid.Size = new System.Drawing.Size(460, 791);
+            this.propertyGrid.Size = new System.Drawing.Size(383, 791);
             this.propertyGrid.TabIndex = 0;
             this.propertyGrid.ToolbarVisible = false;
             this.propertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
@@ -51,7 +51,7 @@
             this.lblSizeChanger.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this.lblSizeChanger.Dock = System.Windows.Forms.DockStyle.Right;
             this.lblSizeChanger.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lblSizeChanger.Location = new System.Drawing.Point(460, 0);
+            this.lblSizeChanger.Location = new System.Drawing.Point(383, 0);
             this.lblSizeChanger.Margin = new System.Windows.Forms.Padding(0);
             this.lblSizeChanger.Name = "lblSizeChanger";
             this.lblSizeChanger.Size = new System.Drawing.Size(5, 791);
@@ -64,7 +64,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(465, 791);
+            this.ClientSize = new System.Drawing.Size(388, 791);
             this.ControlBox = false;
             this.Controls.Add(this.lblSizeChanger);
             this.Controls.Add(this.propertyGrid);

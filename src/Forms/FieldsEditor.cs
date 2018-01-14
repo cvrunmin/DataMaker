@@ -1,15 +1,29 @@
-﻿using System.Windows.Forms;
+﻿using System.Reflection;
+using System.Windows.Forms;
 
 namespace DataMaker.Forms
 {
-    public partial class PropertyEditor : Form
+    public partial class FieldsEditor : Form
     {
-        public PropertyEditor()
+        public FieldsEditor()
         {
             InitializeComponent();
             SetTheme();
 
             propertyGrid.PropertySort = PropertySort.Alphabetical;
+
+            // 设置propertyGrid的description zone大小
+            // 参考 http://karmian.org/net-tips-tricks-examples-articles/how-resize-description-area-propertygrid.
+            foreach (Control i in propertyGrid.Controls)
+                if (i.GetType().Name == "DocComment")
+                {
+                    var fieldInfo = i.GetType().BaseType.GetField(
+                        "userSized",
+                        BindingFlags.Instance | BindingFlags.NonPublic);
+                    fieldInfo.SetValue(i, true);
+                    i.Height = 200;
+                    return;
+                }
         }
 
         public void SelectObject()
@@ -50,15 +64,15 @@ namespace DataMaker.Forms
         #endregion
         
         #region 单例模式
-        private static PropertyEditor propertyEditor;
+        private static FieldsEditor propertyEditor;
 
         /// <summary>
-        /// 获取 <see cref="PropertyEditor"/> 的唯一实例
+        /// 获取 <see cref="FieldsEditor"/> 的唯一实例
         /// </summary>
-        public static PropertyEditor GetInstance()
+        public static FieldsEditor GetInstance()
         {
             if (propertyEditor == null)
-                propertyEditor = new PropertyEditor();
+                propertyEditor = new FieldsEditor();
 
             return propertyEditor;
         }

@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BetterControls\BetterMenuStripRenderer.cs" />
+    <Compile Include="BetterControls\ArrayUITypeEditor.cs" />
     <Compile Include="BetterControls\LangDescriptionAttribute.cs" />
     <Compile Include="BetterControls\LangDisplayNameAttribute.cs" />
     <Compile Include="DataClasses\DataClass.cs" />
@@ -92,6 +93,12 @@
     </Compile>
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ArrayEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ArrayEditor.Designer.cs">
+      <DependentUpon>ArrayEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileTree.cs">
       <SubType>Form</SubType>
@@ -105,17 +112,18 @@
     <Compile Include="Forms\FunctionEditor.Designer.cs">
       <DependentUpon>FunctionEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\IEditor.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PropertyEditor.cs">
+    <Compile Include="Forms\FieldsEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\PropertyEditor.Designer.cs">
-      <DependentUpon>PropertyEditor.cs</DependentUpon>
+    <Compile Include="Forms\FieldsEditor.Designer.cs">
+      <DependentUpon>FieldsEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -134,6 +142,9 @@
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ArrayEditor.resx">
+      <DependentUpon>ArrayEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileTree.en.resx">
       <DependentUpon>FileTree.cs</DependentUpon>
     </EmbeddedResource>
@@ -149,8 +160,8 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PropertyEditor.resx">
-      <DependentUpon>PropertyEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\FieldsEditor.resx">
+      <DependentUpon>FieldsEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GlobalResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,6 +1,8 @@
 ﻿using DataMaker.BetterControls;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing.Design;
 
 namespace DataMaker.DataClasses
 {
@@ -12,6 +14,7 @@ namespace DataMaker.DataClasses
 
         [JsonProperty(PropertyName = "values")]
         [LangDisplayName("tag_values"), LangDescription("tag_values")]
+        [Editor(typeof(ArrayUITypeEditor), typeof(UITypeEditor))]
         public string[] Values { get; set; }
     }
 }

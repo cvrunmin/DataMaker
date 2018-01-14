@@ -246,7 +246,7 @@
     <value>描述</value>
   </data>
   <data name="displayname_tag_replace" xml:space="preserve">
-    <value>覆盖</value>
+    <value>是否覆盖</value>
   </data>
   <data name="displayname_tag_values" xml:space="preserve">
     <value>值</value>

@@ -151,7 +151,7 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
-        ///   查找类似 覆盖 的本地化字符串。
+        ///   查找类似 是否覆盖 的本地化字符串。
         /// </summary>
         internal static string displayname_tag_replace {
             get {

@@ -44,6 +44,7 @@
             this.folderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.zipSaver = new System.Windows.Forms.SaveFileDialog();
             this.lblFuckGdi = new System.Windows.Forms.Label();
+            this.BWEditors = new System.ComponentModel.BackgroundWorker();
             this.menuTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -173,6 +174,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.Label lblFuckGdi;
+        public System.ComponentModel.BackgroundWorker BWEditors;
     }
 }
 
