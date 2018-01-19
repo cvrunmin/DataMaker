@@ -28,7 +28,7 @@ namespace DataMaker.Forms
 
         public void SelectObject()
         {
-            propertyGrid.SelectedObject = MainForm.GetInstance().EditedDataClass;
+            //propertyGrid.SelectedObject = MainForm.GetInstance().EditedDataClass;
         }
 
         private void SetTheme()

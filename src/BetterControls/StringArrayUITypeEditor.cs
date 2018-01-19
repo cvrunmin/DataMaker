@@ -8,28 +8,28 @@ using System.Windows.Forms.Design;
 
 namespace DataMaker.BetterControls
 {
-    class StringArrayUITypeEditor : UITypeEditor
-    {
-        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-            => UITypeEditorEditStyle.Modal;
+    //class StringArrayUITypeEditor : UITypeEditor
+    //{
+    //    public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+    //        => UITypeEditorEditStyle.Modal;
 
-        public override object EditValue(ITypeDescriptorContext context,
-            IServiceProvider provider, object value)
-        {
-            if ((IWindowsFormsEditorService)
-                provider.GetService(typeof(IWindowsFormsEditorService))
-                != null)
-            {
-                var editor = new StringArrayEditor()
-                {
-                    EditedObject = (string[])value
-                };
-                MainForm.GetInstance().AddEditor(editor);
-                MainForm.GetInstance().RemoveEditor(editor);
-                return editor.EditedObject;
-            }
+    //    public override object EditValue(ITypeDescriptorContext context,
+    //        IServiceProvider provider, object value)
+    //    {
+    //        if ((IWindowsFormsEditorService)
+    //            provider.GetService(typeof(IWindowsFormsEditorService))
+    //            != null)
+    //        {
+    //            var editor = new StringArrayEditor()
+    //            {
+    //                EditedObject = (string[])value
+    //            };
+    //            MainForm.GetInstance().AddEditor(editor);
+    //            MainForm.GetInstance().RemoveEditor(editor);
+    //            return editor.EditedObject;
+    //        }
 
-            return value;
-        }
-    }
+    //        return value;
+    //    }
+    //}
 }

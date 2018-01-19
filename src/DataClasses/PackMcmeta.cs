@@ -5,15 +5,15 @@ using System.ComponentModel;
 
 namespace DataMaker.DataClasses
 {
-    [Obsolete("别tm硬编码了", true)]
+    [Obsolete("Fuck hardcode.", true)]
     public class PackMcmeta: DataClass
     {
         [JsonProperty(PropertyName = "pack")]
         [LangDisplayName("packmcmeta_pack"), LangDescription("packmcmeta_pack")]
         public Pack Pack { get; set; } = new Pack();
     }
-    
-    [Obsolete("别tm硬编码了", true)]
+
+    [Obsolete("Fuck hardcode.", true)]
     public class Pack : DataClass
     {
         [JsonProperty(PropertyName = "pack_format")]

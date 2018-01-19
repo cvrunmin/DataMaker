@@ -62,22 +62,12 @@ namespace DataMaker
             base.OnLoad(e);
         }
         #endregion
-
-        private DataClass editedDataClass;
+        
         private TreeNode editedNode;
         private bool isChanged;
         private string title;
-        private ArrayList editors = new ArrayList();
+        private Editor editor;
 
-        public DataClass EditedDataClass
-        {
-            get => editedDataClass;
-            set
-            {
-                editedDataClass = value;
-                FieldsEditor.GetInstance().SelectObject();
-            }
-        }
         public TreeNode EditedNode
         {
             get => editedNode;
@@ -113,11 +103,6 @@ namespace DataMaker
             FileTree.GetInstance().Show();
             FileTree.GetInstance().Resize += Form_Resize;
 
-            // 显示属性区
-            FieldsEditor.GetInstance().MdiParent = this;
-            FieldsEditor.GetInstance().Show();
-            FieldsEditor.GetInstance().Resize += Form_Resize;
-
             LayoutForms();
             Show();
         }
@@ -146,7 +131,7 @@ namespace DataMaker
             if (IsChanged)
             {
                 var result = ShowMessagebox(
-                    Lang("mainform_msgbox_savechangedornot"), 
+                    Lang("mainform_msgbox_savechangedornot"),
                     MessageBoxButtons.YesNoCancel,
                     EditedNode.Text);
 
@@ -166,28 +151,9 @@ namespace DataMaker
 
             // 关闭原有，编辑新的
             EditedNode = node;
-            EditedDataClass = FileTree.GetDataClass(node);
-        }
-
-        /// <summary>
-        /// 显示指定编辑器
-        /// </summary>
-        /// <param name="editor"></param>
-        public void AddEditor(IEditor editor)
-        {
-            editors.Add(editor);
-            LayoutForms();
-            (editor as Form).ShowDialog();
-        }
-
-        /// <summary>
-        /// 关闭指定编辑器
-        /// </summary>
-        /// <param name="editor"></param>
-        public void RemoveEditor(IEditor editor)
-        {
-            editors.Remove(editor);
-            LayoutForms();
+            editor = FileTree.GetEditor(node);
+            editor.MdiParent = this;
+            editor.Show();
         }
 
         #region 事件处理
@@ -257,7 +223,6 @@ namespace DataMaker
         private void ExitApplication()
         {
             FileTree.GetInstance().Resize -= Form_Resize;
-            FieldsEditor.GetInstance().Resize -= Form_Resize;
             Application.Exit();
         }
 
@@ -309,38 +274,24 @@ namespace DataMaker
         {
             var height = ClientSize.Height - menuTop.Height - 5;
 
-            // 设置两个侧边栏
-            FileTree.GetInstance().Left = ClientSize.Width - FileTree.GetInstance().ClientSize.Width;
-            FileTree.GetInstance().Top = FieldsEditor.GetInstance().Top = 0;
-
-            FileTree.GetInstance().Height = FieldsEditor.GetInstance().Height = height;
-
-            FieldsEditor.GetInstance().Left = 0;
-
-
-            // 设置编辑器(们)
-            if (editors.Count > 0)
+            if (editor != null)
             {
-                int indentWidth = 0;
-                if (editors.Count - 1 > 0)
-                    indentWidth = 100 / (editors.Count - 1);
 
-                for (var i = 0; i < editors.Count; i++)
-                {
-                    (editors[i] as Form).Top = Top + 0;
-                    (editors[i] as Form).Width = indentWidth;
-                    (editors[i] as Form).Left = Left + i * indentWidth;
-                    (editors[i] as Form).Height = height;
-                }
+                // 设置两个侧边栏
+                FileTree.GetInstance().Left = ClientSize.Width - FileTree.GetInstance().ClientSize.Width;
+                FileTree.GetInstance().Top = editor.Top = 0;
 
-                (editors[editors.Count - 1] as Form).Width = ClientSize.Width - FileTree.GetInstance().Width - FieldsEditor.GetInstance().Width;
-                (editors[editors.Count - 1] as Form).Left = Left + 100 + FieldsEditor.GetInstance().Width;
+                FileTree.GetInstance().Height = editor.Height = height;
+
+                editor.Left = 0;
             }
+
+            
         }
 
         private void SaveFile()
         {
-            FileTree.SaveFile(EditedDataClass, EditedNode);
+            //FileTree.SaveFile(EditedDataClass, EditedNode);
             IsChanged = false;
         }
 

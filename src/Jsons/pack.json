@@ -1,0 +1,10 @@
+{
+	"updown": [{
+		"key": "pack_format",
+		"default": "3"
+	}],
+	"text": [{
+		"key": "description",
+		"default": "A data pack."
+	}]
+}

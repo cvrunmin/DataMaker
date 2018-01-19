@@ -7,7 +7,7 @@ using System.Drawing.Design;
 
 namespace DataMaker.DataClasses
 {
-    [Obsolete("FUCK HARDCODE", true)]
+    [Obsolete("Fuck hardcode.", true)]
     class Tag : DataClass
     {
         [JsonProperty(PropertyName = "replace")]
@@ -16,7 +16,7 @@ namespace DataMaker.DataClasses
 
         [JsonProperty(PropertyName = "values")]
         [LangDisplayName("tag_values"), LangDescription("tag_values")]
-        [Editor(typeof(StringArrayUITypeEditor), typeof(UITypeEditor))]
+        //[Editor(typeof(StringArrayUITypeEditor), typeof(UITypeEditor))]
         public string[] Values { get; set; }
     }
 }

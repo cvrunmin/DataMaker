@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace DataMaker.Forms
 {
+    [Obsolete("fuck hard code.")]
     public partial class StringArrayEditor : Form, IEditor
     {
         private object[] editedObject;

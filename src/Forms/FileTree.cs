@@ -1,4 +1,6 @@
 ﻿using DataMaker.DataClasses;
+using DataMaker.Forms;
+using DataMaker.Parsers;
 using DataMaker.Properties;
 using Newtonsoft.Json;
 using System;
@@ -146,12 +148,12 @@ namespace DataMaker
         #region 定义函数
 
         /// <summary>
-        /// 根据指定节点获取数据类
+        /// 根据指定节点获取Editor
         /// </summary>
         /// <param name="node">指定节点</param>
-        public static DataClass GetDataClass(TreeNode node)
+        public static Editor GetEditor(TreeNode node)
         {
-            DataClass result = null;
+            var result = new Editor();
 
             switch (((Item)node).Sort)
             {
@@ -166,10 +168,9 @@ namespace DataMaker
                 case ItemSort.Structure:
                     break;
                 case ItemSort.Tag:
-                    result = LoadFile<Tag>(node);
                     break;
                 case ItemSort.PackMcmeta:
-                    result = LoadFile<PackMcmeta>(node);
+                    result.SetEditor(Application.StartupPath + "/Jsons/pack.json");
                     break;
             }
 
@@ -180,19 +181,19 @@ namespace DataMaker
         /// 将指定数据类的内容保存到指定节点
         /// </summary>
         /// <param name="dataClass">指定数据类</param>
-        public static void SaveFile(DataClass dataClass, TreeNode node)
-        {
-            var path = GetPathFromNode(node);
-            File.WriteAllText(path, dataClass.ToString());
-        }
+        //public static void SaveFile(DataClass dataClass, TreeNode node)
+        //{
+        //    var path = GetPathFromNode(node);
+        //    File.WriteAllText(path, dataClass.ToString());
+        //}
 
         /// <summary>
-        /// 将指定节点对应的文件反序列化为数据类
+        /// 将指定节点对应的文件反序列化为Parser
         /// </summary>
         /// <typeparam name="T">数据类类型</typeparam>
         /// <param name="node">指定节点</param>
         /// <returns></returns>
-        private static T LoadFile<T>(TreeNode node) where T : DataClass
+        private static T LoadFile<T>(TreeNode node) where T : IParser
         {
             var path = GetPathFromNode(node);
             var content = File.ReadAllText(path);
@@ -456,7 +457,8 @@ namespace DataMaker
             Directory.CreateDirectory(dataPackPath + @"\data");
             if (!File.Exists(dataPackPath + @"\pack.mcmeta"))
             {
-                File.WriteAllText(dataPackPath + @"\pack.mcmeta", SerializeObjectToJson(new PackMcmeta()));
+                // TODO
+                //File.WriteAllText(dataPackPath + @"\pack.mcmeta", SerializeObjectToJson(new PackMcmeta()));
             }
 
             // 补全命名空间下的目录
@@ -1048,8 +1050,9 @@ namespace DataMaker
 
                     try
                     {
+                        //TODO
                         // 尝试创建文件
-                        File.WriteAllText(GetPathFromNode(node), GetDataClass(node).ToString());
+                        //File.WriteAllText(GetPathFromNode(node), GetDataClass(node).ToString());
                         node.BeginEdit();
                     }
                     catch (Exception ex)

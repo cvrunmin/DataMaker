@@ -87,7 +87,7 @@ namespace DataMaker.Forms
 
         public void UpdateContent()
         {
-            fctbJson.Text = SerializeObjectToJson(MainForm.GetInstance().EditedDataClass);
+            //fctbJson.Text = SerializeObjectToJson(MainForm.GetInstance().EditedDataClass);
         }
     }
 }
