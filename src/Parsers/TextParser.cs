@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Windows.Forms;
 
 namespace DataMaker.Parsers
 {
@@ -23,8 +15,8 @@ namespace DataMaker.Parsers
             set
             {
                 this.value = value;
-                textBox1.Text = value;
-                Width = textBox1.Width + lblKey.Width;
+                textBoxValue.Text = value;
+                Width = textBoxValue.Width + lblKey.Width;
             }
         }
         public string Key
@@ -34,7 +26,7 @@ namespace DataMaker.Parsers
             {
                 key = value;
                 lblKey.Text = value;
-                Width = textBox1.Width + lblKey.Width;
+                Width = textBoxValue.Width + lblKey.Width;
             }
         }
 
@@ -45,7 +37,7 @@ namespace DataMaker.Parsers
 
         public string GetJson()
         {
-            return $@"""{Key}"": ""{Value}""";
+            return $@"""{Key}"":""{Value}""";
         }
 
         public void SetJson(string json)
@@ -60,5 +52,8 @@ namespace DataMaker.Parsers
             Key = jobj["key"].ToString();
             Value = jobj["default"].ToString();
         }
+
+        private void textBoxValue_TextChanged(object sender, System.EventArgs e)
+            => Value = textBoxValue.Text;
     }
 }

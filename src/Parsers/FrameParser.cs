@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Windows.Forms;
 
 namespace DataMaker.Parsers
 {
     public partial class FrameParser : UserControl, IParser
     {
+        public string Key { get; set; }
+
         public FrameParser()
         {
             InitializeComponent();
@@ -25,11 +19,10 @@ namespace DataMaker.Parsers
         //public override Font Font { get => base.Font; set => base.Font = value; }
         public new ControlCollection Controls => mainPanel.Controls;
 
-        public string Key { get; set; }
 
         public string GetJson()
         {
-            var json = "{";
+            var json = "\"" + Key + "\":" + "{";
 
             foreach (var parser in Controls)
                 if (parser is IParser)
@@ -42,16 +35,20 @@ namespace DataMaker.Parsers
 
         public void SetParser(string json)
         {
-            if (JsonConvert.DeserializeObject<JObject>(json)["frame"] != null)
-                foreach (var i in JsonConvert.DeserializeObject<JObject>(json)["frame"])
+            var jobj = JsonConvert.DeserializeObject<JObject>(json);
+            Key = jobj["key"].ToString();
+            var parsersJson = File.ReadAllText(Application.StartupPath + "/Jsons/" + jobj["json"].ToString() + ".json");
+
+            if (JsonConvert.DeserializeObject<JObject>(parsersJson)["frame"] != null)
+                foreach (var i in JsonConvert.DeserializeObject<JObject>(parsersJson)["frame"])
                 {
                     var parser = new FrameParser();
                     parser.SetParser(i.ToString());
                     Controls.Add(parser);
                 }
 
-            if (JsonConvert.DeserializeObject<JObject>(json)["text"] != null)
-                foreach (var i in JsonConvert.DeserializeObject<JObject>(json)["text"])
+            if (JsonConvert.DeserializeObject<JObject>(parsersJson)["text"] != null)
+                foreach (var i in JsonConvert.DeserializeObject<JObject>(parsersJson)["text"])
                 {
                     var parser = new TextParser();
                     parser.SetParser(i.ToString());
@@ -61,10 +58,14 @@ namespace DataMaker.Parsers
 
         public void SetJson(string json)
         {
+            var jObj = JsonConvert.DeserializeObject<JObject>(json);
             foreach (var i in Controls)
             {
                 if (i is IParser)
-                    ((IParser)i).SetJson(json);
+                    if (i is FrameParser)
+                        ((IParser)i).SetJson(jObj[((IParser)i).Key].ToString());
+                    else
+                        ((IParser)i).SetJson(jObj.ToString());
             }
         }
     }

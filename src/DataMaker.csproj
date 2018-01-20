@@ -88,12 +88,7 @@
       <DependentUpon>BetterComboBox.cs</DependentUpon>
     </Compile>
     <Compile Include="BetterControls\BetterMenuStripRenderer.cs" />
-    <Compile Include="BetterControls\StringArrayUITypeEditor.cs" />
-    <Compile Include="BetterControls\LangDescriptionAttribute.cs" />
-    <Compile Include="BetterControls\LangDisplayNameAttribute.cs" />
-    <Compile Include="DataClasses\DataClass.cs" />
-    <Compile Include="DataClasses\PackMcmeta.cs" />
-    <Compile Include="DataClasses\Tag.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,12 +100,6 @@
     </Compile>
     <Compile Include="Forms\Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\StringArrayEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\StringArrayEditor.Designer.cs">
-      <DependentUpon>StringArrayEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileTree.cs">
       <SubType>Form</SubType>
@@ -124,18 +113,11 @@
     <Compile Include="Forms\FunctionEditor.Designer.cs">
       <DependentUpon>FunctionEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\IEditor.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FieldsEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FieldsEditor.Designer.cs">
-      <DependentUpon>FieldsEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -173,9 +155,6 @@
     <EmbeddedResource Include="Forms\Editor.resx">
       <DependentUpon>Editor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\StringArrayEditor.resx">
-      <DependentUpon>StringArrayEditor.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileTree.en.resx">
       <DependentUpon>FileTree.cs</DependentUpon>
     </EmbeddedResource>
@@ -190,9 +169,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FieldsEditor.resx">
-      <DependentUpon>FieldsEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GlobalResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -233,9 +209,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataClasses\Advancements\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Icon.ico" />
     <Content Include="Resources\FileTree\BlockTags.png" />

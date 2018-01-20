@@ -1,15 +1,4 @@
-﻿using DataMaker.Parsers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 using System.Windows.Forms;
 
 namespace DataMaker.Forms
@@ -23,10 +12,24 @@ namespace DataMaker.Forms
             DarkTheme.Initialize(this);
         }
 
-        public void SetEditor(string path)
+        public void SetEditor(string json) => frameParserRoot.SetParser(json);
+
+        public void SetJson(string json) => frameParserRoot.SetJson(json);
+
+        public string GetJson()
         {
-            var content = File.ReadAllText(path);
-            frameParser1.SetParser(content);
+            var json = frameParserRoot.GetJson();
+
+            // 以奇异的方式去除"%NaN%":
+            json = json.Replace("\"%NaN%\":", "");
+
+            // 以奇异的方式格式化Json
+            var parsedJson = JsonConvert.DeserializeObject(json);
+            var result = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
+
+            // TODO: 自定义缩进
+            //return result.Replace("  ", " " * n);
+            return result;
         }
     }
 }

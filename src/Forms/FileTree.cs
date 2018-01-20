@@ -1,5 +1,4 @@
-﻿using DataMaker.DataClasses;
-using DataMaker.Forms;
+﻿using DataMaker.Forms;
 using DataMaker.Parsers;
 using DataMaker.Properties;
 using Newtonsoft.Json;
@@ -130,7 +129,7 @@ namespace DataMaker
         /// </summary>
         private static bool isAddingFolder;
 
-        #region 单例模式
+        #region Single instance
         private static FileTree fileTree;
 
         /// <summary>
@@ -146,16 +145,33 @@ namespace DataMaker
         #endregion
 
         #region 定义函数
-
         /// <summary>
         /// 根据指定节点获取Editor
         /// </summary>
         /// <param name="node">指定节点</param>
         public static Editor GetEditor(TreeNode node)
         {
-            var result = new Editor();
+            // 设置 editor
+            var editor = new Editor();
+            var json = GetRootParserJson(((Item)node).Sort);
+            editor.SetEditor(json);
 
-            switch (((Item)node).Sort)
+            // 用该 editor 读取已有 json
+            editor.SetJson(File.ReadAllText(GetPath(node)));
+
+            return editor;
+        }
+
+        /// <summary>
+        /// 根据指定 Sort 获得该文件的 Parser 的 RootFrame json .
+        /// </summary>
+        /// <param name="sort">指定 Sort </param>
+        /// <returns>RootFrame json.</returns>
+        private static string GetRootParserJson(ItemSort sort)
+        {
+            var rootParserFileName = "";
+
+            switch (sort)
             {
                 case ItemSort.Advancement:
                     break;
@@ -170,35 +186,27 @@ namespace DataMaker
                 case ItemSort.Tag:
                     break;
                 case ItemSort.PackMcmeta:
-                    result.SetEditor(Application.StartupPath + "/Jsons/pack.json");
+                    rootParserFileName = "packmcmeta";
                     break;
             }
 
-            return result;
+            // 设置RootParserJson
+            var json =
+$@"{{
+    ""key"": ""%NaN%"",
+    ""json"": ""{rootParserFileName}""
+}}";
+            return json;
         }
 
         /// <summary>
         /// 将指定数据类的内容保存到指定节点
         /// </summary>
-        /// <param name="dataClass">指定数据类</param>
-        //public static void SaveFile(DataClass dataClass, TreeNode node)
-        //{
-        //    var path = GetPathFromNode(node);
-        //    File.WriteAllText(path, dataClass.ToString());
-        //}
-
-        /// <summary>
-        /// 将指定节点对应的文件反序列化为Parser
-        /// </summary>
-        /// <typeparam name="T">数据类类型</typeparam>
-        /// <param name="node">指定节点</param>
-        /// <returns></returns>
-        private static T LoadFile<T>(TreeNode node) where T : IParser
+        /// <param name="editor">指定数据类</param>
+        public static void SaveFile(Editor editor, TreeNode node)
         {
-            var path = GetPathFromNode(node);
-            var content = File.ReadAllText(path);
-
-            return JsonConvert.DeserializeObject<T>(content);
+            var path = GetPath(node);
+            File.WriteAllText(path, editor.GetJson());
         }
 
         /// <summary>
@@ -240,7 +248,7 @@ namespace DataMaker
         /// </summary>
         /// <param name="node">指定节点</param>
         /// <returns>文件路径</returns>
-        private static string GetPathFromNode(TreeNode node)
+        private static string GetPath(TreeNode node)
         {
             // FIXME: 效率奇低，还tm可能出错
             StringBuilder result = new StringBuilder(node.FullPath);
@@ -390,7 +398,7 @@ namespace DataMaker
         /// <param name="node">指定节点</param>
         private static bool IsFile(TreeNode node)
         {
-            return File.Exists(GetPathFromNode(node));
+            return File.Exists(GetPath(node));
         }
         #endregion
 
@@ -457,8 +465,12 @@ namespace DataMaker
             Directory.CreateDirectory(dataPackPath + @"\data");
             if (!File.Exists(dataPackPath + @"\pack.mcmeta"))
             {
-                // TODO
-                //File.WriteAllText(dataPackPath + @"\pack.mcmeta", SerializeObjectToJson(new PackMcmeta()));
+                // 创建默认的 pack.mcmeta 文件
+                using (var editor = new Editor())
+                {
+                    editor.SetEditor(GetRootParserJson(ItemSort.PackMcmeta));
+                    File.WriteAllText(dataPackPath + @"\pack.mcmeta", editor.GetJson());
+                }
             }
 
             // 补全命名空间下的目录
@@ -950,7 +962,7 @@ namespace DataMaker
                     MessageBox.Show(
                         Lang("filetree_properties_name") + ": " + tvwFiles.SelectedNode.Text + "\n" +
                         Lang("filetree_properties_type") + ": " + tvwFiles.SelectedNode.Tag + "\n" +
-                        Lang("filetree_properties_path") + ": " + GetPathFromNode(tvwFiles.SelectedNode) + "\n"
+                        Lang("filetree_properties_path") + ": " + GetPath(tvwFiles.SelectedNode) + "\n"
                         );
                 }
             }
@@ -971,13 +983,13 @@ namespace DataMaker
                     string name;
                     if (IsFile(tvwFiles.SelectedNode))
                     {
-                        name = GetAvailableDirName(GetPathFromNode(tvwFiles.SelectedNode) + "\\new_folder");
+                        name = GetAvailableDirName(GetPath(tvwFiles.SelectedNode) + "\\new_folder");
                         node = tvwFiles.SelectedNode.Parent.Nodes.Add(name);
                         tvwFiles.SelectedNode.Parent.Expand();
                     }
                     else
                     {
-                        name = GetAvailableDirName(GetPathFromNode(tvwFiles.SelectedNode) + "\\new_folder");
+                        name = GetAvailableDirName(GetPath(tvwFiles.SelectedNode) + "\\new_folder");
                         node = tvwFiles.SelectedNode.Nodes.Add(name);
                         tvwFiles.SelectedNode.Expand();
                     }
@@ -987,7 +999,7 @@ namespace DataMaker
                     try
                     {
                         // 尝试创建目录
-                        Directory.CreateDirectory(GetPathFromNode(node));
+                        Directory.CreateDirectory(GetPath(node));
                         node.BeginEdit();
                     }
                     catch (Exception ex)
@@ -997,7 +1009,7 @@ namespace DataMaker
                         // 弹窗提示
                         MessageBox.Show(ex.Message);
 
-                        if (!Directory.Exists(GetPathFromNode(node)))
+                        if (!Directory.Exists(GetPath(node)))
                         {
                             // 目录创建失败
                             // 把节点删除
@@ -1022,7 +1034,7 @@ namespace DataMaker
                 {
                     TreeNode node;
                     var name = GetAvailableFileName(
-                        GetPathFromNode(tvwFiles.SelectedNode) + "\\new_file",
+                        GetPath(tvwFiles.SelectedNode) + "\\new_file",
                         SelectedItem.GetFileSuffix(true)
                         );
                     if (IsFile(tvwFiles.SelectedNode))
@@ -1050,9 +1062,12 @@ namespace DataMaker
 
                     try
                     {
-                        //TODO
                         // 尝试创建文件
-                        //File.WriteAllText(GetPathFromNode(node), GetDataClass(node).ToString());
+                        using (var editor = new Editor())
+                        {
+                            editor.SetEditor(GetRootParserJson(((Item)node).Sort));
+                            File.WriteAllText(GetPath(node), editor.GetJson());
+                        }
                         node.BeginEdit();
                     }
                     catch (Exception ex)
@@ -1061,7 +1076,7 @@ namespace DataMaker
                         // 弹窗提示
                         MessageBox.Show(ex.Message);
 
-                        if (!File.Exists(GetPathFromNode(node)))
+                        if (!File.Exists(GetPath(node)))
                         {
                             // 文件创建失败
                             // 把节点删除
@@ -1094,12 +1109,12 @@ namespace DataMaker
                         {
                             // 尝试删除
 
-                            if (File.Exists(GetPathFromNode(tvwFiles.SelectedNode)))
+                            if (File.Exists(GetPath(tvwFiles.SelectedNode)))
                                 // 删除文件
-                                File.Delete(GetPathFromNode(tvwFiles.SelectedNode));
+                                File.Delete(GetPath(tvwFiles.SelectedNode));
                             else
                                 // 删除目录
-                                Directory.Delete(GetPathFromNode(tvwFiles.SelectedNode), true);
+                                Directory.Delete(GetPath(tvwFiles.SelectedNode), true);
 
                             // 移除节点
                             tvwFiles.Nodes.Remove(tvwFiles.SelectedNode);
@@ -1127,7 +1142,7 @@ namespace DataMaker
             {
                 if (tvwFiles.SelectedNode != null)
                 {
-                    SetClipboardList(new[] { GetPathFromNode(tvwFiles.SelectedNode) }, false);
+                    SetClipboardList(new[] { GetPath(tvwFiles.SelectedNode) }, false);
                 }
             }
         }
@@ -1141,7 +1156,7 @@ namespace DataMaker
             {
                 if (tvwFiles.SelectedNode != null)
                 {
-                    SetClipboardList(new[] { GetPathFromNode(tvwFiles.SelectedNode) }, true);
+                    SetClipboardList(new[] { GetPath(tvwFiles.SelectedNode) }, true);
                 }
             }
         }
@@ -1194,13 +1209,13 @@ namespace DataMaker
                 {
                     // 选择的是文件
                     // 粘贴到上一级目录
-                    destination = GetPathFromNode(tvwFiles.SelectedNode.Parent);
+                    destination = GetPath(tvwFiles.SelectedNode.Parent);
                 }
                 else
                 {
                     // 选择的是目录
                     // 粘贴到本级下面
-                    destination = GetPathFromNode(tvwFiles.SelectedNode);
+                    destination = GetPath(tvwFiles.SelectedNode);
                 }
                 destination += source.Remove(0, source.LastIndexOf("\\"));
                 if (File.Exists(source))
@@ -1312,13 +1327,13 @@ namespace DataMaker
                     {
                         // 选中的是文件
                         // 打开explorer.exe, 将光标定位在此文件
-                        info.Arguments = "/e,/select," + GetPathFromNode(tvwFiles.SelectedNode);
+                        info.Arguments = "/e,/select," + GetPath(tvwFiles.SelectedNode);
                     }
                     else
                     {
                         // 选中的是文件夹
                         // 以此文件夹作为根目录打开explorer.exe
-                        info.Arguments = "/root," + GetPathFromNode(tvwFiles.SelectedNode);
+                        info.Arguments = "/root," + GetPath(tvwFiles.SelectedNode);
                     }
                     Process.Start(info);
                 }
@@ -1344,11 +1359,11 @@ namespace DataMaker
                 {
                     // 合法文件名
 
-                    var before = GetPathFromNode(e.Node);
+                    var before = GetPath(e.Node);
                     var backup = e.Node.Text;
                     var isFile = IsFile(e.Node);
                     e.Node.Text = e.Label;
-                    var after = GetPathFromNode(e.Node);
+                    var after = GetPath(e.Node);
 
                     if (isFile)
                     {

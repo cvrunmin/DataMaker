@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Editor));
-            this.frameParser1 = new DataMaker.Parsers.FrameParser();
+            this.frameParserRoot = new DataMaker.Parsers.FrameParser();
             this.SuspendLayout();
             // 
             // frameParser1
             // 
-            resources.ApplyResources(this.frameParser1, "frameParser1");
-            this.frameParser1.Key = null;
-            this.frameParser1.Name = "frameParser1";
+            resources.ApplyResources(this.frameParserRoot, "frameParser1");
+            this.frameParserRoot.Key = null;
+            this.frameParserRoot.Name = "frameParser1";
             // 
             // Editor
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.frameParser1);
+            this.Controls.Add(this.frameParserRoot);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Editor";
             this.ResumeLayout(false);
@@ -51,6 +51,6 @@
 
         #endregion
 
-        private Parsers.FrameParser frameParser1;
+        private Parsers.FrameParser frameParserRoot;
     }
 }

@@ -1,5 +1,4 @@
-﻿using DataMaker.DataClasses;
-using DataMaker.Properties;
+﻿using DataMaker.Properties;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;

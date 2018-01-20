@@ -1,9 +1,6 @@
 ﻿using DataMaker.BetterControls;
-using DataMaker.DataClasses;
 using DataMaker.Forms;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
@@ -41,8 +38,8 @@ namespace DataMaker
 
         /// <summary>
         /// 重载OnLoad 去边框
-        /// FIXME: 必须要最大化时启动才有效…
         /// </summary>
+        // FIXME: 必须要最大化时启动才有效…
         protected override void OnLoad(EventArgs e)
         {
             // https://stackoverflow.com/questions/7752696/how-to-remove-3d-border-sunken-from-mdiclient-component-in-mdi-parent-form
@@ -66,7 +63,6 @@ namespace DataMaker
         private TreeNode editedNode;
         private bool isChanged;
         private string title;
-        private Editor editor;
 
         public TreeNode EditedNode
         {
@@ -87,6 +83,7 @@ namespace DataMaker
                 else Text = title;
             }
         }
+        public Editor Editor { get; set; }
 
         private MainForm()
         {
@@ -107,7 +104,7 @@ namespace DataMaker
             Show();
         }
 
-        #region 单例模式
+        #region Single instance
         private static MainForm mainForm;
 
         /// <summary>
@@ -151,9 +148,10 @@ namespace DataMaker
 
             // 关闭原有，编辑新的
             EditedNode = node;
-            editor = FileTree.GetEditor(node);
-            editor.MdiParent = this;
-            editor.Show();
+            Editor = FileTree.GetEditor(node);
+            Editor.MdiParent = this;
+            Editor.Show();
+            LayoutForms();
         }
 
         #region 事件处理
@@ -274,24 +272,24 @@ namespace DataMaker
         {
             var height = ClientSize.Height - menuTop.Height - 5;
 
-            if (editor != null)
+            // 设置FileTree
+            FileTree.GetInstance().Left = ClientSize.Width - FileTree.GetInstance().ClientSize.Width;
+            FileTree.GetInstance().Top = 0;
+            FileTree.GetInstance().Height = height;
+
+            // 设置Editor
+            if (Editor != null)
             {
-
-                // 设置两个侧边栏
-                FileTree.GetInstance().Left = ClientSize.Width - FileTree.GetInstance().ClientSize.Width;
-                FileTree.GetInstance().Top = editor.Top = 0;
-
-                FileTree.GetInstance().Height = editor.Height = height;
-
-                editor.Left = 0;
+                Editor.Left = 0;
+                Editor.Top = 0;
+                Editor.Height = height;
+                Editor.Width = ClientSize.Width - FileTree.GetInstance().ClientSize.Width;
             }
-
-            
         }
 
         private void SaveFile()
         {
-            //FileTree.SaveFile(EditedDataClass, EditedNode);
+            FileTree.SaveFile(Editor, EditedNode);
             IsChanged = false;
         }
 
