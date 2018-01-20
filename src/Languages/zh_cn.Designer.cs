@@ -81,9 +81,9 @@ namespace DataMaker.Languages {
         /// <summary>
         ///   查找类似 数据包版本，可以是任何数字。 的本地化字符串。
         /// </summary>
-        internal static string description_pack_packformat {
+        internal static string description_pack_pack_format {
             get {
-                return ResourceManager.GetString("description_pack_packformat", resourceCulture);
+                return ResourceManager.GetString("description_pack_pack_format", resourceCulture);
             }
         }
         
@@ -405,9 +405,9 @@ namespace DataMaker.Languages {
         /// <summary>
         ///   查找类似 版本 的本地化字符串。
         /// </summary>
-        internal static string key_pack_packformat {
+        internal static string key_pack_pack_format {
             get {
-                return ResourceManager.GetString("key_pack_packformat", resourceCulture);
+                return ResourceManager.GetString("key_pack_pack_format", resourceCulture);
             }
         }
         

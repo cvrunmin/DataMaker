@@ -70,12 +70,15 @@ namespace DataMaker.Parsers
                         // 遍历 Parser type 下的每一个实例
                         switch (((JProperty)i).Name)
                         {
-                            // TODO: 新增 Parser 需要在此处增加代码
+                            // NOTE: 新增 Parser 需要在此处增加代码
                             case "frame":
                                 parser = new FrameParser();
                                 break;
                             case "text":
                                 parser = new TextParser();
+                                break;
+                            case "updown":
+                                parser = new UpDownParser();
                                 break;
                             default:
                                 continue;
