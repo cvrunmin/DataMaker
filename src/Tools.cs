@@ -66,7 +66,7 @@ namespace DataMaker
         /// <param name="buttons">显示的按钮</param>
         /// <param name="replacers">要替换文字中{0}{1}...的参数</param>
         /// <returns></returns>
-        public static DialogResult ShowMessagebox(string text, 
+        public static DialogResult ShowMessagebox(string text,
             MessageBoxButtons buttons = MessageBoxButtons.OK, params string[] replacers)
         {
             var showText = text;
@@ -75,7 +75,7 @@ namespace DataMaker
 
             return MessageBox.Show(MainForm.GetInstance(), showText, Application.ProductName, buttons);
         }
-        
+
         /// <summary>
         /// 显示MessageBox
         /// </summary>
@@ -83,9 +83,7 @@ namespace DataMaker
         /// <param name="replacers">要替换文字中{0}{1}...的参数</param>
         /// <returns></returns>
         public static DialogResult ShowMessagebox(string text, params string[] replacers)
-        {
-            return ShowMessagebox(text, replacers: replacers);
-        }
+            => ShowMessagebox(text, MessageBoxButtons.OK, replacers);
 
         public static JToken GetJToken(string json) => (JObject)JsonConvert.DeserializeObject(json);
     }

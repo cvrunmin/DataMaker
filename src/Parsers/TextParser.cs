@@ -19,7 +19,7 @@ namespace DataMaker.Parsers
             {
                 frameFileName = value;
                 lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
-                Width = textBoxValue.Width + lblKey.Width;
+                SetSize();
             }
         }
         public string Value
@@ -41,6 +41,7 @@ namespace DataMaker.Parsers
         public TextParser()
         {
             InitializeComponent();
+            DarkTheme.Initialize(this);
         }
 
         public string GetJson()
@@ -65,5 +66,11 @@ namespace DataMaker.Parsers
 
         private void textBoxValue_TextChanged(object sender, EventArgs e)
             => Value = textBoxValue.Text;
+
+        public void SetSize()
+        {
+            Width = textBoxValue.Width + lblKey.Width;
+            Height = textBoxValue.Height;
+        }
     }
 }

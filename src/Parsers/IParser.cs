@@ -30,5 +30,10 @@
         /// </summary>
         /// <returns>Json文本</returns>
         string GetJson();
+
+        /// <summary>
+        /// 设置Parser大小
+        /// </summary>
+        void SetSize();
     }
 }

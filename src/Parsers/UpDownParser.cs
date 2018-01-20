@@ -19,7 +19,7 @@ namespace DataMaker.Parsers
             {
                 frameFileName = value;
                 lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
-                Width = upDownValue.Width + lblKey.Width;
+                SetSize();
             }
         }
         public string Key
@@ -43,6 +43,7 @@ namespace DataMaker.Parsers
         public UpDownParser()
         {
             InitializeComponent();
+            DarkTheme.Initialize(this);
         }
 
         public string GetJson()
@@ -74,6 +75,12 @@ namespace DataMaker.Parsers
             if (upDownValue.Value < Min) upDownValue.Value = Min;
             else if (upDownValue.Value > Max) upDownValue.Value = Max;
             else Value = upDownValue.Value;
+        }
+
+        public void SetSize()
+        {
+            Width = upDownValue.Width + lblKey.Width;
+            Height = upDownValue.Height;
         }
     }
 }

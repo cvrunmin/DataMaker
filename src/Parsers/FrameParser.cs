@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using static DataMaker.Tools;
+using System;
 
 namespace DataMaker.Parsers
 {
@@ -32,12 +34,12 @@ namespace DataMaker.Parsers
         public FrameParser()
         {
             InitializeComponent();
+            DarkTheme.Initialize(this);
         }
 
-        //public override Color BackColor { get => mainPanel.BackColor; set => mainPanel.BackColor = value; }
-        //public override Color ForeColor { get => mainPanel.ForeColor; set => mainPanel.ForeColor = value; }
-        //public override Font Font { get => base.Font; set => base.Font = value; }
         public ControlCollection PanelControls => mainPanel.Controls;
+
+        public void SetSize() { }
 
         public string GetJson()
         {

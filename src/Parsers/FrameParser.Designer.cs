@@ -47,14 +47,14 @@
             this.lblKey.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblKey.Location = new System.Drawing.Point(3, 0);
             this.lblKey.Name = "lblKey";
-            this.lblKey.Size = new System.Drawing.Size(339, 12);
+            this.lblKey.Size = new System.Drawing.Size(336, 23);
             this.lblKey.TabIndex = 0;
             // 
             // FrameParser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            base.Controls.Add(this.mainPanel);
+            this.Controls.Add(this.mainPanel);
             this.Name = "FrameParser";
             this.Size = new System.Drawing.Size(342, 253);
             this.mainPanel.ResumeLayout(false);
