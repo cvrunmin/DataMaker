@@ -1,14 +1,26 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Windows.Forms;
+using static DataMaker.Tools;
 
 namespace DataMaker.Parsers
 {
     public partial class TextParser : UserControl, IParser
     {
+        private string frameFileName;
         private string value;
         private string key;
 
+        public string FrameFileName
+        {
+            get => frameFileName;
+            set
+            {
+                frameFileName = value;
+                lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
+                Width = textBoxValue.Width + lblKey.Width;
+            }
+        }
         public string Value
         {
             get => value;
@@ -25,8 +37,6 @@ namespace DataMaker.Parsers
             set
             {
                 key = value;
-                lblKey.Text = value;
-                Width = textBoxValue.Width + lblKey.Width;
             }
         }
 

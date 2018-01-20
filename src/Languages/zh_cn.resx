@@ -230,25 +230,25 @@
   </data>
 
   
-  <!--DisplayNames-->
+  <!--Keys-->
 
-  <data name="displayname_" xml:space="preserve">
+  <data name="key_" xml:space="preserve">
     <value></value>
   </data>
   
-  <data name="displayname_packmcmeta_pack" xml:space="preserve">
+  <data name="key_packmcmeta_pack" xml:space="preserve">
     <value>信息</value>
   </data>
-  <data name="displayname_pack_packformat" xml:space="preserve">
+  <data name="key_pack_packformat" xml:space="preserve">
     <value>版本</value>
   </data>
-  <data name="displayname_pack_description" xml:space="preserve">
+  <data name="key_pack_description" xml:space="preserve">
     <value>描述</value>
   </data>
-  <data name="displayname_tag_replace" xml:space="preserve">
+  <data name="key_tag_replace" xml:space="preserve">
     <value>是否覆盖</value>
   </data>
-  <data name="displayname_tag_values" xml:space="preserve">
+  <data name="key_tag_values" xml:space="preserve">
     <value>值</value>
   </data>
 

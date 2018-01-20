@@ -8,6 +8,12 @@
         string Key { get; set; }
 
         /// <summary>
+        /// 该 Parser 所属 Frame 的文件名
+        /// 用于显示本地语言
+        /// </summary>
+        string FrameFileName { get; set; }
+
+        /// <summary>
         /// 根据指定的Json文件设置parser
         /// </summary>
         /// <param name="json">指定Json</param>

@@ -115,60 +115,6 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
-        ///   查找类似  的本地化字符串。
-        /// </summary>
-        internal static string displayname_ {
-            get {
-                return ResourceManager.GetString("displayname_", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 描述 的本地化字符串。
-        /// </summary>
-        internal static string displayname_pack_description {
-            get {
-                return ResourceManager.GetString("displayname_pack_description", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 版本 的本地化字符串。
-        /// </summary>
-        internal static string displayname_pack_packformat {
-            get {
-                return ResourceManager.GetString("displayname_pack_packformat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 信息 的本地化字符串。
-        /// </summary>
-        internal static string displayname_packmcmeta_pack {
-            get {
-                return ResourceManager.GetString("displayname_packmcmeta_pack", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 是否覆盖 的本地化字符串。
-        /// </summary>
-        internal static string displayname_tag_replace {
-            get {
-                return ResourceManager.GetString("displayname_tag_replace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 值 的本地化字符串。
-        /// </summary>
-        internal static string displayname_tag_values {
-            get {
-                return ResourceManager.GetString("displayname_tag_values", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 添加... 的本地化字符串。
         /// </summary>
         internal static string filetree_add {
@@ -435,6 +381,60 @@ namespace DataMaker.Languages {
         internal static string global_tag {
             get {
                 return ResourceManager.GetString("global_tag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似  的本地化字符串。
+        /// </summary>
+        internal static string key_ {
+            get {
+                return ResourceManager.GetString("key_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 描述 的本地化字符串。
+        /// </summary>
+        internal static string key_pack_description {
+            get {
+                return ResourceManager.GetString("key_pack_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 版本 的本地化字符串。
+        /// </summary>
+        internal static string key_pack_packformat {
+            get {
+                return ResourceManager.GetString("key_pack_packformat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 信息 的本地化字符串。
+        /// </summary>
+        internal static string key_packmcmeta_pack {
+            get {
+                return ResourceManager.GetString("key_packmcmeta_pack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 是否覆盖 的本地化字符串。
+        /// </summary>
+        internal static string key_tag_replace {
+            get {
+                return ResourceManager.GetString("key_tag_replace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 值 的本地化字符串。
+        /// </summary>
+        internal static string key_tag_values {
+            get {
+                return ResourceManager.GetString("key_tag_values", resourceCulture);
             }
         }
         
