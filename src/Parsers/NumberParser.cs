@@ -6,11 +6,16 @@ using System;
 
 namespace DataMaker.Parsers
 {
-    public partial class UpDownParser : UserControl, IParser
+    public partial class NumberParser : UserControl, IParser
     {
+        public NumberParser()
+        {
+            InitializeComponent();
+            DarkTheme.Initialize(this);
+        }
+
         private string frameFileName;
         private decimal value;
-        private string key;
 
         public string FrameFileName
         {
@@ -22,11 +27,7 @@ namespace DataMaker.Parsers
                 SetSize();
             }
         }
-        public string Key
-        {
-            get => key;
-            set => key = value;
-        }
+        public string Key { get; set; }
         public decimal Value
         {
             get => value;
@@ -49,12 +50,6 @@ namespace DataMaker.Parsers
         }
         public decimal Max { get; set; } = 2147483647;
         public decimal Min { get; set; } = -2147483648;
-
-        public UpDownParser()
-        {
-            InitializeComponent();
-            DarkTheme.Initialize(this);
-        }
         
         public void SetParser(string json)
         {

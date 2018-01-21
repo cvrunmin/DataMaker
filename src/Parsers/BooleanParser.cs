@@ -6,47 +6,46 @@ using static DataMaker.Tools;
 
 namespace DataMaker.Parsers
 {
-    public partial class TextParser : UserControl, IParser
+    public partial class BooleanParser : UserControl, IParser
     {
-        private string frameFileName;
-        private string value;
+        public BooleanParser()
+        {
+            InitializeComponent();
+            DarkTheme.Initialize(this);
+        }
 
+        private string frameFileName;
+        private bool value;
+
+        public string Key { get; set; }
         public string FrameFileName
         {
             get => frameFileName;
             set
             {
                 frameFileName = value;
-                lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
+                checkBoxValue.Text = Lang("key_" + FrameFileName + "_" + Key);
                 SetSize();
             }
         }
-        public string Value
+        public bool Value
         {
             get => value;
             set
             {
                 this.value = value;
-                textBoxValue.Text = value;
+                checkBoxValue.Checked = Value;
                 MainForm.GetInstance().IsChanged = true;
             }
         }
-        public string Key { get; set; }
-
-        public TextParser()
-        {
-            InitializeComponent();
-            DarkTheme.Initialize(this);
-        }
-
         public string Json
         {
-            get => $@"""{Key}"":""{Value}""";
+            get => $@"""{Key}"":{Value}";
             set
             {
                 var jobj = JsonConvert.DeserializeObject<JObject>(value);
                 if (jobj[Key] != null)
-                    Value = jobj[Key].ToString();
+                    Value = bool.Parse(jobj[Key].ToString());
             }
         }
 
@@ -55,16 +54,18 @@ namespace DataMaker.Parsers
             var jobj = JsonConvert.DeserializeObject<JObject>(json);
             Key = jobj["key"].ToString();
             if (jobj["default"] != null)
-                Value = jobj["default"].ToString();
+                Value = bool.Parse(jobj["default"].ToString());
         }
 
-        private void textBoxValue_TextChanged(object sender, EventArgs e)
-            => Value = textBoxValue.Text;
+        private void checkBoxValue_CheckedChanged(object sender, EventArgs e)
+        {
+            Value = checkBoxValue.Checked;
+        }
 
         public void SetSize()
         {
-            Width = textBoxValue.Width + lblKey.Width;
-            Height = textBoxValue.Height;
+            Width = checkBoxValue.Width;
+            Height = checkBoxValue.Height;
         }
     }
 }

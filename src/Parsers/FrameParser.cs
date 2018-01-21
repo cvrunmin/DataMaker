@@ -11,7 +11,6 @@ namespace DataMaker.Parsers
     public partial class FrameParser : UserControl, IParser
     {
         private string frameFileName;
-        private string key;
 
         public string FrameFileName
         {
@@ -22,14 +21,7 @@ namespace DataMaker.Parsers
                 lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
             }
         }
-        public string Key
-        {
-            get => key;
-            set
-            {
-                key = value;
-            }
-        }
+        public string Key { get; set; }
 
         public FrameParser()
         {
@@ -73,7 +65,8 @@ namespace DataMaker.Parsers
         {
             var jobj = JsonConvert.DeserializeObject<JObject>(json);
             Key = jobj["key"].ToString();
-            var parsersJson = File.ReadAllText(Application.StartupPath + "/Jsons/" + jobj["json"].ToString() + ".json");
+            var parsersJson = File.ReadAllText(Application.StartupPath + "/Jsons/" +
+                jobj["json"].ToString() + ".json");
 
             // 加载所有嵌套parsers
             IParser parser = null;
@@ -94,8 +87,14 @@ namespace DataMaker.Parsers
                             case "text":
                                 parser = new TextParser();
                                 break;
-                            case "updown":
-                                parser = new UpDownParser();
+                            case "number":
+                                parser = new NumberParser();
+                                break;
+                            case "nullboolean":
+                                parser = new NullBooleanParser();
+                                break;
+                            case "boolean":
+                                parser = new BooleanParser();
                                 break;
                             default:
                                 continue;

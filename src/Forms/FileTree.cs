@@ -184,9 +184,10 @@ namespace DataMaker
                 case ItemSort.Structure:
                     break;
                 case ItemSort.Tag:
+                    rootParserFileName = "tag/tag";
                     break;
                 case ItemSort.PackMcmeta:
-                    rootParserFileName = "packmcmeta";
+                    rootParserFileName = "packmcmeta/packmcmeta";
                     break;
             }
 

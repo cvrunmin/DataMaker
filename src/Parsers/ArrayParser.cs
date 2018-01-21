@@ -1,15 +1,22 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
+using System.IO;
 using System.Windows.Forms;
 using static DataMaker.Tools;
 
 namespace DataMaker.Parsers
 {
-    public partial class TextParser : UserControl, IParser
+    public partial class ArrayParser : UserControl, IParser
     {
+
+        public ArrayParser()
+        {
+            InitializeComponent();
+            DarkTheme.Initialize(this);
+        }
+
         private string frameFileName;
-        private string value;
+        private string[] values;
 
         public string FrameFileName
         {
@@ -21,32 +28,34 @@ namespace DataMaker.Parsers
                 SetSize();
             }
         }
-        public string Value
+        public string Key { get; set; }
+        public string[] Values
         {
-            get => value;
+            get => values;
             set
             {
-                this.value = value;
-                textBoxValue.Text = value;
+                values = value;
+                //upDownValue.Value = value;
                 MainForm.GetInstance().IsChanged = true;
             }
-        }
-        public string Key { get; set; }
-
-        public TextParser()
-        {
-            InitializeComponent();
-            DarkTheme.Initialize(this);
         }
 
         public string Json
         {
-            get => $@"""{Key}"":""{Value}""";
+            get
+            {
+                var result = "";
+
+                foreach (var i in Values)
+                    result += i + ",";
+
+                return result;
+            }
             set
             {
                 var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                if (jobj[Key] != null)
-                    Value = jobj[Key].ToString();
+                //if (jobj[Key] != null)
+                    //Values = decimal.Parse(jobj[Key].ToString());
             }
         }
 
@@ -54,17 +63,14 @@ namespace DataMaker.Parsers
         {
             var jobj = JsonConvert.DeserializeObject<JObject>(json);
             Key = jobj["key"].ToString();
-            if (jobj["default"] != null)
-                Value = jobj["default"].ToString();
-        }
 
-        private void textBoxValue_TextChanged(object sender, EventArgs e)
-            => Value = textBoxValue.Text;
+            
+        }
 
         public void SetSize()
         {
-            Width = textBoxValue.Width + lblKey.Width;
-            Height = textBoxValue.Height;
+            //Width = upDownValue.Width + lblKey.Width;
+            //Height = upDownValue.Height;
         }
     }
 }

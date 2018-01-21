@@ -396,45 +396,45 @@ namespace DataMaker.Languages {
         /// <summary>
         ///   查找类似 描述 的本地化字符串。
         /// </summary>
-        internal static string key_pack_description {
+        internal static string key_packmcmeta_pack_description {
             get {
-                return ResourceManager.GetString("key_pack_description", resourceCulture);
+                return ResourceManager.GetString("key_packmcmeta_pack_description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 版本 的本地化字符串。
         /// </summary>
-        internal static string key_pack_pack_format {
+        internal static string key_packmcmeta_pack_pack_format {
             get {
-                return ResourceManager.GetString("key_pack_pack_format", resourceCulture);
+                return ResourceManager.GetString("key_packmcmeta_pack_pack_format", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 信息 的本地化字符串。
         /// </summary>
-        internal static string key_packmcmeta_pack {
+        internal static string key_packmcmeta_packmcmeta_pack {
             get {
-                return ResourceManager.GetString("key_packmcmeta_pack", resourceCulture);
+                return ResourceManager.GetString("key_packmcmeta_packmcmeta_pack", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 是否覆盖 的本地化字符串。
         /// </summary>
-        internal static string key_tag_replace {
+        internal static string key_tag_tag_replace {
             get {
-                return ResourceManager.GetString("key_tag_replace", resourceCulture);
+                return ResourceManager.GetString("key_tag_tag_replace", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 值 的本地化字符串。
         /// </summary>
-        internal static string key_tag_values {
+        internal static string key_tag_tag_values {
             get {
-                return ResourceManager.GetString("key_tag_values", resourceCulture);
+                return ResourceManager.GetString("key_tag_tag_values", resourceCulture);
             }
         }
         

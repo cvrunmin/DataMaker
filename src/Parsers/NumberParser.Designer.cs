@@ -1,6 +1,6 @@
 ﻿namespace DataMaker.Parsers
 {
-    partial class UpDownParser
+    partial class NumberParser
     {
         /// <summary> 
         /// 必需的设计器变量。

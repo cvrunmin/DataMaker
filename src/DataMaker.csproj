@@ -135,6 +135,18 @@
     <Compile Include="Parsers\ArrayParser.Designer.cs">
       <DependentUpon>ArrayParser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Parsers\BooleanParser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Parsers\BooleanParser.Designer.cs">
+      <DependentUpon>BooleanParser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Parsers\NullBooleanParser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Parsers\NullBooleanParser.Designer.cs">
+      <DependentUpon>NullBooleanParser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Parsers\FrameParser.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -148,11 +160,11 @@
     <Compile Include="Parsers\TextParser.Designer.cs">
       <DependentUpon>TextParser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Parsers\UpDownParser.cs">
+    <Compile Include="Parsers\NumberParser.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Parsers\UpDownParser.Designer.cs">
-      <DependentUpon>UpDownParser.cs</DependentUpon>
+    <Compile Include="Parsers\NumberParser.Designer.cs">
+      <DependentUpon>NumberParser.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -190,9 +202,16 @@
     <EmbeddedResource Include="Languages\zh_cn.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>zh_cn.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Parsers\ArrayParser.resx">
       <DependentUpon>ArrayParser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Parsers\BooleanParser.resx">
+      <DependentUpon>BooleanParser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Parsers\NullBooleanParser.resx">
+      <DependentUpon>NullBooleanParser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Parsers\FrameParser.resx">
       <DependentUpon>FrameParser.cs</DependentUpon>
@@ -200,8 +219,8 @@
     <EmbeddedResource Include="Parsers\TextParser.resx">
       <DependentUpon>TextParser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Parsers\UpDownParser.resx">
-      <DependentUpon>UpDownParser.cs</DependentUpon>
+    <EmbeddedResource Include="Parsers\NumberParser.resx">
+      <DependentUpon>NumberParser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -214,9 +233,10 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="Jsons\pack.json" />
-    <None Include="Jsons\packmcmeta.json" />
-    <None Include="Jsons\tag.json" />
+    <None Include="Jsons\packmcmeta\pack.json" />
+    <None Include="Jsons\packmcmeta\packmcmeta.json" />
+    <None Include="Jsons\tag\tag.json" />
+    <None Include="Jsons\tag\content.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -1,5 +1,5 @@
 {
-	"updown": [{
+	"number": [{
 		"key": "pack_format",
 		"default": "3"
 	}],

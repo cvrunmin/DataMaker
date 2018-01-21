@@ -15,6 +15,7 @@ namespace DataMaker
         /// <param name="key">指定key</param>
         public static string Lang(string key)
         {
+            key = key.Replace("/", "_").Replace("\\", "");
 
             var rm = new System.Resources.ResourceManager("DataMaker.Languages." + "zh_cn", typeof(Resources).Assembly);
 

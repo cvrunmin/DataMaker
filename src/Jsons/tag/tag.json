@@ -1,0 +1,10 @@
+{
+	"boolean": [{
+		"key": "replace",
+		"default": "false"
+	}],
+	"array": [{
+		"key": "values",
+		"json": "tag/content"
+	}]
+}
