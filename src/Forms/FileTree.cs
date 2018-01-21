@@ -157,7 +157,7 @@ namespace DataMaker
             editor.SetEditor(json);
 
             // 用该 editor 读取已有 json
-            editor.SetJson(File.ReadAllText(GetPath(node)));
+            editor.Json = File.ReadAllText(GetPath(node));
 
             return editor;
         }
@@ -206,7 +206,7 @@ $@"{{
         public static void SaveFile(Editor editor, TreeNode node)
         {
             var path = GetPath(node);
-            File.WriteAllText(path, editor.GetJson());
+            File.WriteAllText(path, editor.Json);
         }
 
         /// <summary>
@@ -469,7 +469,7 @@ $@"{{
                 using (var editor = new Editor())
                 {
                     editor.SetEditor(GetRootParserJson(ItemSort.PackMcmeta));
-                    File.WriteAllText(dataPackPath + @"\pack.mcmeta", editor.GetJson());
+                    File.WriteAllText(dataPackPath + @"\pack.mcmeta", editor.Json);
                 }
             }
 
@@ -1066,7 +1066,7 @@ $@"{{
                         using (var editor = new Editor())
                         {
                             editor.SetEditor(GetRootParserJson(((Item)node).Sort));
-                            File.WriteAllText(GetPath(node), editor.GetJson());
+                            File.WriteAllText(GetPath(node), editor.Json);
                         }
                         node.BeginEdit();
                     }

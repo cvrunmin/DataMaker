@@ -41,17 +41,32 @@ namespace DataMaker.Parsers
 
         public void SetSize() { }
 
-        public string GetJson()
+        public string Json
         {
-            var json = "\"" + Key + "\":" + "{";
+            get
+            {
+                var json = "\"" + Key + "\":" + "{";
 
-            foreach (var parser in PanelControls)
-                if (parser is IParser)
-                    json += ((IParser)parser).GetJson() + ",";
+                foreach (var parser in PanelControls)
+                    if (parser is IParser)
+                        json += ((IParser)parser).Json + ",";
 
-            json += "}";
+                json += "}";
 
-            return json;
+                return json;
+            }
+            set
+            {
+                var jObj = JsonConvert.DeserializeObject<JObject>(value);
+                foreach (var i in PanelControls)
+                {
+                    if (i is IParser)
+                        if (i is FrameParser)
+                            ((IParser)i).Json = jObj[((IParser)i).Key].ToString();
+                        else
+                            ((IParser)i).Json = jObj.ToString();
+                }
+            }
         }
 
         public void SetParser(string json)
@@ -90,19 +105,6 @@ namespace DataMaker.Parsers
                         parser.FrameFileName = jobj["json"].ToString();
                         PanelControls.Add((Control)parser);
                     }
-            }
-        }
-
-        public void SetJson(string json)
-        {
-            var jObj = JsonConvert.DeserializeObject<JObject>(json);
-            foreach (var i in PanelControls)
-            {
-                if (i is IParser)
-                    if (i is FrameParser)
-                        ((IParser)i).SetJson(jObj[((IParser)i).Key].ToString());
-                    else
-                        ((IParser)i).SetJson(jObj.ToString());
             }
         }
     }

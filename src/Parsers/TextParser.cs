@@ -44,16 +44,15 @@ namespace DataMaker.Parsers
             DarkTheme.Initialize(this);
         }
 
-        public string GetJson()
+        public string Json
         {
-            return $@"""{Key}"":""{Value}""";
-        }
-
-        public void SetJson(string json)
-        {
-            var jobj = JsonConvert.DeserializeObject<JObject>(json);
-            if (jobj[Key] != null)
-                Value = jobj[Key].ToString();
+            get => $@"""{Key}"":""{Value}""";
+            set
+            {
+                var jobj = JsonConvert.DeserializeObject<JObject>(value);
+                if (jobj[Key] != null)
+                    Value = jobj[Key].ToString();
+            }
         }
 
         public void SetParser(string json)

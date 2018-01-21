@@ -37,6 +37,16 @@ namespace DataMaker.Parsers
                 MainForm.GetInstance().IsChanged = true;
             }
         }
+        public string Json
+        {
+            get => $@"""{Key}"":{Value}";
+            set
+            {
+                var jobj = JsonConvert.DeserializeObject<JObject>(value);
+                if (jobj[Key] != null)
+                    Value = decimal.Parse(jobj[Key].ToString());
+            }
+        }
         public decimal Max { get; set; } = 2147483647;
         public decimal Min { get; set; } = -2147483648;
 
@@ -45,19 +55,7 @@ namespace DataMaker.Parsers
             InitializeComponent();
             DarkTheme.Initialize(this);
         }
-
-        public string GetJson()
-        {
-            return $@"""{Key}"":{Value}";
-        }
-
-        public void SetJson(string json)
-        {
-            var jobj = JsonConvert.DeserializeObject<JObject>(json);
-            if (jobj[Key] != null)
-                Value = decimal.Parse(jobj[Key].ToString());
-        }
-
+        
         public void SetParser(string json)
         {
             var jobj = JsonConvert.DeserializeObject<JObject>(json);

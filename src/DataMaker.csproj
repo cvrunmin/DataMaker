@@ -129,6 +129,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>zh_cn.resx</DependentUpon>
     </Compile>
+    <Compile Include="Parsers\ArrayParser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Parsers\ArrayParser.Designer.cs">
+      <DependentUpon>ArrayParser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Parsers\FrameParser.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -185,6 +191,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>zh_cn.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Parsers\ArrayParser.resx">
+      <DependentUpon>ArrayParser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Parsers\FrameParser.resx">
       <DependentUpon>FrameParser.cs</DependentUpon>
     </EmbeddedResource>
@@ -207,6 +216,7 @@
     <None Include="app.config" />
     <None Include="Jsons\pack.json" />
     <None Include="Jsons\packmcmeta.json" />
+    <None Include="Jsons\tag.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
