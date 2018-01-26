@@ -11,6 +11,14 @@ namespace DataMaker.Parsers
         private string frameFileName;
         private string value;
 
+        public TextParser()
+        {
+            InitializeComponent();
+            DarkTheme.Initialize(this);
+        }
+
+        public string Key { get; set; }
+
         public string FrameFileName
         {
             get => frameFileName;
@@ -21,6 +29,7 @@ namespace DataMaker.Parsers
                 SetSize();
             }
         }
+
         public string Value
         {
             get => value;
@@ -30,13 +39,6 @@ namespace DataMaker.Parsers
                 textBoxValue.Text = value;
                 MainForm.GetInstance().IsChanged = true;
             }
-        }
-        public string Key { get; set; }
-
-        public TextParser()
-        {
-            InitializeComponent();
-            DarkTheme.Initialize(this);
         }
 
         public string Json

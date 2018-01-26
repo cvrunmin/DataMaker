@@ -194,7 +194,7 @@ namespace DataMaker
             // 设置RootParserJson
             var json =
 $@"{{
-    ""key"": ""%NaN%"",
+    ""key"": ""%NoKey%"",
     ""json"": ""{rootParserFileName}""
 }}";
             return json;
@@ -1069,6 +1069,7 @@ $@"{{
                             editor.SetEditor(GetRootParserJson(((Item)node).Sort));
                             File.WriteAllText(GetPath(node), editor.Json);
                         }
+
                         node.BeginEdit();
                     }
                     catch (Exception ex)

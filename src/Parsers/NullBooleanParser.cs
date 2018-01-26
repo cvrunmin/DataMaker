@@ -48,7 +48,7 @@ namespace DataMaker.Parsers
             get
             {
                 if (Value.HasValue)
-                    return $@"""{Key}"":{Value}";
+                    return $@"""{Key}"":{Value.ToString().ToLower()}";
                 else
                     return "";
             }

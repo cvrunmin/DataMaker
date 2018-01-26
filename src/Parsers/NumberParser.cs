@@ -1,21 +1,23 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Windows.Forms;
 using static DataMaker.Tools;
-using System;
 
 namespace DataMaker.Parsers
 {
     public partial class NumberParser : UserControl, IParser
     {
+        private string frameFileName;
+        private decimal value;
+
         public NumberParser()
         {
             InitializeComponent();
             DarkTheme.Initialize(this);
         }
 
-        private string frameFileName;
-        private decimal value;
+        public string Key { get; set; }
 
         public string FrameFileName
         {
@@ -27,7 +29,7 @@ namespace DataMaker.Parsers
                 SetSize();
             }
         }
-        public string Key { get; set; }
+
         public decimal Value
         {
             get => value;
@@ -38,6 +40,7 @@ namespace DataMaker.Parsers
                 MainForm.GetInstance().IsChanged = true;
             }
         }
+
         public string Json
         {
             get => $@"""{Key}"":{Value}";

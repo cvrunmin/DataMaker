@@ -1,7 +1,7 @@
 {
 	"boolean": [{
 		"key": "replace",
-		"default": "false"
+		"default": false
 	}],
 	"array": [{
 		"key": "values",

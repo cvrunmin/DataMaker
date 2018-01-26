@@ -21,9 +21,6 @@ namespace DataMaker.Forms
             {
                 var json = frameParserRoot.Json;
 
-                // 以奇异的方式去除"%NaN%":
-                json = json.Replace("\"%NaN%\":", "");
-
                 // 以奇异的方式格式化Json
                 var parsedJson = JsonConvert.DeserializeObject(json);
                 var result = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);

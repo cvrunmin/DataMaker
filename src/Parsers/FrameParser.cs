@@ -37,7 +37,13 @@ namespace DataMaker.Parsers
         {
             get
             {
-                var json = "\"" + Key + "\":" + "{";
+                var json = "";
+
+                // 除去"%NoKey%":
+                if (Key == "%NoKey%")
+                    json = "{";
+                else
+                    json = "\"" + Key + "\":" + "{";
 
                 foreach (var parser in PanelControls)
                     if (parser is IParser)

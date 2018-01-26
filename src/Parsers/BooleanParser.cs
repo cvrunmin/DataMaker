@@ -8,16 +8,17 @@ namespace DataMaker.Parsers
 {
     public partial class BooleanParser : UserControl, IParser
     {
+        private string frameFileName;
+        private bool value;
+
         public BooleanParser()
         {
             InitializeComponent();
             DarkTheme.Initialize(this);
         }
 
-        private string frameFileName;
-        private bool value;
-
         public string Key { get; set; }
+
         public string FrameFileName
         {
             get => frameFileName;
@@ -28,6 +29,7 @@ namespace DataMaker.Parsers
                 SetSize();
             }
         }
+
         public bool Value
         {
             get => value;
@@ -38,9 +40,10 @@ namespace DataMaker.Parsers
                 MainForm.GetInstance().IsChanged = true;
             }
         }
+
         public string Json
         {
-            get => $@"""{Key}"":{Value}";
+            get => $@"""{Key}"":{Value.ToString().ToLower()}";
             set
             {
                 var jobj = JsonConvert.DeserializeObject<JObject>(value);
@@ -58,9 +61,7 @@ namespace DataMaker.Parsers
         }
 
         private void checkBoxValue_CheckedChanged(object sender, EventArgs e)
-        {
-            Value = checkBoxValue.Checked;
-        }
+            => Value = checkBoxValue.Checked;
 
         public void SetSize()
         {
