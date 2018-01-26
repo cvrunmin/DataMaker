@@ -40,7 +40,6 @@ namespace DataMaker.Parsers
                     else
                         rbtnFalse.Checked = true;
                 else rbtnNull.Checked = true;
-                MainForm.GetInstance().IsChanged = true;
             }
         }
         public string Json
@@ -78,6 +77,7 @@ namespace DataMaker.Parsers
                 Value = false;
             else if (rbtnNull.Checked)
                 Value = null;
+            MainForm.GetInstance().IsChanged = true;
         }
 
         public void SetSize()

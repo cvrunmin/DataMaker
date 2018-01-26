@@ -1,8 +1,6 @@
 {
-	"combobox": [{
-		"key": "%NoKey%",
-		"zone": [
-			"%TagContent%"
-		]
+	"text": [{
+		"key": "%SameLevel%",
+		"default": "minecraft:hi"
 	}]
 }

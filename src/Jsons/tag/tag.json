@@ -5,6 +5,7 @@
 	}],
 	"array": [{
 		"key": "values",
+		"item_key": "%SameLevel%",
 		"json": "tag/content"
 	}]
 }

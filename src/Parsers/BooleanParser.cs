@@ -37,7 +37,6 @@ namespace DataMaker.Parsers
             {
                 this.value = value;
                 checkBoxValue.Checked = Value;
-                MainForm.GetInstance().IsChanged = true;
             }
         }
 
@@ -61,7 +60,10 @@ namespace DataMaker.Parsers
         }
 
         private void checkBoxValue_CheckedChanged(object sender, EventArgs e)
-            => Value = checkBoxValue.Checked;
+        {
+            Value = checkBoxValue.Checked;
+            MainForm.GetInstance().IsChanged = true;
+        }
 
         public void SetSize()
         {

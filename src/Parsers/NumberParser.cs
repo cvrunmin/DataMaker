@@ -37,7 +37,6 @@ namespace DataMaker.Parsers
             {
                 this.value = value;
                 upDownValue.Value = value;
-                MainForm.GetInstance().IsChanged = true;
             }
         }
 
@@ -71,6 +70,7 @@ namespace DataMaker.Parsers
             if (upDownValue.Value < Min) upDownValue.Value = Min;
             else if (upDownValue.Value > Max) upDownValue.Value = Max;
             else Value = upDownValue.Value;
+            MainForm.GetInstance().IsChanged = true;
         }
 
         public void SetSize()

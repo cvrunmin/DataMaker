@@ -233,10 +233,18 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="Jsons\packmcmeta\pack.json" />
-    <None Include="Jsons\packmcmeta\packmcmeta.json" />
-    <None Include="Jsons\tag\tag.json" />
-    <None Include="Jsons\tag\content.json" />
+    <None Include="Jsons\packmcmeta\pack.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Jsons\packmcmeta\packmcmeta.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Jsons\tag\tag.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Jsons\tag\content.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
