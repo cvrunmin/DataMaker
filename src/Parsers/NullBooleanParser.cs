@@ -45,10 +45,18 @@ namespace DataMaker.Parsers
         {
             get
             {
+                var result = "";
+
                 if (Value.HasValue)
-                    return $@"""{Key}"":{Value.ToString().ToLower()}";
-                else
-                    return "";
+                {
+                    result = GetJsonPreffix(Key, "");
+
+                    result += Value.ToString().ToLower();
+
+                    result += GetJsonSuffix(Key, "");
+                }
+
+                return result;
             }
             set
             {

@@ -45,10 +45,11 @@ namespace DataMaker.Parsers
         {
             get
             {
-                var result = "";
+                var result = GetJsonPreffix(Key, "[");
 
-                foreach (var i in Values)
-                    result += i + ",";
+                foreach (var i in Values) result += i + ",";
+
+                result += GetJsonSuffix(Key, "]");
 
                 return result;
             }
@@ -69,7 +70,7 @@ namespace DataMaker.Parsers
             Key = jobj["key"].ToString();
             var rootParserJson = 
 $@"{{
-    ""key"": ""%SameLevel%"",
+    ""key"": ""{jobj["item_key"].ToString()}"",
     ""json"": ""{jobj["json"].ToString()}""
 }}";
             frameRoot.SetParser(rootParserJson);

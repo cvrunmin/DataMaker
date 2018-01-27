@@ -36,7 +36,7 @@ namespace DataMaker.Parsers
             foreach (var i in PanelControls)
             {
                 if (i is IParser)
-                    ((IParser)i).SetSize(width);
+                ((IParser)i).SetSize(width);
             }
         }
 
@@ -44,22 +44,16 @@ namespace DataMaker.Parsers
         {
             get
             {
-                var json = "";
-
-                // 处理特殊Key
-                if (Key == "%NoKey%") json = "{";
-                else if (Key == "%SameLevel%") { }
-                else json = "\"" + Key + "\":" + "{";
+                var result = GetJsonPreffix(Key, "{");
 
                 // 合并所有Parsers的Json
                 foreach (var parser in PanelControls)
                     if (parser is IParser)
-                        json += ((IParser)parser).Json + ",";
+                        result += ((IParser)parser).Json + ",";
 
-                // 处理特殊Key
-                if (Key != "%SameLevel%") json += "}";
+                result += GetJsonSuffix(Key, "}");
 
-                return json;
+                return result;
             }
             set
             {

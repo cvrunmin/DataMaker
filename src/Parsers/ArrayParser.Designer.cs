@@ -67,8 +67,6 @@
             this.frameRoot.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             resources.ApplyResources(this.frameRoot, "frameRoot");
             this.frameRoot.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
-            this.frameRoot.FrameFileName = null;
-            this.frameRoot.Json = "\"\":{}";
             this.frameRoot.Key = null;
             this.frameRoot.Name = "frameRoot";
             // 

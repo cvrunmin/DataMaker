@@ -391,16 +391,13 @@ $@"{{
         /// <summary>
         /// 获取被选中的节点对应的Item
         /// </summary>
-        private static Item SelectedItem { get => (Item)GetInstance().tvwFiles.SelectedNode; }
+        private static Item SelectedItem => (Item)GetInstance().tvwFiles.SelectedNode;
 
         /// <summary>
         /// 获取指定节点对应的路径是否是文件
         /// </summary>
         /// <param name="node">指定节点</param>
-        private static bool IsFile(TreeNode node)
-        {
-            return File.Exists(GetPath(node));
-        }
+        private static bool IsFile(TreeNode node) => File.Exists(GetPath(node));
         #endregion
 
         #region 启动时初始化

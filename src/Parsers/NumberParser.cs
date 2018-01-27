@@ -41,7 +41,16 @@ namespace DataMaker.Parsers
 
         public string Json
         {
-            get => $@"""{Key}"":{Value}";
+            get
+            {
+                var result = GetJsonPreffix(Key, "");
+
+                result += Value;
+
+                result += GetJsonSuffix(Key, "");
+
+                return result;
+            }
             set
             {
                 var jobj = JsonConvert.DeserializeObject<JObject>(value);

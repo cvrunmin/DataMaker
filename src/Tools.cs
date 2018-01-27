@@ -86,6 +86,38 @@ namespace DataMaker
         public static DialogResult ShowMessagebox(string text, params string[] replacers)
             => ShowMessagebox(text, MessageBoxButtons.OK, replacers);
 
-        public static JToken GetJToken(string json) => (JObject)JsonConvert.DeserializeObject(json);
+        /// <summary>
+        /// 根据指定key获取该Json的前缀
+        /// </summary>
+        /// <param name="key">指定key</param>
+        /// <param name="brackets">包围值的符号</param>
+        /// <returns>该Json的前缀</returns>
+        public static string GetJsonPreffix(string key, string brackets)
+        {
+            var result = "";
+
+            if (!key.Contains("%NoKey%"))
+                result += $"\"{key}\":";
+            if (!key.Contains("%NoBrackets%"))
+                result += brackets;
+
+            return result;
+        }
+
+        /// <summary>
+        /// 根据指定key获取该Json的后缀
+        /// </summary>
+        /// <param name="key">指定key</param>
+        /// <param name="brackets">包围值的符号</param>
+        /// <returns>该Json的前缀</returns>
+        public static string GetJsonSuffix(string key, string brackets)
+        {
+            var result = "";
+            
+            if (!key.Contains("%NoBrackets%"))
+                result += brackets;
+
+            return result;
+        }
     }
 }
