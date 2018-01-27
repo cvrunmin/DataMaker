@@ -33,7 +33,6 @@
             // 
             // checkBoxValue
             // 
-            this.checkBoxValue.AutoSize = true;
             this.checkBoxValue.Location = new System.Drawing.Point(-2, 0);
             this.checkBoxValue.Name = "checkBoxValue";
             this.checkBoxValue.Size = new System.Drawing.Size(78, 16);
@@ -50,7 +49,6 @@
             this.Name = "BooleanParser";
             this.Size = new System.Drawing.Size(99, 18);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

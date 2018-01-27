@@ -26,7 +26,6 @@ namespace DataMaker.Parsers
             {
                 frameFileName = value;
                 lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
-                SetSize();
             }
         }
 
@@ -73,10 +72,12 @@ namespace DataMaker.Parsers
             MainForm.GetInstance().IsChanged = true;
         }
 
-        public void SetSize()
+        public void SetSize(int width)
         {
-            Width = upDownValue.Width + lblKey.Width;
-            Height = upDownValue.Height;
+            Width = width;
+            upDownValue.Left = lblKey.Left + lblKey.Width + upDownValue.Margin.Left;
+            upDownValue.Width = Width - lblKey.Left - lblKey.Width - upDownValue.Margin.Left;
+            Height = Math.Max(upDownValue.Height, lblKey.Width);
         }
     }
 }

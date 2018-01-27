@@ -15,14 +15,14 @@ namespace DataMaker
         /// <param name="key">指定key</param>
         public static string Lang(string key)
         {
+            if (key.Contains("%")) return "";
+
             key = key.Replace("/", "_").Replace("\\", "");
 
-            var rm = new System.Resources.ResourceManager("DataMaker.Languages." + "zh_cn", typeof(Resources).Assembly);
+            var rm = new System.Resources.ResourceManager("DataMaker.Languages." +
+                "zh_cn", typeof(Resources).Assembly);
 
-            if (rm.GetString(key) != null)
-            {
-                return rm.GetString(key);
-            }
+            if (rm.GetString(key) != null) return rm.GetString(key);
 
             throw new ApplicationException("No Lang: " + key);
         }

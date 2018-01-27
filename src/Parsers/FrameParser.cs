@@ -31,7 +31,14 @@ namespace DataMaker.Parsers
 
         public ControlCollection PanelControls => mainPanel.Controls;
 
-        public void SetSize() { }
+        public void SetSize(int width)
+        {
+            foreach (var i in PanelControls)
+            {
+                if (i is IParser)
+                    ((IParser)i).SetSize(width);
+            }
+        }
 
         public string Json
         {
@@ -39,17 +46,18 @@ namespace DataMaker.Parsers
             {
                 var json = "";
 
-                // 除去"%NoKey%":
-                if (Key == "%NoKey%")
-                    json = "{";
-                else
-                    json = "\"" + Key + "\":" + "{";
+                // 处理特殊Key
+                if (Key == "%NoKey%") json = "{";
+                else if (Key == "%SameLevel%") { }
+                else json = "\"" + Key + "\":" + "{";
 
+                // 合并所有Parsers的Json
                 foreach (var parser in PanelControls)
                     if (parser is IParser)
                         json += ((IParser)parser).Json + ",";
 
-                json += "}";
+                // 处理特殊Key
+                if (Key != "%SameLevel%") json += "}";
 
                 return json;
             }
@@ -87,20 +95,23 @@ namespace DataMaker.Parsers
                         switch (((JProperty)i).Name)
                         {
                             // NOTE: 新增 Parser 需要在此处增加代码
+                            case "array":
+                                parser = new ArrayParser();
+                                break;
+                            case "boolean":
+                                parser = new BooleanParser();
+                                break;
                             case "frame":
                                 parser = new FrameParser();
-                                break;
-                            case "text":
-                                parser = new TextParser();
-                                break;
-                            case "number":
-                                parser = new NumberParser();
                                 break;
                             case "nullboolean":
                                 parser = new NullBooleanParser();
                                 break;
-                            case "boolean":
-                                parser = new BooleanParser();
+                            case "number":
+                                parser = new NumberParser();
+                                break;
+                            case "text":
+                                parser = new TextParser();
                                 break;
                             default:
                                 continue;
@@ -108,9 +119,14 @@ namespace DataMaker.Parsers
 
                         parser.SetParser(k.ToString());
                         parser.FrameFileName = jobj["json"].ToString();
+
+                        //((Control)parser).Dock = DockStyle.Top;
                         PanelControls.Add((Control)parser);
                     }
             }
+
+            // 设置Parsers的位置
+            SetSize(ClientSize.Width);
         }
     }
 }

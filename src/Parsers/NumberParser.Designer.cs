@@ -44,7 +44,6 @@
             // 
             // upDownValue
             // 
-            this.upDownValue.Dock = System.Windows.Forms.DockStyle.Left;
             this.upDownValue.Location = new System.Drawing.Point(0, 0);
             this.upDownValue.Margin = new System.Windows.Forms.Padding(0);
             this.upDownValue.Name = "upDownValue";
@@ -52,13 +51,13 @@
             this.upDownValue.TabIndex = 1;
             this.upDownValue.ValueChanged += new System.EventHandler(this.upDownValue_ValueChanged);
             // 
-            // UpDownParser
+            // NumberParser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.upDownValue);
             this.Controls.Add(this.lblKey);
-            this.Name = "UpDownParser";
+            this.Name = "NumberParser";
             this.Size = new System.Drawing.Size(67, 21);
             ((System.ComponentModel.ISupportInitialize)(this.upDownValue)).EndInit();
             this.ResumeLayout(false);

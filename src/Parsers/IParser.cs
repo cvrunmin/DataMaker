@@ -27,6 +27,6 @@
         /// <summary>
         /// 设置Parser大小
         /// </summary>
-        void SetSize();
+        void SetSize(int width);
     }
 }

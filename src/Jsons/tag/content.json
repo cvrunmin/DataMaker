@@ -1,6 +1,6 @@
 {
 	"text": [{
-		"key": "%SameLevel%",
+		"key": "%NoKey%",
 		"default": "minecraft:hi"
 	}]
 }

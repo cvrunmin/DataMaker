@@ -27,7 +27,6 @@ namespace DataMaker.Parsers
             {
                 frameFileName = value;
                 lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
-                SetSize();
             }
         }
 
@@ -37,6 +36,8 @@ namespace DataMaker.Parsers
             set
             {
                 values = value;
+                listValues.Items.Clear();
+                foreach (var i in Values) listValues.Items.Add(i);
             }
         }
 
@@ -54,9 +55,9 @@ namespace DataMaker.Parsers
             set
             {
                 var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                if (jobj["key"] != null)
+                if (jobj[Key] != null)
                 {
-                    var jary = (JArray)jobj["key"];
+                    var jary = (JArray)jobj[Key];
                     Values = jary.Values<string>().ToArray();
                 }
             }
@@ -66,16 +67,29 @@ namespace DataMaker.Parsers
         {
             var jobj = JsonConvert.DeserializeObject<JObject>(json);
             Key = jobj["key"].ToString();
-            frameRoot.SetParser(File.ReadAllText(jobj["json"].ToString()));
+            var rootParserJson = 
+$@"{{
+    ""key"": ""%SameLevel%"",
+    ""json"": ""{jobj["json"].ToString()}""
+}}";
+            frameRoot.SetParser(rootParserJson);
         }
 
-        // TODO:
+        //TODO:
         //      MainForm.GetInstance().IsChanged = true
 
-        public void SetSize()
+        public void SetSize(int width)
         {
-            //Width = upDownValue.Width + lblKey.Width;
-            //Height = upDownValue.Height;
+            Width = width;
+            // 左侧大小调整
+            listValues.Width = Width / 3;
+            btnAdd.Width = btnEdit.Width = btnRemove.Width = (listValues.Width - 6) / 3;
+            btnRemove.Left = btnAdd.Left + btnAdd.Width + btnRemove.Margin.Left;
+            btnEdit.Left = btnRemove.Left + btnRemove.Width + btnEdit.Margin.Left;
+
+            // 右侧大小调整
+            frameRoot.Width = Width / 3 * 2;
+            frameRoot.Left = listValues.Left + listValues.Width + frameRoot.Margin.Left;
         }
 
         private void listValues_DoubleClick(object sender, System.EventArgs e)

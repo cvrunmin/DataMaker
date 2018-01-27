@@ -26,7 +26,6 @@ namespace DataMaker.Parsers
             {
                 frameFileName = value;
                 checkBoxValue.Text = Lang("key_" + FrameFileName + "_" + Key);
-                SetSize();
             }
         }
 
@@ -65,10 +64,10 @@ namespace DataMaker.Parsers
             MainForm.GetInstance().IsChanged = true;
         }
 
-        public void SetSize()
+        public void SetSize(int width)
         {
-            Width = checkBoxValue.Width;
-            Height = checkBoxValue.Height;
+            Width = width;
+            checkBoxValue.Width = Width;
         }
     }
 }

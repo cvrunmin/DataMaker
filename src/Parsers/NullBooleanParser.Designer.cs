@@ -56,8 +56,8 @@
             // 
             // rbtnNull
             // 
-            resources.ApplyResources(this.rbtnNull, "rbtnNull");
             this.rbtnNull.Checked = true;
+            resources.ApplyResources(this.rbtnNull, "rbtnNull");
             this.rbtnNull.Name = "rbtnNull";
             this.rbtnNull.TabStop = true;
             this.rbtnNull.UseVisualStyleBackColor = true;

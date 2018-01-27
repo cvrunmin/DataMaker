@@ -25,7 +25,6 @@ namespace DataMaker.Parsers
             {
                 frameFileName = value;
                 lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
-                SetSize();
             }
         }
         public bool? Value
@@ -80,10 +79,14 @@ namespace DataMaker.Parsers
             MainForm.GetInstance().IsChanged = true;
         }
 
-        public void SetSize()
+        public void SetSize(int width)
         {
-            Width = rbtnTrue.Width + rbtnFalse.Width + rbtnNull.Width+ lblKey.Width;
-            Height = rbtnTrue.Height;
+            Width = width;
+            rbtnTrue.Width = rbtnFalse.Width = rbtnNull.Width = 
+                (Width - lblKey.Width - rbtnTrue.Margin.Left * 3) / 3;
+            rbtnTrue.Left = lblKey.Left + lblKey.Width + rbtnTrue.Margin.Left;
+            rbtnFalse.Left = rbtnTrue.Left + rbtnTrue.Width + rbtnFalse.Margin.Left;
+            rbtnNull.Left = rbtnFalse.Left + rbtnFalse.Width + rbtnNull.Margin.Left;
         }
     }
 }

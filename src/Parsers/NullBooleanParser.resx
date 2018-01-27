@@ -121,10 +121,6 @@
   <data name="lblKey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lblKey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lblKey.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -150,12 +146,6 @@
   <data name="&gt;&gt;lblKey.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="rbtnTrue.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbtnTrue.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
-  </data>
   <data name="rbtnTrue.Location" type="System.Drawing.Point, System.Drawing">
     <value>41, 0</value>
   </data>
@@ -179,12 +169,6 @@
   </data>
   <data name="&gt;&gt;rbtnTrue.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="rbtnFalse.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbtnFalse.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
   </data>
   <data name="rbtnFalse.Location" type="System.Drawing.Point, System.Drawing">
     <value>76, 0</value>
@@ -210,12 +194,7 @@
   <data name="&gt;&gt;rbtnFalse.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="rbtnNull.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbtnNull.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Left</value>
-  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="rbtnNull.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
