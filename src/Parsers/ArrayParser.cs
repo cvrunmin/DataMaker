@@ -36,8 +36,12 @@ namespace DataMaker.Parsers
             set
             {
                 values = value;
+                var selectedIndex = listValues.SelectedIndex;
+
                 listValues.Items.Clear();
                 foreach (var i in Values) listValues.Items.Add(i);
+
+                listValues.SelectedIndex = selectedIndex;
             }
         }
 
@@ -98,12 +102,27 @@ $@"{{
             frameRoot.Left = listValues.Left + listValues.Width + frameRoot.Margin.Left;
         }
 
-        private void listValues_DoubleClick(object sender, System.EventArgs e)
+        private void listValues_DoubleClick(object sender, EventArgs e)
         {
-            if (listValues.SelectedIndex >= 0)
-            {
-                frameRoot.Json = Values[listValues.SelectedIndex];
-            }
+            SaveEditedValue();
+            // 加载选中的Value到Parser
+            if (listValues.SelectedIndex >= 0) frameRoot.Json = Values[editedIndex];
+        }
+
+        private int editedIndex;
+
+        /// <summary>
+        /// 保存正在编辑的Value
+        /// </summary>
+        private void SaveEditedValue()
+        {
+            // 用临时变量values来修改，再把values赋值给Values
+            // 这样可以出发Values的set访问器
+            var values = Values;
+            values[editedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
+            Values = values;
+
+            editedIndex = listValues.SelectedIndex;
         }
     }
 }

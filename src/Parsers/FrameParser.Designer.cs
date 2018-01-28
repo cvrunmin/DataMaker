@@ -50,6 +50,7 @@
             this.lblKey.Name = "lblKey";
             this.lblKey.Size = new System.Drawing.Size(0, 23);
             this.lblKey.TabIndex = 0;
+            this.lblKey.Text = "编辑器";
             // 
             // FrameParser
             // 

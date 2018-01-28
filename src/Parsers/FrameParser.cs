@@ -64,13 +64,12 @@ namespace DataMaker.Parsers
                     var json = value;
                     if (Json != null)
                     {
-                        // 补全Json为能够让Parser读取的格式
-                        JObject jObj = new JObject();
-                        if (JsonConvert.DeserializeObject<JToken>(json) is JObject)
-                            jObj = JsonConvert.DeserializeObject<JObject>(json);
-                        else if (JsonConvert.DeserializeObject<JToken>(json) is JValue)
+                        var jObj = new JObject();
+                        if (JsonConvert.DeserializeObject<JToken>(json) is JValue)
                             jObj = JsonConvert.DeserializeObject<JObject>(
                                 "{\"%NoKey%\":" + json + "}");
+                        else if (JsonConvert.DeserializeObject<JToken>(json) is JObject)
+                            jObj = JsonConvert.DeserializeObject<JObject>(json);
                         //jObj = JsonConvert.DeserializeObject<JValue>(json);
 
                         foreach (var i in PanelControls)
