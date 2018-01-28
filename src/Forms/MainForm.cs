@@ -8,7 +8,7 @@ using System.Linq;
 using System.Windows.Forms;
 using static DataMaker.Tools;
 
-namespace DataMaker
+namespace DataMaker.Forms
 {
     public partial class MainForm : Form
     {

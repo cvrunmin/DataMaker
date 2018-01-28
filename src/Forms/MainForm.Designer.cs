@@ -1,4 +1,4 @@
-﻿namespace DataMaker
+﻿namespace DataMaker.Forms
 {
     partial class MainForm
     {

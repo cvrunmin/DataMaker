@@ -13,13 +13,13 @@ namespace DataMaker.Forms
             InitializeComponent();
 
             DarkTheme.Initialize(this);
-
-            frameParserRoot.ValueChanged += FrameParserRoot_ValueChanged;
-        }
-
-        private void FrameParserRoot_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isSettingJson) MainForm.GetInstance().IsChanged = true;
+            
+            // 你tm有本事写在一行啊！！！
+            frameParserRoot.ValueChanged +=
+                (object sender, EventArgs e) => 
+                {
+                    if (!isSettingJson) MainForm.GetInstance().IsChanged = true;
+                };
         }
 
         public void SetEditor(string json) => frameParserRoot.SetParser(json);

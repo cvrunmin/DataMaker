@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataMaker.Forms;
+using System;
 using System.Windows.Forms;
 
 namespace DataMaker
