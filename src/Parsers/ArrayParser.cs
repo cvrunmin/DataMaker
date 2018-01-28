@@ -11,11 +11,20 @@ namespace DataMaker.Parsers
     {
         private string frameFileName;
         private List<string> values;
+        private bool isSettingValue;
+
+        public event ValueChangedHandler ValueChanged;
 
         public ArrayParser()
         {
             InitializeComponent();
             DarkTheme.Initialize(this);
+
+            frameRoot.ValueChanged +=
+                (object sender, EventArgs e) =>
+                {
+                    if (!isSettingValue) SaveEditedValue();
+                };
         }
 
         public string Key { get; set; }
@@ -30,7 +39,7 @@ namespace DataMaker.Parsers
             }
         }
 
-        public List<string> Values
+        private List<string> Values
         {
             get => values;
             set
@@ -79,7 +88,7 @@ namespace DataMaker.Parsers
                     Values = values;
                 }
                 // 开始编辑第0个
-                EditedIndex = 0;
+                listValues.SelectedIndex = 0;
             }
         }
 
@@ -95,9 +104,6 @@ $@"{{
             frameRoot.SetParser(rootParserJson);
         }
 
-        //TODO:
-        //      MainForm.GetInstance().IsChanged = true
-
         public void SetSize(int width)
         {
             Width = width;
@@ -111,28 +117,11 @@ $@"{{
             frameRoot.SetSize(Width / 3 * 2);
             frameRoot.Left = listValues.Left + listValues.Width + frameRoot.Margin.Left;
         }
-
-        private void listValues_DoubleClick(object sender, EventArgs e)
+        
+        private void listValues_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // 保存当前Value
-            SaveEditedValue();
-            // 加载选中的Value
-            EditedIndex = listValues.SelectedIndex;
-        }
-
-        private int editedIndex;
-
-        public event ValueChangedHandler ValueChanged;
-
-        private int EditedIndex
-        {
-            get => editedIndex;
-            set
-            {
-                editedIndex = value;
-                if (Values.Count > EditedIndex && EditedIndex >= 0)
-                    frameRoot.Json = Values[EditedIndex];
-            }
+            SetButtons();
+            EditSelectedValue();
         }
 
         /// <summary>
@@ -143,8 +132,60 @@ $@"{{
             // 用临时变量values来修改，再把values赋值给Values
             // 这样可以触发Values的setter
             var values = Values;
-            values[EditedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
+            values[listValues.SelectedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
             Values = values;
         }
+
+        /// <summary>
+        /// 编辑选中的Value
+        /// </summary>
+        private void EditSelectedValue()
+        {
+            isSettingValue = true;
+            if (Values.Count > listValues.SelectedIndex && listValues.SelectedIndex >= 0)
+                frameRoot.Json = Values[listValues.SelectedIndex];
+            isSettingValue = false;
+        }
+
+        /// <summary>
+        /// 设置按钮可用性
+        /// </summary>
+        private void SetButtons()
+        {
+            if (listValues.SelectedIndex >= 0)
+            {
+                btnRemove.Enabled = true;
+                btnEdit.Enabled = true;
+            }
+            else
+            {
+                btnRemove.Enabled = false;
+                btnEdit.Enabled = false;
+            }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            // 赋一次值，这样会刷新列表
+            var values = Values;
+            values.Insert(listValues.SelectedIndex, "");
+            Values = values;
+
+            // 赋一次值，这样会读取新增的Value
+            listValues.SelectedIndex = listValues.SelectedIndex;
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            // 赋一次值，这样会刷新列表
+            var values = Values;
+            values.Remove(Values[listValues.SelectedIndex]);
+            Values = values;
+
+            // 赋一次值，这样谁都不会读取
+            listValues.SelectedIndex = -1;
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e) => EditSelectedValue();
     }
 }

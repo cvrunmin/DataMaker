@@ -42,25 +42,28 @@
             this.listValues.FormattingEnabled = true;
             resources.ApplyResources(this.listValues, "listValues");
             this.listValues.Name = "listValues";
-            this.listValues.DoubleClick += new System.EventHandler(this.listValues_DoubleClick);
+            this.listValues.SelectedIndexChanged += new System.EventHandler(this.listValues_SelectedIndexChanged);
             // 
             // btnAdd
             // 
             resources.ApplyResources(this.btnAdd, "btnAdd");
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnRemove
             // 
             resources.ApplyResources(this.btnRemove, "btnRemove");
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // btnEdit
             // 
             resources.ApplyResources(this.btnEdit, "btnEdit");
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // frameRoot
             // 
