@@ -129,8 +129,7 @@ namespace DataMaker.Parsers
                         // Amazing lambda【
                         parser.ValueChanged += 
                             (object sender, EventArgs e) => ValueChanged?.Invoke(sender, e);
-
-                        //((Control)parser).Dock = DockStyle.Top;
+                        
                         PanelControls.Add((Control)parser);
                     }
             }

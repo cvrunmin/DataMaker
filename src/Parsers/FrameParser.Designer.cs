@@ -57,7 +57,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.AutoSize = true;
             this.Controls.Add(this.mainPanel);
             this.Name = "FrameParser";
             this.Size = new System.Drawing.Size(342, 253);
