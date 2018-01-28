@@ -22,7 +22,7 @@ namespace DataMaker.Parsers
                     lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
             }
         }
-        public string Key { get; set; }
+        public string Key { get; set; } /*= "%NoKey%";*/
 
         public FrameParser()
         {
@@ -65,11 +65,11 @@ namespace DataMaker.Parsers
                     if (Json != null)
                     {
                         var jObj = new JObject();
-                        if (JsonConvert.DeserializeObject<JToken>(json) is JValue)
+                        if (JsonConvert.DeserializeObject<JToken>(json) is JObject)
+                            jObj = JsonConvert.DeserializeObject<JObject>(json);
+                        else if(JsonConvert.DeserializeObject<JToken>(json) is JValue)
                             jObj = JsonConvert.DeserializeObject<JObject>(
                                 "{\"%NoKey%\":" + json + "}");
-                        else if (JsonConvert.DeserializeObject<JToken>(json) is JObject)
-                            jObj = JsonConvert.DeserializeObject<JObject>(json);
                         //jObj = JsonConvert.DeserializeObject<JValue>(json);
 
                         foreach (var i in PanelControls)
