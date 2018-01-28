@@ -1343,77 +1343,86 @@ $@"{{
 
         private void tvwFiles_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            // 取消命名 后续命名由代码手动实现
-            e.CancelEdit = true;
-
-            if (e.Label != null && e.Label != e.Node.Text)
+            try
             {
-                // 确实改名了
+                // 取消命名 后续命名由代码手动实现
+                e.CancelEdit = true;
 
-                if (!IsNameLegal(e.Label))
+                if (e.Label != null && e.Label != e.Node.Text)
                 {
-                    MessageBox.Show(Lang("formmain_msgbox_notalegalname").Replace("{0}", e.Label));
-                }
-                else
-                {
-                    // 合法文件名
+                    // 确实改名了
 
-                    var before = GetPath(e.Node);
-                    var backup = e.Node.Text;
-                    var isFile = IsFile(e.Node);
-                    e.Node.Text = e.Label;
-                    var after = GetPath(e.Node);
-
-                    if (isFile)
+                    if (!IsNameLegal(e.Label))
                     {
-                        // 重命名文件
-
-                        if (File.Exists(after))
-                        {
-                            // 命名后的文件存在 这可坏了
-                            MessageBox.Show(Lang("filetree_msgbox_exist").Replace("{0}", e.Node.Text));
-                            e.Node.Text = backup;
-                        }
-                        else if (File.Exists(before))
-                        {
-                            // 命名前的文件存在 直接重命名
-                            File.Move(before, after);
-                        }
-                        else
-                        {
-                            // 命名前的文件并不存在 创建命名后的目录
-                            File.WriteAllText(after, "");
-                        }
+                        MessageBox.Show(Lang("filetree_msgbox_notalegalname").Replace("{0}", e.Label));
                     }
                     else
                     {
-                        // 重命名目录
+                        // 合法文件名
 
-                        if (Directory.Exists(after))
+                        var before = GetPath(e.Node);
+                        var backup = e.Node.Text;
+                        var isFile = IsFile(e.Node);
+                        e.Node.Text = e.Label;
+                        var after = GetPath(e.Node);
+
+                        if (isFile)
                         {
-                            // 命名后的目录存在 这可坏了
-                            MessageBox.Show(Lang("filetree_msgbox_exist").Replace("{0}", e.Node.Text));
-                            e.Node.Text = backup;
-                        }
-                        else if (Directory.Exists(before))
-                        {
-                            // 命名前的目录存在 直接重命名
-                            Directory.Move(before, after);
+                            // 重命名文件
+
+                            if (File.Exists(after))
+                            {
+                                // 命名后的文件存在 这可坏了
+                                MessageBox.Show(Lang("filetree_msgbox_exist").Replace("{0}", e.Node.Text));
+                                e.Node.Text = backup;
+                            }
+                            else if (File.Exists(before))
+                            {
+                                // 命名前的文件存在 直接重命名
+                                File.Move(before, after);
+                            }
+                            else
+                            {
+                                // 命名前的文件并不存在 创建命名后的文件
+                                File.WriteAllText(after, "");
+                            }
                         }
                         else
                         {
-                            // 命名前的目录并不存在 创建命名后的目录
-                            Directory.CreateDirectory(after);
+                            // 重命名目录
+
+                            if (Directory.Exists(after))
+                            {
+                                // 命名后的目录存在 这可坏了
+                                MessageBox.Show(Lang("filetree_msgbox_exist").Replace("{0}", e.Node.Text));
+                                e.Node.Text = backup;
+                            }
+                            else if (Directory.Exists(before))
+                            {
+                                // 命名前的目录存在 直接重命名
+                                Directory.Move(before, after);
+                            }
+                            else
+                            {
+                                // 命名前的目录并不存在 创建命名后的目录
+                                Directory.CreateDirectory(after);
+                            }
+                            InitializeNode(e.Node, false);
                         }
-                        InitializeNode(e.Node, false);
                     }
                 }
             }
-
-            if (isAddingFolder)
+            catch (Exception ex)
             {
-                RefreshItems();
-                isAddingFolder = false;
+                ShowMessagebox(ex.Message);
+            }
+            finally
+            {
+                if (isAddingFolder)
+                {
+                    RefreshItems();
+                    isAddingFolder = false;
+                }
             }
         }
 

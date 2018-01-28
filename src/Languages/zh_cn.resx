@@ -194,6 +194,12 @@
   <data name="filetree_msgbox_suretodelete" xml:space="preserve">
     <value>你确定要删除 {0} ？</value>
   </data>
+  <data name="filetree_msgbox_notadatapack" xml:space="preserve">
+    <value>{0} 不是空的文件夹，也不像一个数据包，是否继续？</value>
+  </data>
+  <data name="filetree_msgbox_notalegalname" xml:space="preserve">
+    <value>文件名 {0} 不合法，文件名只能包含小写字母、数字、下划线“_” 和 横线“-”。不建议使用拼音</value>
+  </data>
   <data name="filetree_paste" xml:space="preserve">
     <value>粘贴</value>
   </data>
@@ -212,16 +218,9 @@
   <data name="filetree_rename" xml:space="preserve">
     <value>重命名</value>
   </data>
-  <data name="filetree_msgbox_notadatapack" xml:space="preserve">
-    <value>{0} 不是空的文件夹，也不像一个数据包，是否继续？</value>
-  </data>
 
-  
   <!--MainForm-->
 
-  <data name="mainform_msgbox_notalegalname" xml:space="preserve">
-    <value>文件名 {0} 不合法，文件名只能包含小写字母、数字、下划线“_” 和 横线“-”。不建议使用拼音</value>
-  </data>
   <data name="mainform_msgbox_exportzipsuccessfully" xml:space="preserve">
     <value>zip文件已成功导出到 {0}</value>
   </data>

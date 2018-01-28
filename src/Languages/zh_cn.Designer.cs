@@ -214,6 +214,15 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
+        ///   查找类似 文件名 {0} 不合法，文件名只能包含小写字母、数字、下划线“_” 和 横线“-”。不建议使用拼音 的本地化字符串。
+        /// </summary>
+        internal static string filetree_msgbox_notalegalname {
+            get {
+                return ResourceManager.GetString("filetree_msgbox_notalegalname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 你确定要删除 {0} ？ 的本地化字符串。
         /// </summary>
         internal static string filetree_msgbox_suretodelete {
@@ -444,15 +453,6 @@ namespace DataMaker.Languages {
         internal static string mainform_msgbox_exportzipsuccessfully {
             get {
                 return ResourceManager.GetString("mainform_msgbox_exportzipsuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 文件名 {0} 不合法，文件名只能包含小写字母、数字、下划线“_” 和 横线“-”。不建议使用拼音 的本地化字符串。
-        /// </summary>
-        internal static string mainform_msgbox_notalegalname {
-            get {
-                return ResourceManager.GetString("mainform_msgbox_notalegalname", resourceCulture);
             }
         }
         
