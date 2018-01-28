@@ -11,6 +11,8 @@ namespace DataMaker.Parsers
         private string frameFileName;
         private string value;
 
+        public event ValueChangedHandler ValueChanged;
+
         public TextParser()
         {
             InitializeComponent();
@@ -35,8 +37,8 @@ namespace DataMaker.Parsers
             set
             {
                 this.value = value;
+                ValueChanged(this, new EventArgs());
                 textBoxValue.Text = value;
-                MainForm.GetInstance().IsChanged = true;
             }
         }
 

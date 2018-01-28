@@ -17,6 +17,8 @@ namespace DataMaker.Parsers
         private string frameFileName;
         private bool? value;
 
+        public event ValueChangedHandler ValueChanged;
+
         public string Key { get; set; }
         public string FrameFileName
         {
@@ -33,6 +35,7 @@ namespace DataMaker.Parsers
             set
             {
                 this.value = value;
+                ValueChanged(this, new EventArgs());
                 if (Value.HasValue)
                     if (Value.Value)
                         rbtnTrue.Checked = true;
@@ -84,7 +87,6 @@ namespace DataMaker.Parsers
                 Value = false;
             else if (rbtnNull.Checked)
                 Value = null;
-            MainForm.GetInstance().IsChanged = true;
         }
 
         public void SetSize(int width)

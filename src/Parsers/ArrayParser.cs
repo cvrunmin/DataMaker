@@ -36,11 +36,14 @@ namespace DataMaker.Parsers
             set
             {
                 values = value;
+                ValueChanged(this, new EventArgs());
                 var selectedIndex = listValues.SelectedIndex;
 
+                // 把Values加入listValues
                 listValues.Items.Clear();
                 foreach (var i in Values) listValues.Items.Add(i);
 
+                // 恢复选择的索引
                 listValues.SelectedIndex = selectedIndex;
             }
         }
@@ -49,11 +52,16 @@ namespace DataMaker.Parsers
         {
             get
             {
-                var result = GetJsonPreffix(Key, "[");
+                var result = "";
 
-                if (Values != null) foreach(var i in Values) result += i + ",";
+                if (Key != null)
+                {
+                    result = GetJsonPreffix(Key, "[");
 
-                result += GetJsonSuffix(Key, "]");
+                    if (Values != null) foreach (var i in Values) result += i + ",";
+
+                    result += GetJsonSuffix(Key, "]");
+                }
 
                 return result;
             }
@@ -70,6 +78,8 @@ namespace DataMaker.Parsers
                         values.Add(GetLeftBrackets(i) + i.ToString() + GetRightBrackets(i));
                     Values = values;
                 }
+                // 开始编辑第0个
+                EditedIndex = 0;
             }
         }
 
@@ -77,7 +87,7 @@ namespace DataMaker.Parsers
         {
             var jobj = JsonConvert.DeserializeObject<JObject>(json);
             Key = jobj["key"].ToString();
-            var rootParserJson = 
+            var rootParserJson =
 $@"{{
     ""key"": ""%NoKey%%NoBrackets%"",
     ""json"": ""{jobj["json"].ToString()}""
@@ -104,12 +114,26 @@ $@"{{
 
         private void listValues_DoubleClick(object sender, EventArgs e)
         {
+            // 保存当前Value
             SaveEditedValue();
-            // 加载选中的Value到Parser
-            if (listValues.SelectedIndex >= 0) frameRoot.Json = Values[editedIndex];
+            // 加载选中的Value
+            EditedIndex = listValues.SelectedIndex;
         }
 
         private int editedIndex;
+
+        public event ValueChangedHandler ValueChanged;
+
+        private int EditedIndex
+        {
+            get => editedIndex;
+            set
+            {
+                editedIndex = value;
+                if (Values.Count > EditedIndex && EditedIndex >= 0)
+                    frameRoot.Json = Values[EditedIndex];
+            }
+        }
 
         /// <summary>
         /// 保存正在编辑的Value
@@ -117,12 +141,10 @@ $@"{{
         private void SaveEditedValue()
         {
             // 用临时变量values来修改，再把values赋值给Values
-            // 这样可以出发Values的set访问器
+            // 这样可以触发Values的setter
             var values = Values;
-            values[editedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
+            values[EditedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
             Values = values;
-
-            editedIndex = listValues.SelectedIndex;
         }
     }
 }

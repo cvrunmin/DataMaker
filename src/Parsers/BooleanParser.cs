@@ -11,6 +11,8 @@ namespace DataMaker.Parsers
         private string frameFileName;
         private bool value;
 
+        public event ValueChangedHandler ValueChanged;
+
         public BooleanParser()
         {
             InitializeComponent();
@@ -35,6 +37,7 @@ namespace DataMaker.Parsers
             set
             {
                 this.value = value;
+                ValueChanged(this, new EventArgs());
                 checkBoxValue.Checked = Value;
             }
         }
@@ -70,7 +73,6 @@ namespace DataMaker.Parsers
         private void checkBoxValue_CheckedChanged(object sender, EventArgs e)
         {
             Value = checkBoxValue.Checked;
-            MainForm.GetInstance().IsChanged = true;
         }
 
         public void SetSize(int width)

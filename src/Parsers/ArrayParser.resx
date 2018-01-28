@@ -153,7 +153,7 @@
     <value>1</value>
   </data>
   <data name="btnAdd.Text" xml:space="preserve">
-    <value>＋</value>
+    <value>添加</value>
   </data>
   <data name="&gt;&gt;btnAdd.Name" xml:space="preserve">
     <value>btnAdd</value>
@@ -184,7 +184,7 @@
     <value>2</value>
   </data>
   <data name="btnRemove.Text" xml:space="preserve">
-    <value>-</value>
+    <value>删除</value>
   </data>
   <data name="&gt;&gt;btnRemove.Name" xml:space="preserve">
     <value>btnRemove</value>
@@ -227,6 +227,9 @@
   </data>
   <data name="&gt;&gt;btnEdit.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="frameRoot.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="frameRoot.Font" type="System.Drawing.Font, System.Drawing">
     <value>微软雅黑, 12pt</value>

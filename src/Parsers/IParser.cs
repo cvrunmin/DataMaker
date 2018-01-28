@@ -1,4 +1,7 @@
-﻿namespace DataMaker.Parsers
+﻿using System;
+using static DataMaker.Tools;
+
+namespace DataMaker.Parsers
 {
     public interface IParser
     {
@@ -28,5 +31,10 @@
         /// 设置Parser大小
         /// </summary>
         void SetSize(int width);
+
+        /// <summary>
+        /// 值更改时触发
+        /// </summary>
+        event ValueChangedHandler ValueChanged;
     }
 }

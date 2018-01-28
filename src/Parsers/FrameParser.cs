@@ -12,6 +12,8 @@ namespace DataMaker.Parsers
     {
         private string frameFileName;
 
+        public event ValueChangedHandler ValueChanged;
+
         public string FrameFileName
         {
             get => frameFileName;
@@ -35,10 +37,7 @@ namespace DataMaker.Parsers
         public void SetSize(int width)
         {
             Width = width;
-            foreach (var i in PanelControls)
-            {
-                if (i is IParser) ((IParser)i).SetSize(width);
-            }
+            foreach (var i in PanelControls) if (i is IParser) ((IParser)i).SetSize(width);
         }
 
         public string Json
@@ -67,7 +66,7 @@ namespace DataMaker.Parsers
                         var jObj = new JObject();
                         if (JsonConvert.DeserializeObject<JToken>(json) is JObject)
                             jObj = JsonConvert.DeserializeObject<JObject>(json);
-                        else if(JsonConvert.DeserializeObject<JToken>(json) is JValue)
+                        else if (JsonConvert.DeserializeObject<JToken>(json) is JValue)
                             jObj = JsonConvert.DeserializeObject<JObject>(
                                 "{\"%NoKey%\":" + json + "}");
                         //jObj = JsonConvert.DeserializeObject<JValue>(json);
@@ -126,6 +125,10 @@ namespace DataMaker.Parsers
 
                         parser.SetParser(k.ToString());
                         parser.FrameFileName = jobj["json"].ToString();
+                        // 当 parser 的 ValueChanged 事件触发时触发当前 frame 的 ValueChanged 事件
+                        // Amazing lambda【
+                        parser.ValueChanged += 
+                            (object sender, EventArgs e) => ValueChanged(sender, e);
 
                         //((Control)parser).Dock = DockStyle.Top;
                         PanelControls.Add((Control)parser);

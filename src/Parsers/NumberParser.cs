@@ -11,6 +11,8 @@ namespace DataMaker.Parsers
         private string frameFileName;
         private decimal value;
 
+        public event ValueChangedHandler ValueChanged;
+
         public NumberParser()
         {
             InitializeComponent();
@@ -35,6 +37,7 @@ namespace DataMaker.Parsers
             set
             {
                 this.value = value;
+                ValueChanged(this, new EventArgs());
                 upDownValue.Value = value;
             }
         }
@@ -78,7 +81,6 @@ namespace DataMaker.Parsers
             if (upDownValue.Value < Min) upDownValue.Value = Min;
             else if (upDownValue.Value > Max) upDownValue.Value = Max;
             else Value = upDownValue.Value;
-            MainForm.GetInstance().IsChanged = true;
         }
 
         public void SetSize(int width)

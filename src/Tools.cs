@@ -9,6 +9,8 @@ namespace DataMaker
 {
     public class Tools
     {
+        public delegate void ValueChangedHandler(object sender, EventArgs e);
+
         /// <summary>
         /// 依据指定key从资源文件读取文字
         /// </summary>
