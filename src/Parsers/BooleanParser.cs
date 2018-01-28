@@ -76,7 +76,7 @@ namespace DataMaker.Parsers
         public void SetSize(int width)
         {
             Width = width;
-            checkBoxValue.Width = Width;
+            checkBoxValue.Width = Width - 50;
         }
     }
 }

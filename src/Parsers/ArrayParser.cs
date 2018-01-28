@@ -47,7 +47,7 @@ namespace DataMaker.Parsers
             {
                 var result = GetJsonPreffix(Key, "[");
 
-                foreach (var i in Values) result += i + ",";
+                if (Values != null) foreach(var i in Values) result += i + ",";
 
                 result += GetJsonSuffix(Key, "]");
 
@@ -94,7 +94,7 @@ $@"{{
             btnEdit.Left = btnRemove.Left + btnRemove.Width + btnEdit.Margin.Left;
 
             // 右侧大小调整
-            frameRoot.Width = Width / 3 * 2;
+            frameRoot.SetSize(Width / 3 * 2);
             frameRoot.Left = listValues.Left + listValues.Width + frameRoot.Margin.Left;
         }
 

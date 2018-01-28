@@ -34,6 +34,7 @@ namespace DataMaker.Parsers
 
         public void SetSize(int width)
         {
+            Width = width;
             foreach (var i in PanelControls)
             {
                 if (i is IParser) ((IParser)i).SetSize(width);
@@ -47,9 +48,10 @@ namespace DataMaker.Parsers
                 var result = GetJsonPreffix(Key, "{");
 
                 // 合并所有Parsers的Json
-                foreach (var parser in PanelControls)
-                    if (parser is IParser)
-                        result += ((IParser)parser).Json + ",";
+                if (PanelControls != null)
+                    foreach (var parser in PanelControls)
+                        if (parser is IParser)
+                            result += ((IParser)parser).Json + ",";
 
                 result += GetJsonSuffix(Key, "}");
 
@@ -58,16 +60,19 @@ namespace DataMaker.Parsers
             set
             {
                 var json = value;
-                if (Key.Contains("%NoBrackets%")) json = "{" + json + "}";
-                if (Key.Contains("%NoKey%")) json = "\"%NoKey%\"" + json;
-                var jObj = JsonConvert.DeserializeObject<JObject>(value);
-                foreach (var i in PanelControls)
+                if (Json != null)
                 {
-                    if (i is IParser)
-                        if (i is FrameParser)
-                            ((IParser)i).Json = jObj[((IParser)i).Key].ToString();
-                        else
-                            ((IParser)i).Json = jObj.ToString();
+                    if (Key.Contains("%NoBrackets%")) json = "{" + json + "}";
+                    if (Key.Contains("%NoKey%")) json = "\"%NoKey%\"" + json;
+                    var jObj = JsonConvert.DeserializeObject<JObject>(value);
+                    foreach (var i in PanelControls)
+                    {
+                        if (i is IParser)
+                            if (i is FrameParser)
+                                ((IParser)i).Json = jObj[((IParser)i).Key].ToString();
+                            else
+                                ((IParser)i).Json = jObj.ToString();
+                    }
                 }
             }
         }

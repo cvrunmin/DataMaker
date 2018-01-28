@@ -77,7 +77,7 @@ namespace DataMaker.Parsers
         {
             Width = width;
             textBoxValue.Left = lblKey.Left + lblKey.Width + textBoxValue.Margin.Left;
-            textBoxValue.Width = Width - lblKey.Left - lblKey.Width - textBoxValue.Margin.Left;
+            textBoxValue.Width = Width - lblKey.Left - lblKey.Width - textBoxValue.Margin.Left - 50;
             Height = Math.Max(textBoxValue.Height, lblKey.Height);
         }
     }

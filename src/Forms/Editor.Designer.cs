@@ -37,6 +37,7 @@
             resources.ApplyResources(this.frameParserRoot, "frameParserRoot");
             this.frameParserRoot.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.frameParserRoot.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
+            this.frameParserRoot.FrameFileName = null;
             this.frameParserRoot.Key = null;
             this.frameParserRoot.Name = "frameParserRoot";
             // 
@@ -45,6 +46,7 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.frameParserRoot);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Editor";
             this.Resize += new System.EventHandler(this.Editor_Resize);
