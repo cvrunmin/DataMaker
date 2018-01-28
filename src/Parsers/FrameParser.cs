@@ -128,7 +128,7 @@ namespace DataMaker.Parsers
                         // 当 parser 的 ValueChanged 事件触发时触发当前 frame 的 ValueChanged 事件
                         // Amazing lambda【
                         parser.ValueChanged += 
-                            (object sender, EventArgs e) => ValueChanged(sender, e);
+                            (object sender, EventArgs e) => ValueChanged?.Invoke(sender, e);
 
                         //((Control)parser).Dock = DockStyle.Top;
                         PanelControls.Add((Control)parser);

@@ -14,16 +14,12 @@ namespace DataMaker.Forms
 
             DarkTheme.Initialize(this);
 
-            // FIXME:
-            // 你tm还知道每行100字符啊！
-            // 有本事写在一行啊！！！
-            // 真tm的乱
-            frameParserRoot.ValueChanged +=
-                (object sender, EventArgs e) =>
-                {
-                    if (!isSettingJson) MainForm.GetInstance().IsChanged = true;
-                    else isSettingJson = false;
-                };
+            frameParserRoot.ValueChanged += FrameParserRoot_ValueChanged;
+        }
+
+        private void FrameParserRoot_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isSettingJson) MainForm.GetInstance().IsChanged = true;
         }
 
         public void SetEditor(string json) => frameParserRoot.SetParser(json);
@@ -32,8 +28,9 @@ namespace DataMaker.Forms
         {
             set
             {
-                frameParserRoot.Json = value;
                 isSettingJson = true;
+                frameParserRoot.Json = value;
+                isSettingJson = false;
             }
             get
             {
@@ -49,7 +46,7 @@ namespace DataMaker.Forms
             }
         }
 
-        private void Editor_Resize(object sender, EventArgs e) 
+        private void Editor_Resize(object sender, EventArgs e)
             => frameParserRoot.SetSize(ClientSize.Width);
     }
 }

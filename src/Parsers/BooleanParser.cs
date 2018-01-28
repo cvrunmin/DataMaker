@@ -37,7 +37,7 @@ namespace DataMaker.Parsers
             set
             {
                 this.value = value;
-                ValueChanged(this, new EventArgs());
+                ValueChanged?.Invoke(this, new EventArgs());
                 checkBoxValue.Checked = Value;
             }
         }

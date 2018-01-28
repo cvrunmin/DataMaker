@@ -35,7 +35,7 @@ namespace DataMaker.Parsers
             set
             {
                 this.value = value;
-                ValueChanged(this, new EventArgs());
+                ValueChanged?.Invoke(this, new EventArgs());
                 if (Value.HasValue)
                     if (Value.Value)
                         rbtnTrue.Checked = true;

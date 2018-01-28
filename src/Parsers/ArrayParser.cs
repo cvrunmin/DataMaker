@@ -36,7 +36,7 @@ namespace DataMaker.Parsers
             set
             {
                 values = value;
-                ValueChanged(this, new EventArgs());
+                ValueChanged?.Invoke(this, new EventArgs());
                 var selectedIndex = listValues.SelectedIndex;
 
                 // 把Values加入listValues
