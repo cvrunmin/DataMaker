@@ -5,7 +5,6 @@
 	}],
 	"array": [{
 		"key": "values",
-		"item_key": "%NoKey%%NoBrackets%",
 		"json": "tag/content"
 	}]
 }

@@ -30,5 +30,8 @@ namespace DataMaker.Forms
                 return result;
             }
         }
+
+        private void Editor_Resize(object sender, System.EventArgs e)
+            => frameParserRoot.SetSize(ClientSize.Width);
     }
 }

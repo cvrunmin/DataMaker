@@ -117,34 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="frameParserRoot.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="frameParser1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="frameParserRoot.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="frameParser1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="frameParserRoot.Font" type="System.Drawing.Font, System.Drawing">
+    <value>微软雅黑, 12pt</value>
+  </data>
+  <data name="frameParserRoot.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="frameParser1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="frameParserRoot.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 5, 4, 5</value>
   </data>
-  <data name="frameParser1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="frameParserRoot.Size" type="System.Drawing.Size, System.Drawing">
     <value>379, 435</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="frameParser1.TabIndex" type="System.Int32, mscorlib">
+  <data name="frameParserRoot.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;frameParser1.Name" xml:space="preserve">
-    <value>frameParser1</value>
+  <data name="&gt;&gt;frameParserRoot.Name" xml:space="preserve">
+    <value>frameParserRoot</value>
   </data>
-  <data name="&gt;&gt;frameParser1.Type" xml:space="preserve">
+  <data name="&gt;&gt;frameParserRoot.Type" xml:space="preserve">
     <value>DataMaker.Parsers.FrameParser, DataMaker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;frameParser1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;frameParserRoot.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;frameParser1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;frameParserRoot.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using static DataMaker.Tools;
 
@@ -10,7 +10,7 @@ namespace DataMaker.Parsers
     public partial class ArrayParser : UserControl, IParser
     {
         private string frameFileName;
-        private string[] values;
+        private List<string> values;
 
         public ArrayParser()
         {
@@ -30,7 +30,7 @@ namespace DataMaker.Parsers
             }
         }
 
-        public string[] Values
+        public List<string> Values
         {
             get => values;
             set
@@ -55,11 +55,16 @@ namespace DataMaker.Parsers
             }
             set
             {
-                var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                if (jobj[Key] != null)
+                var jObj = JsonConvert.DeserializeObject<JObject>(value);
+                if (jObj[Key] != null)
                 {
-                    var jary = (JArray)jobj[Key];
-                    Values = jary.Values<string>().ToArray();
+                    // 加载数组
+                    var JAry = (JArray)jObj[Key];
+                    var values = new List<string>();
+                    // 把数组内容的Json加入Value
+                    foreach (var i in JAry)
+                        values.Add(GetLeftBrackets(i) + i.ToString() + GetRightBrackets(i));
+                    Values = values;
                 }
             }
         }
@@ -70,7 +75,7 @@ namespace DataMaker.Parsers
             Key = jobj["key"].ToString();
             var rootParserJson = 
 $@"{{
-    ""key"": ""{jobj["item_key"].ToString()}"",
+    ""key"": ""%NoKey%%NoBrackets%"",
     ""json"": ""{jobj["json"].ToString()}""
 }}";
             frameRoot.SetParser(rootParserJson);

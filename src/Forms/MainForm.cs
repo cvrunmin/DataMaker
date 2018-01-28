@@ -310,6 +310,5 @@ namespace DataMaker
         {
             SaveFile();
         }
-
     }
 }

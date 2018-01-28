@@ -18,7 +18,8 @@ namespace DataMaker.Parsers
             set
             {
                 frameFileName = value;
-                lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
+                if (FrameFileName != null)
+                    lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
             }
         }
         public string Key { get; set; }
@@ -35,8 +36,7 @@ namespace DataMaker.Parsers
         {
             foreach (var i in PanelControls)
             {
-                if (i is IParser)
-                ((IParser)i).SetSize(width);
+                if (i is IParser) ((IParser)i).SetSize(width);
             }
         }
 
@@ -57,6 +57,9 @@ namespace DataMaker.Parsers
             }
             set
             {
+                var json = value;
+                if (Key.Contains("%NoBrackets%")) json = "{" + json + "}";
+                if (Key.Contains("%NoKey%")) json = "\"%NoKey%\"" + json;
                 var jObj = JsonConvert.DeserializeObject<JObject>(value);
                 foreach (var i in PanelControls)
                 {

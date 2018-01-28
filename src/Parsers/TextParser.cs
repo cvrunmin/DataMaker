@@ -36,6 +36,7 @@ namespace DataMaker.Parsers
             {
                 this.value = value;
                 textBoxValue.Text = value;
+                MainForm.GetInstance().IsChanged = true;
             }
         }
 
@@ -70,7 +71,6 @@ namespace DataMaker.Parsers
         private void textBoxValue_TextChanged(object sender, EventArgs e)
         {
             Value = textBoxValue.Text;
-            MainForm.GetInstance().IsChanged = true;
         }
 
         public void SetSize(int width)

@@ -32,11 +32,13 @@
             this.frameParserRoot = new DataMaker.Parsers.FrameParser();
             this.SuspendLayout();
             // 
-            // frameParser1
+            // frameParserRoot
             // 
-            resources.ApplyResources(this.frameParserRoot, "frameParser1");
+            resources.ApplyResources(this.frameParserRoot, "frameParserRoot");
+            this.frameParserRoot.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.frameParserRoot.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
             this.frameParserRoot.Key = null;
-            this.frameParserRoot.Name = "frameParser1";
+            this.frameParserRoot.Name = "frameParserRoot";
             // 
             // Editor
             // 
@@ -45,6 +47,7 @@
             this.Controls.Add(this.frameParserRoot);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Editor";
+            this.Resize += new System.EventHandler(this.Editor_Resize);
             this.ResumeLayout(false);
 
         }

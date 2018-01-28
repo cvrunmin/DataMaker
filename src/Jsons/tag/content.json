@@ -1,6 +1,6 @@
 {
 	"text": [{
-		"key": "%NoKey%%NoBrackets%",
+		"key": "%NoKey%",
 		"default": "minecraft:hi"
 	}]
 }

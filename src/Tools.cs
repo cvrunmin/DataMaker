@@ -119,5 +119,59 @@ namespace DataMaker
 
             return result;
         }
+
+        /// <summary>
+        /// 根据指定JToken获得左括号
+        /// </summary>
+        /// <param name="token">指定JToken</param>
+        /// <returns>对应的左括号</returns>
+        public static string GetLeftBrackets(JToken token)
+        {
+            var result = "";
+
+            switch (token.Type)
+            {
+                case JTokenType.Array:
+                    result = "[";
+                    break;
+                case JTokenType.Object:
+                    result = "{";
+                    break;
+                case JTokenType.String:
+                    result = "\"";
+                    break;
+                default:
+                    break;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 根据指定JToken获得右括号
+        /// </summary>
+        /// <param name="token">指定JToken</param>
+        /// <returns>对应的右括号</returns>
+        public static string GetRightBrackets(JToken token)
+        {
+            var result = "";
+
+            switch (token.Type)
+            {
+                case JTokenType.Array:
+                    result = "]";
+                    break;
+                case JTokenType.Object:
+                    result = "}";
+                    break;
+                case JTokenType.String:
+                    result = "\"";
+                    break;
+                default:
+                    break;
+            }
+
+            return result;
+        }
     }
 }
