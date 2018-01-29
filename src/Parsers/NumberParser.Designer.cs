@@ -46,6 +46,16 @@
             // 
             this.upDownValue.Location = new System.Drawing.Point(0, 0);
             this.upDownValue.Margin = new System.Windows.Forms.Padding(0);
+            this.upDownValue.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.upDownValue.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
             this.upDownValue.Name = "upDownValue";
             this.upDownValue.Size = new System.Drawing.Size(65, 21);
             this.upDownValue.TabIndex = 1;

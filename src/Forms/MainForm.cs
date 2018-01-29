@@ -71,6 +71,7 @@ namespace DataMaker.Forms
             {
                 editedNode = value;
                 title = EditedNode.Text + " - " + Application.CompanyName + " " + Application.ProductName;
+                Text = title;
             }
         }
         public bool IsChanged

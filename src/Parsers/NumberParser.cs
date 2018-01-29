@@ -10,6 +10,8 @@ namespace DataMaker.Parsers
     {
         private string frameFileName;
         private decimal value;
+        private decimal min = -2147483648;
+        private decimal max = 2147483647;
 
         public event ValueChangedHandler ValueChanged;
 
@@ -61,9 +63,25 @@ namespace DataMaker.Parsers
                     Value = decimal.Parse(jobj[Key].ToString());
             }
         }
-        public decimal Max { get; set; } = 2147483647;
-        public decimal Min { get; set; } = -2147483648;
-        
+        public decimal Max
+        {
+            get => max;
+            set
+            {
+                max = value;
+                upDownValue.Maximum = Max;
+            }
+        }
+        public decimal Min
+        {
+            get => min;
+            set
+            {
+                min = value;
+                upDownValue.Minimum = Min;
+            }
+        }
+
         public void SetParser(string json)
         {
             var jobj = JsonConvert.DeserializeObject<JObject>(json);
