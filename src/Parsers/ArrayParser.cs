@@ -47,7 +47,7 @@ namespace DataMaker.Parsers
             {
                 editedIndex = value;
                 SetButtons();
-                EditSelectedValue();
+                EditValue();
             }
         }
 
@@ -121,9 +121,8 @@ $@"{{
             Width = width;
             // 左侧大小调整
             listValues.Width = Width / 3;
-            btnAdd.Width = btnEdit.Width = btnRemove.Width = (listValues.Width - 6) / 3;
+            btnAdd.Width = btnRemove.Width = (listValues.Width - 6) / 2;
             btnRemove.Left = btnAdd.Left + btnAdd.Width + btnRemove.Margin.Left;
-            btnEdit.Left = btnRemove.Left + btnRemove.Width + btnEdit.Margin.Left;
 
             // 右侧大小调整
             frameRoot.SetSize(Width / 3 * 2);
@@ -135,21 +134,22 @@ $@"{{
         /// </summary>
         private void SaveEditedValue()
         {
-            // 用临时变量values来修改，再把values赋值给Values
-            // 这样可以触发Values的setter
-            var values = Values;
-            values[EditedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
-            Values = values;
+            Values[EditedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
+            // 触发一次 Setter
+            Values = Values;
         }
 
         /// <summary>
-        /// 编辑选中的Value
+        /// 编辑EditedIndex上的Value
         /// </summary>
-        private void EditSelectedValue()
+        private void EditValue()
         {
             isSettingValue = true;
-            if (Values.Count > EditedIndex && EditedIndex >= 0)
+
+            if (Values.Count - 1 >= EditedIndex && EditedIndex >= 0)
                 frameRoot.Json = Values[EditedIndex];
+            else frameRoot.Json = "{}";
+
             isSettingValue = false;
         }
 
@@ -161,42 +161,33 @@ $@"{{
             if (EditedIndex >= 0)
             {
                 btnRemove.Enabled = true;
-                btnEdit.Enabled = true;
             }
             else
             {
                 btnRemove.Enabled = false;
-                btnEdit.Enabled = false;
             }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // 赋一次值，这样会刷新列表
-            var values = Values;
-            values.Insert(EditedIndex, "");
-            Values = values;
+            Values.Insert(EditedIndex, "");
 
-            // 赋一次值，这样会读取新增的Value
+            // 触发 Setter
+            Values = Values;
             EditedIndex = EditedIndex;
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            // 赋一次值，这样会刷新列表
-            var values = Values;
-            values.Remove(Values[EditedIndex]);
-            Values = values;
+            Values.Remove(Values[EditedIndex]);
+            // 触发 Setter
+            Values = Values;
 
-            // 赋一次值，这样谁都不会读取
-            EditedIndex = -1;
-        }
-
-        private void btnEdit_Click(object sender, EventArgs e) => EditSelectedValue();
-
-        private void ArrayParser_Load(object sender, EventArgs e)
-        {
-
+            // 读取删除后的上一个位置
+            if (EditedIndex > 0) EditedIndex = EditedIndex - 1;
+            else if (EditedIndex == 0) EditedIndex = 0;
+            // 然后如果没东西读取的话老子就不读了
+            if (listValues.Items.Count == 0) EditedIndex = -1;
         }
 
         private void listValues_SelectedIndexChanged(object sender, EventArgs e)

@@ -23,6 +23,8 @@ namespace DataMaker.Parsers
 
         public string Key { get; set; }
 
+        public decimal Default { get; set; }
+
         public string FrameFileName
         {
             get => frameFileName;
@@ -59,8 +61,8 @@ namespace DataMaker.Parsers
             set
             {
                 var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                if (jobj[Key] != null)
-                    Value = decimal.Parse(jobj[Key].ToString());
+                if (jobj[Key] != null) Value = decimal.Parse(jobj[Key].ToString());
+                else Value = Default;
             }
         }
         public decimal Max
@@ -87,7 +89,7 @@ namespace DataMaker.Parsers
             var jobj = JsonConvert.DeserializeObject<JObject>(json);
             Key = jobj["key"].ToString();
             if (jobj["default"] != null)
-                Value = decimal.Parse(jobj["default"].ToString());
+                Value = Default = decimal.Parse(jobj["default"].ToString());
             if (jobj["max"] != null)
                 Max = decimal.Parse(jobj["max"].ToString());
             if (jobj["min"] != null)

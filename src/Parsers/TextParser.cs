@@ -21,6 +21,8 @@ namespace DataMaker.Parsers
 
         public string Key { get; set; }
 
+        public string Default { get; set; }
+
         public string FrameFileName
         {
             get => frameFileName;
@@ -57,8 +59,8 @@ namespace DataMaker.Parsers
             set
             {
                 var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                if (jobj[Key] != null)
-                    Value = jobj[Key].ToString();
+                if (jobj[Key] != null) Value = jobj[Key].ToString();
+                else Value = Default;
             }
         }
 
@@ -67,7 +69,7 @@ namespace DataMaker.Parsers
             var jobj = JsonConvert.DeserializeObject<JObject>(json);
             Key = jobj["key"].ToString();
             if (jobj["default"] != null)
-                Value = jobj["default"].ToString();
+                Value = Default = jobj["default"].ToString();
         }
 
         private void textBoxValue_TextChanged(object sender, EventArgs e)

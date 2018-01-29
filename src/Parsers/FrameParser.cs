@@ -58,9 +58,9 @@ namespace DataMaker.Parsers
             }
             set
             {
-                if (Json != null)
+                var json = value;
+                if (json != null)
                 {
-                    var json = value;
                     // 补全Json为Parser能够读取的格式
                     var jObj = new JObject();
                     if (JsonConvert.DeserializeObject<JToken>(json) is JObject)
@@ -87,6 +87,7 @@ namespace DataMaker.Parsers
 
             // 加载所有嵌套parsers
             IParser parser = null;
+            PanelControls.Clear();
 
             foreach (var i in JsonConvert.DeserializeObject<JObject>(parsersJson).Children())
             {

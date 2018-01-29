@@ -32,7 +32,6 @@
             this.listValues = new System.Windows.Forms.ListBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnRemove = new System.Windows.Forms.Button();
-            this.btnEdit = new System.Windows.Forms.Button();
             this.frameRoot = new DataMaker.Parsers.FrameParser();
             this.lblKey = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -58,13 +57,6 @@
             this.btnRemove.UseVisualStyleBackColor = true;
             this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
-            // btnEdit
-            // 
-            resources.ApplyResources(this.btnEdit, "btnEdit");
-            this.btnEdit.Name = "btnEdit";
-            this.btnEdit.UseVisualStyleBackColor = true;
-            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
-            // 
             // frameRoot
             // 
             resources.ApplyResources(this.frameRoot, "frameRoot");
@@ -85,12 +77,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lblKey);
             this.Controls.Add(this.frameRoot);
-            this.Controls.Add(this.btnEdit);
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.listValues);
             this.Name = "ArrayParser";
-            this.Load += new System.EventHandler(this.ArrayParser_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -101,7 +91,6 @@
         private System.Windows.Forms.ListBox listValues;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.Button btnEdit;
         private FrameParser frameRoot;
         private System.Windows.Forms.Label lblKey;
     }
