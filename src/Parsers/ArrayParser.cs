@@ -12,6 +12,7 @@ namespace DataMaker.Parsers
         private string frameFileName;
         private List<string> values;
         private bool isSettingValue;
+        private int editedIndex;
 
         public event ValueChangedHandler ValueChanged;
 
@@ -38,6 +39,17 @@ namespace DataMaker.Parsers
                 lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
             }
         }
+        
+        private int EditedIndex
+        {
+            get => editedIndex;
+            set
+            {
+                editedIndex = value;
+                SetButtons();
+                EditSelectedValue();
+            }
+        }
 
         private List<string> Values
         {
@@ -46,14 +58,14 @@ namespace DataMaker.Parsers
             {
                 values = value;
                 ValueChanged?.Invoke(this, new EventArgs());
-                var selectedIndex = listValues.SelectedIndex;
+                var selectedIndex = EditedIndex;
 
                 // 把Values加入listValues
                 listValues.Items.Clear();
                 foreach (var i in Values) listValues.Items.Add(i);
 
                 // 恢复选择的索引
-                listValues.SelectedIndex = selectedIndex;
+                EditedIndex = selectedIndex;
             }
         }
 
@@ -88,7 +100,7 @@ namespace DataMaker.Parsers
                     Values = values;
                 }
                 // 开始编辑第0个
-                listValues.SelectedIndex = 0;
+                EditedIndex = 0;
             }
         }
 
@@ -117,12 +129,6 @@ $@"{{
             frameRoot.SetSize(Width / 3 * 2);
             frameRoot.Left = listValues.Left + listValues.Width + frameRoot.Margin.Left;
         }
-        
-        private void listValues_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SetButtons();
-            EditSelectedValue();
-        }
 
         /// <summary>
         /// 保存正在编辑的Value
@@ -132,7 +138,7 @@ $@"{{
             // 用临时变量values来修改，再把values赋值给Values
             // 这样可以触发Values的setter
             var values = Values;
-            values[listValues.SelectedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
+            values[EditedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
             Values = values;
         }
 
@@ -142,8 +148,8 @@ $@"{{
         private void EditSelectedValue()
         {
             isSettingValue = true;
-            if (Values.Count > listValues.SelectedIndex && listValues.SelectedIndex >= 0)
-                frameRoot.Json = Values[listValues.SelectedIndex];
+            if (Values.Count > EditedIndex && EditedIndex >= 0)
+                frameRoot.Json = Values[EditedIndex];
             isSettingValue = false;
         }
 
@@ -152,7 +158,7 @@ $@"{{
         /// </summary>
         private void SetButtons()
         {
-            if (listValues.SelectedIndex >= 0)
+            if (EditedIndex >= 0)
             {
                 btnRemove.Enabled = true;
                 btnEdit.Enabled = true;
@@ -168,24 +174,34 @@ $@"{{
         {
             // 赋一次值，这样会刷新列表
             var values = Values;
-            values.Insert(listValues.SelectedIndex, "");
+            values.Insert(EditedIndex, "");
             Values = values;
 
             // 赋一次值，这样会读取新增的Value
-            listValues.SelectedIndex = listValues.SelectedIndex;
+            EditedIndex = EditedIndex;
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
             // 赋一次值，这样会刷新列表
             var values = Values;
-            values.Remove(Values[listValues.SelectedIndex]);
+            values.Remove(Values[EditedIndex]);
             Values = values;
 
             // 赋一次值，这样谁都不会读取
-            listValues.SelectedIndex = -1;
+            EditedIndex = -1;
         }
 
         private void btnEdit_Click(object sender, EventArgs e) => EditSelectedValue();
+
+        private void ArrayParser_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listValues_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EditedIndex = listValues.SelectedIndex;
+        }
     }
 }
