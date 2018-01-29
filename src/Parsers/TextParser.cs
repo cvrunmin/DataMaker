@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using static DataMaker.Tools;
 
@@ -63,6 +64,10 @@ namespace DataMaker.Parsers
                 else Value = Default;
             }
         }
+
+        // TODO ZoneTextParser
+        public bool OutOfZone { get; set; }
+        public List<string> Zone { get; set; }
 
         public void SetParser(string json)
         {

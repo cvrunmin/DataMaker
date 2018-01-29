@@ -39,7 +39,6 @@ namespace DataMaker.Forms
         /// <summary>
         /// 重载OnLoad 去边框
         /// </summary>
-        // FIXME: 必须要最大化时启动才有效…
         protected override void OnLoad(EventArgs e)
         {
             // https://stackoverflow.com/questions/7752696/how-to-remove-3d-border-sunken-from-mdiclient-component-in-mdi-parent-form

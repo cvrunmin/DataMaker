@@ -1,5 +1,9 @@
 {
 	"text": [{
-		"key": "%NoKey%"
+		"key": "%NoKey%",
+		"zone": [
+			"%SameTags%"
+		],
+		"out_of_zone": true
 	}]
 }

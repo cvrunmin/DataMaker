@@ -251,7 +251,6 @@ $@"{{
         /// <returns>文件路径</returns>
         private static string GetPath(TreeNode node)
         {
-            // FIXME: 效率奇低，还tm可能出错
             StringBuilder result = new StringBuilder(node.FullPath);
             result = result.Replace(Lang("global_datapack"), dataPackPath)
                 .Replace("/" + Lang("global_data"), "/data")
