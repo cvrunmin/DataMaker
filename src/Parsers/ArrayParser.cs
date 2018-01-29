@@ -46,6 +46,8 @@ namespace DataMaker.Parsers
             set
             {
                 editedIndex = value;
+                if (Values.Count - 1 >= EditedIndex)
+                    listValues.SelectedIndex = EditedIndex;
                 SetButtons();
                 EditValue();
             }
@@ -65,7 +67,8 @@ namespace DataMaker.Parsers
                 foreach (var i in Values) listValues.Items.Add(i);
 
                 // 恢复选择的索引
-                EditedIndex = selectedIndex;
+                if (selectedIndex >= 0) EditedIndex = selectedIndex;
+                else EditedIndex = 0;
             }
         }
 
@@ -170,7 +173,10 @@ $@"{{
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            Values.Insert(EditedIndex, "");
+            if (Values.Count - 1 >= EditedIndex && EditedIndex >= 0)
+                Values.Insert(EditedIndex, "");
+            else
+                Values.Insert(0, "");
 
             // 触发 Setter
             Values = Values;
@@ -190,6 +196,7 @@ $@"{{
             if (listValues.Items.Count == 0) EditedIndex = -1;
         }
 
+        // 当赋值后值一样时并不会触发此事件
         private void listValues_SelectedIndexChanged(object sender, EventArgs e)
         {
             EditedIndex = listValues.SelectedIndex;

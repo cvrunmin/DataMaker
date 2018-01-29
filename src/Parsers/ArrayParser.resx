@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="listValues.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="listValues.HorizontalScrollbar" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="listValues.ItemHeight" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
@@ -143,6 +149,9 @@
   <data name="&gt;&gt;listValues.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <metadata name="btnAdd.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="btnAdd.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 394</value>
   </data>
@@ -167,6 +176,9 @@
   <data name="&gt;&gt;btnAdd.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <metadata name="btnRemove.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="btnRemove.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -198,6 +210,9 @@
   <data name="&gt;&gt;btnRemove.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <metadata name="frameRoot.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="frameRoot.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -228,6 +243,9 @@
   <data name="&gt;&gt;frameRoot.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <metadata name="lblKey.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="lblKey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -256,6 +274,9 @@
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
