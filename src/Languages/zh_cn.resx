@@ -226,13 +226,13 @@
   <data name="mainform_msgbox_savechangedornot" xml:space="preserve">
     <value>是否将你所作的更改保存到 {0} ？</value>
   </data>
-  <data name="mainform_info_error" xml:space="preserve">
+  <data name="mainform_infobar_error" xml:space="preserve">
     <value>错误</value>
   </data>
-  <data name="mainform_info_error" xml:space="preserve">
+  <data name="mainform_infobar_error" xml:space="preserve">
     <value>错误</value>
   </data>
-  <data name="mainform_info_info" xml:space="preserve">
+  <data name="mainform_infobar_info" xml:space="preserve">
     <value>信息</value>
   </data>
 

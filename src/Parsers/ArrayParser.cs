@@ -108,11 +108,11 @@ namespace DataMaker.Parsers
                     // 开始编辑第0个
                     EditedIndex = 0;
 
-                    MainForm.ShowInfo("parsers_info_parsesuccessfully");
+                    MainForm.ShowInfoBar("parsers_info_parsesuccessfully");
                 }
                 catch
                 {
-                    MainForm.ShowInfo("parsers_error_parsebad");
+                    MainForm.ShowInfoBar("parsers_error_parsebad");
                 }
             }
         }
@@ -130,11 +130,11 @@ $@"{{
 }}";
                 frameRoot.SetParser(rootParserJson);
 
-                MainForm.ShowInfo("parsers_info_loadsuccessfully");
+                MainForm.ShowInfoBar("parsers_info_loadsuccessfully");
             }
             catch
             {
-                MainForm.ShowInfo("parsers_error_loadbad");
+                MainForm.ShowInfoBar("parsers_error_loadbad");
             }
         }
 

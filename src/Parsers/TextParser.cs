@@ -84,11 +84,11 @@ namespace DataMaker.Parsers
                     if (jobj[Key] != null) Value = jobj[Key].ToString();
                     else Value = Default;
 
-                    MainForm.ShowInfo("parsers_info_parsesuccessfully");
+                    MainForm.ShowInfoBar("parsers_info_parsesuccessfully");
                 }
                 catch
                 {
-                    MainForm.ShowInfo("parsers_error_parsebad");
+                    MainForm.ShowInfoBar("parsers_error_parsebad");
                 }
             }
         }
@@ -108,11 +108,11 @@ namespace DataMaker.Parsers
                 else
                     Zone = new List<string>();
 
-                MainForm.ShowInfo("parsers_info_loadsuccessfully");
+                MainForm.ShowInfoBar("parsers_info_loadsuccessfully");
             }
             catch
             {
-                MainForm.ShowInfo("parsers_error_loadbad");
+                MainForm.ShowInfoBar("parsers_error_loadbad");
             }
         }
 
@@ -132,7 +132,7 @@ namespace DataMaker.Parsers
             if (CanOutOfZone || comboBoxValue.AllItems.Contains(comboBoxValue.Text))
                 Value = comboBoxValue.Text;
             else
-                MainForm.ShowInfo("textparser_error_outofzone");
+                MainForm.ShowInfoBar("textparser_error_outofzone");
         }
     }
 }

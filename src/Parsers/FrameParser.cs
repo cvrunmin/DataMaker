@@ -79,11 +79,11 @@ namespace DataMaker.Parsers
                                 else ((IParser)i).Json = jObj.ToString();
                     }
 
-                    MainForm.ShowInfo("parsers_info_parsesuccessfully");
+                    MainForm.ShowInfoBar("parsers_info_parsesuccessfully");
                 }
                 catch
                 {
-                    MainForm.ShowInfo("parsers_error_parsebad");
+                    MainForm.ShowInfoBar("parsers_error_parsebad");
                 }
             }
         }
@@ -143,7 +143,7 @@ namespace DataMaker.Parsers
                             PanelControls.Add((Control)parser);
                         }
 
-                    MainForm.ShowInfo("parsers_info_loadsuccessfully");
+                    MainForm.ShowInfoBar("parsers_info_loadsuccessfully");
 
                     // 设置Parsers的位置
                     SetSize(ClientSize.Width);
@@ -151,7 +151,7 @@ namespace DataMaker.Parsers
             }
             catch
             {
-                MainForm.ShowInfo("parsers_error_loadbad");
+                MainForm.ShowInfoBar("parsers_error_loadbad");
             }
         }
     }

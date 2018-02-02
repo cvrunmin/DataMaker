@@ -67,11 +67,11 @@ namespace DataMaker.Parsers
                     if (jobj[Key] != null) Value = decimal.Parse(jobj[Key].ToString());
                     else Value = Default;
 
-                    MainForm.ShowInfo("parsers_info_parsesuccessfully");
+                    MainForm.ShowInfoBar("parsers_info_parsesuccessfully");
                 }
                 catch
                 {
-                    MainForm.ShowInfo("parsers_error_parsebad");
+                    MainForm.ShowInfoBar("parsers_error_parsebad");
                 }
             }
         }
@@ -107,11 +107,11 @@ namespace DataMaker.Parsers
                 if (jobj["min"] != null)
                     Min = decimal.Parse(jobj["min"].ToString());
 
-                MainForm.ShowInfo("parsers_info_loadsuccessfully");
+                MainForm.ShowInfoBar("parsers_info_loadsuccessfully");
             }
             catch
             {
-                MainForm.ShowInfo("parsers_error_loadbad");
+                MainForm.ShowInfoBar("parsers_error_loadbad");
             }
         }
 

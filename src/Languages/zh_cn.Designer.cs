@@ -448,15 +448,6 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
-        ///   查找类似 错误 的本地化字符串。
-        /// </summary>
-        internal static string mainform_info_error {
-            get {
-                return ResourceManager.GetString("mainform_info_error", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 zip文件已成功导出到 {0} 的本地化字符串。
         /// </summary>
         internal static string mainform_info_exportzipsuccessfully {
@@ -466,11 +457,20 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
+        ///   查找类似 错误 的本地化字符串。
+        /// </summary>
+        internal static string mainform_infobar_error {
+            get {
+                return ResourceManager.GetString("mainform_infobar_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 信息 的本地化字符串。
         /// </summary>
-        internal static string mainform_info_info {
+        internal static string mainform_infobar_info {
             get {
-                return ResourceManager.GetString("mainform_info_info", resourceCulture);
+                return ResourceManager.GetString("mainform_infobar_info", resourceCulture);
             }
         }
         

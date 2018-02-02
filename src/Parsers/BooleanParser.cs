@@ -65,11 +65,11 @@ namespace DataMaker.Parsers
                     if (jobj[Key] != null) Value = bool.Parse(jobj[Key].ToString());
                     else Value = Default;
 
-                    MainForm.ShowInfo("parsers_info_parsesuccessfully");
+                    MainForm.ShowInfoBar("parsers_info_parsesuccessfully");
                 }
                 catch
                 {
-                    MainForm.ShowInfo("parsers_error_parsebad");
+                    MainForm.ShowInfoBar("parsers_error_parsebad");
                 }
             }
         }
@@ -83,11 +83,11 @@ namespace DataMaker.Parsers
                 if (jobj["default"] != null)
                     Value = Default = bool.Parse(jobj["default"].ToString());
 
-                MainForm.ShowInfo("parsers_info_loadsuccessfully");
+                MainForm.ShowInfoBar("parsers_info_loadsuccessfully");
             }
             catch
             {
-                MainForm.ShowInfo("parsers_error_loadbad");
+                MainForm.ShowInfoBar("parsers_error_loadbad");
             }
         }
 

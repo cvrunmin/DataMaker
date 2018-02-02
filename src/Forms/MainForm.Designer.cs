@@ -45,7 +45,7 @@
             this.zipSaver = new System.Windows.Forms.SaveFileDialog();
             this.lblFuckGdi = new System.Windows.Forms.Label();
             this.BWEditors = new System.ComponentModel.BackgroundWorker();
-            this.lblInfo = new System.Windows.Forms.Label();
+            this.lblInfoBar = new System.Windows.Forms.Label();
             this.menuTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,14 +138,14 @@
             // 
             // lblInfo
             // 
-            resources.ApplyResources(this.lblInfo, "lblInfo");
-            this.lblInfo.Name = "lblInfo";
+            resources.ApplyResources(this.lblInfoBar, "lblInfo");
+            this.lblInfoBar.Name = "lblInfo";
             // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.lblInfo);
+            this.Controls.Add(this.lblInfoBar);
             this.Controls.Add(this.lblFuckGdi);
             this.Controls.Add(this.menuTop);
             this.DoubleBuffered = true;
@@ -181,7 +181,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.Label lblFuckGdi;
         public System.ComponentModel.BackgroundWorker BWEditors;
-        private System.Windows.Forms.Label lblInfo;
+        private System.Windows.Forms.Label lblInfoBar;
     }
 }
 

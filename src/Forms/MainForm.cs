@@ -34,7 +34,7 @@ namespace DataMaker.Forms
                 i.BackColor = BackColor;
                 i.ForeColor = ForeColor;
             }
-            lblInfo.Font = new Font(lblInfo.Font.FontFamily, 15f);
+            lblInfoBar.Font = new Font(lblInfoBar.Font.FontFamily, 15f);
         }
 
         /// <summary>
@@ -262,14 +262,14 @@ namespace DataMaker.Forms
                     ZipFile.CreateFromDirectory(FileTree.GetInstance().DatapackPath, name);
 
                     // 通知
-                    ShowInfo("mainform_info_exportzipsuccessfully", name);
+                    ShowInfoBar("mainform_info_exportzipsuccessfully", name);
                 }
             }
         }
 
         private void LayoutForms()
         {
-            var height = ClientSize.Height - menuTop.Height - 5 - lblInfo.Height;
+            var height = ClientSize.Height - menuTop.Height - 5 - lblInfoBar.Height;
 
             // 设置FileTree
             FileTree.GetInstance().Left = ClientSize.Width - FileTree.GetInstance().ClientSize.Width;
@@ -308,7 +308,7 @@ namespace DataMaker.Forms
             SaveFile();
         }
 
-        public static void ShowInfo(string lang, params string[] replacers)
+        public static void ShowInfoBar(string lang, params string[] replacers)
         {
             var seperates = lang.Split('_');
             var preffix = "";
@@ -318,24 +318,24 @@ namespace DataMaker.Forms
             switch (seperates[1])
             {
                 case "error":
-                    preffix = Lang("mainform_info_error");
+                    preffix = Lang("mainform_infobar_error");
                     forecolor = DarkTheme.ErrorColor;
                     msg = $"[{preffix}] {Lang(lang, replacers)}";
                     break;
                 case "warn":
-                    preffix = Lang("mainform_info_warn");
+                    preffix = Lang("mainform_infobar_warn");
                     forecolor = DarkTheme.WarnColor;
                     msg = $"[{preffix}] {Lang(lang, replacers)}";
                     break;
                 default:
-                    preffix = Lang("mainform_info_info");
+                    preffix = Lang("mainform_infobar_info");
                     forecolor = DarkTheme.InfoColor;
                     msg = $"[{preffix}] {Lang(lang, replacers)}";
                     break;
             }
 
-            GetInstance().lblInfo.Text = msg;
-            GetInstance().lblInfo.ForeColor = forecolor;
+            GetInstance().lblInfoBar.Text = msg;
+            GetInstance().lblInfoBar.ForeColor = forecolor;
         }
     }
 }
