@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DataMaker.Forms;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Windows.Forms;
@@ -63,20 +64,38 @@ namespace DataMaker.Parsers
             }
             set
             {
-                var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                if (jobj[Key] != null)
-                    Value = bool.Parse(jobj[Key].ToString());
-                else
-                    Value = null;
+                try
+                {
+                    var jobj = JsonConvert.DeserializeObject<JObject>(value);
+                    if (jobj[Key] != null)
+                        Value = bool.Parse(jobj[Key].ToString());
+                    else
+                        Value = null;
+
+                    MainForm.ShowInfo("parsers_info_parsesuccessfully");
+                }
+                catch
+                {
+                    MainForm.ShowInfo("parsers_error_parsebad");
+                }
             }
         }
 
         public void SetParser(string json)
         {
-            var jobj = JsonConvert.DeserializeObject<JObject>(json);
-            Key = jobj["key"].ToString();
-            if (jobj["default"] != null)
-                Value = bool.Parse(jobj["default"].ToString());
+            try
+            {
+                var jobj = JsonConvert.DeserializeObject<JObject>(json);
+                Key = jobj["key"].ToString();
+                if (jobj["default"] != null)
+                    Value = bool.Parse(jobj["default"].ToString());
+
+                MainForm.ShowInfo("parsers_info_loadsuccessfully");
+            }
+            catch
+            {
+                MainForm.ShowInfo("parsers_error_loadbad");
+            }
         }
 
         private void rbtn_CheckedChanged(object sender, EventArgs e)

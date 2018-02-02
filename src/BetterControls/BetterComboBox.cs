@@ -12,6 +12,16 @@ namespace DataMaker.BetterControls
         public new event EventHandler TextChanged;
 
         public ComboBox.ObjectCollection Items => comboBoxContent.Items;
+        public List<string> AllItems
+        {
+            get => allItems;
+            set => allItems = value;
+        }
+        public int SelectedIndex
+        {
+            get => comboBoxContent.SelectedIndex;
+            set => comboBoxContent.SelectedIndex = value;
+        }
         public override string Text
         {
             get => comboBoxContent.Text;
@@ -29,7 +39,7 @@ namespace DataMaker.BetterControls
             DarkTheme.Initialize(this);
         }
 
-        private List<string> allItems;
+        private List<string> allItems = new List<string>();
 
         private void comboBoxContent_TextChanged(object sender, EventArgs e)
         {
@@ -49,7 +59,6 @@ namespace DataMaker.BetterControls
                 // 存储所有Item
                 if (allItems == null)
                 {
-                    allItems = new List<string>();
                     allItems.AddRange(comboBoxContent.Items.Cast<string>());
                 }
 

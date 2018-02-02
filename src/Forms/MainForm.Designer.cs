@@ -45,6 +45,7 @@
             this.zipSaver = new System.Windows.Forms.SaveFileDialog();
             this.lblFuckGdi = new System.Windows.Forms.Label();
             this.BWEditors = new System.ComponentModel.BackgroundWorker();
+            this.lblInfo = new System.Windows.Forms.Label();
             this.menuTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -135,10 +136,16 @@
             resources.ApplyResources(this.lblFuckGdi, "lblFuckGdi");
             this.lblFuckGdi.Name = "lblFuckGdi";
             // 
+            // lblInfo
+            // 
+            resources.ApplyResources(this.lblInfo, "lblInfo");
+            this.lblInfo.Name = "lblInfo";
+            // 
             // MainForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.lblFuckGdi);
             this.Controls.Add(this.menuTop);
             this.DoubleBuffered = true;
@@ -147,7 +154,6 @@
             this.MainMenuStrip = this.menuTop;
             this.Name = "MainForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RespondShortcutKeys);
             this.Resize += new System.EventHandler(this.Form_Resize);
             this.menuTop.ResumeLayout(false);
@@ -175,6 +181,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.Label lblFuckGdi;
         public System.ComponentModel.BackgroundWorker BWEditors;
+        private System.Windows.Forms.Label lblInfo;
     }
 }
 

@@ -36,11 +36,12 @@
             // comboBoxContent
             // 
             this.comboBoxContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxContent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
             this.comboBoxContent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboBoxContent.Location = new System.Drawing.Point(0, 0);
             this.comboBoxContent.MaxDropDownItems = 16;
             this.comboBoxContent.Name = "comboBoxContent";
-            this.comboBoxContent.Size = new System.Drawing.Size(100, 20);
+            this.comboBoxContent.Size = new System.Drawing.Size(322, 19);
             this.comboBoxContent.Sorted = true;
             this.comboBoxContent.TabIndex = 0;
             this.comboBoxContent.TextChanged += new System.EventHandler(this.comboBoxContent_TextChanged);
@@ -57,7 +58,7 @@
             this.Controls.Add(this.comboBoxContent);
             this.Font = new System.Drawing.Font("宋体", 9F);
             this.Name = "BetterComboBox";
-            this.Size = new System.Drawing.Size(100, 19);
+            this.Size = new System.Drawing.Size(322, 19);
             this.Resize += new System.EventHandler(this.BetterComboBox_Resize);
             this.ResumeLayout(false);
 

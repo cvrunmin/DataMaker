@@ -3,18 +3,27 @@ using DataMaker.Properties;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace DataMaker
 {
+    public enum InfoType
+    {
+        Error,
+        Warn,
+        Info
+    }
+
     public static class Utils
     {
+
         /// <summary>
         /// 依据指定key从资源文件读取文字
         /// </summary>
         /// <param name="key">指定key</param>
-        public static string Lang(string key)
+        public static string Lang(string key, params string[] replacers)
         {
             if (key.Contains("%")) return "";
 
@@ -23,9 +32,14 @@ namespace DataMaker
             var rm = new System.Resources.ResourceManager("DataMaker.Languages." +
                 "zh_cn", typeof(Resources).Assembly);
 
-            if (rm.GetString(key) != null) return rm.GetString(key);
+            var result = "";
+            if (rm.GetString(key) != null) result = rm.GetString(key);
+            else throw new ApplicationException("No Lang: " + key);
 
-            throw new ApplicationException("No Lang: " + key);
+            for (int i = 0; i < replacers.Length; i++)
+                result = result.Replace($"{{{i}}}", replacers[i]);
+
+            return result;
         }
 
         /// <summary>
@@ -45,7 +59,7 @@ namespace DataMaker
         public static bool IsNameLegal(string str)
         {
             // 匹配包含非法字符的字符串
-            var pattern = @"[^(a-z0-9\-_)]";
+            var pattern = @"[^(a-z0-9\-\._)]";
 
             if (Regex.IsMatch(str, pattern))
             {
@@ -180,11 +194,32 @@ namespace DataMaker
         /// </summary>
         /// <param name="node">指定节点</param>
         /// <returns>文件路径</returns>
-        public static string GetPath(this TreeNode node)
+        public static string GetFilePath(this TreeNode node)
         {
-            var result = node.Name;
+            var result = node.FullPath;
+            result = result.Replace(Lang("global_datapack"), FileTree.DataPackPath)
+                            .Replace("/" + Lang("global_data"), "/data")
+                            .Replace("/" + Lang("global_advancement"), "/advancements")
+                            .Replace("/" + Lang("global_function"), "/functions")
+                            .Replace("/" + Lang("global_structure"), "/structures")
+                            .Replace("/" + Lang("global_loottable"), "/loot_tables")
+                            .Replace("/" + Lang("global_recipe"), "/recipes")
+                            .Replace("/" + Lang("global_tag"), "/tags")
+                            .Replace("/" + Lang("global_block"), "/blocks")
+                            .Replace("/" + Lang("global_item"), "/items")
+                            .Replace("/" + Lang("global_function"), "/functions")
+                            .Replace("/" + Lang("global_settings"), "/pack.mcmeta")
+                            .Replace("/", "\\");
+            // 加后缀		
+            result += ((Item)node).GetFileSuffix(false);
 
             return result.ToString();
         }
+
+        /// <summary>
+        /// 获取指定节点对应的路径是否是文件
+        /// </summary>
+        /// <param name="node">指定节点</param>
+        public static bool IsFile(this TreeNode node) => File.Exists(node.GetFilePath());
     }
 }

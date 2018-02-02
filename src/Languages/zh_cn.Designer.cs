@@ -19,7 +19,7 @@ namespace DataMaker.Languages {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class zh_cn {
@@ -448,11 +448,29 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
+        ///   查找类似 错误 的本地化字符串。
+        /// </summary>
+        internal static string mainform_info_error {
+            get {
+                return ResourceManager.GetString("mainform_info_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 zip文件已成功导出到 {0} 的本地化字符串。
         /// </summary>
-        internal static string mainform_msgbox_exportzipsuccessfully {
+        internal static string mainform_info_exportzipsuccessfully {
             get {
-                return ResourceManager.GetString("mainform_msgbox_exportzipsuccessfully", resourceCulture);
+                return ResourceManager.GetString("mainform_info_exportzipsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 信息 的本地化字符串。
+        /// </summary>
+        internal static string mainform_info_info {
+            get {
+                return ResourceManager.GetString("mainform_info_info", resourceCulture);
             }
         }
         
@@ -462,6 +480,51 @@ namespace DataMaker.Languages {
         internal static string mainform_msgbox_savechangedornot {
             get {
                 return ResourceManager.GetString("mainform_msgbox_savechangedornot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 数据驱动失败 的本地化字符串。
+        /// </summary>
+        internal static string parsers_error_loadbad {
+            get {
+                return ResourceManager.GetString("parsers_error_loadbad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 解析失败 的本地化字符串。
+        /// </summary>
+        internal static string parsers_error_parsebad {
+            get {
+                return ResourceManager.GetString("parsers_error_parsebad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 成功数据驱动 的本地化字符串。
+        /// </summary>
+        internal static string parsers_info_loadsuccessfully {
+            get {
+                return ResourceManager.GetString("parsers_info_loadsuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 解析成功 的本地化字符串。
+        /// </summary>
+        internal static string parsers_info_parsesuccessfully {
+            get {
+                return ResourceManager.GetString("parsers_info_parsesuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 你所输入的内容超出范围！ 的本地化字符串。
+        /// </summary>
+        internal static string textparser_error_outofzone {
+            get {
+                return ResourceManager.GetString("textparser_error_outofzone", resourceCulture);
             }
         }
     }

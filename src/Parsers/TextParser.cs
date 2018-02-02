@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DataMaker.Forms;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -30,10 +31,10 @@ namespace DataMaker.Parsers
             set
             {
                 zone = value;
-                if (CanOutOfZone)
-                    // 可以出界，无元素就显示文本框，有元素就显示下拉
-                    if (Zone.Count == 0) comboBoxValue.DropDownStyle = ComboBoxStyle.Simple;
-                    else comboBoxValue.DropDownStyle = ComboBoxStyle.DropDown;
+
+                // 加入列表项
+                comboBoxValue.Items.Clear();
+                comboBoxValue.Items.AddRange(Zone.ToArray());
             }
         }
         public bool CanOutOfZone
@@ -42,7 +43,6 @@ namespace DataMaker.Parsers
             set
             {
                 canOutOfZone = value;
-                if (!CanOutOfZone) comboBoxValue.DropDownStyle = ComboBoxStyle.DropDownList;
             }
         }
         public string FrameFileName
@@ -78,24 +78,42 @@ namespace DataMaker.Parsers
             }
             set
             {
-                var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                if (jobj[Key] != null) Value = jobj[Key].ToString();
-                else Value = Default;
+                try
+                {
+                    var jobj = JsonConvert.DeserializeObject<JObject>(value);
+                    if (jobj[Key] != null) Value = jobj[Key].ToString();
+                    else Value = Default;
+
+                    MainForm.ShowInfo("parsers_info_parsesuccessfully");
+                }
+                catch
+                {
+                    MainForm.ShowInfo("parsers_error_parsebad");
+                }
             }
         }
 
         public void SetParser(string json)
         {
-            var jobj = JsonConvert.DeserializeObject<JObject>(json);
-            Key = jobj["key"].ToString();
-            if (jobj["default"] != null)
-                Value = Default = jobj["default"].ToString();
-            if (jobj["can_out_of_zone"] != null)
-                CanOutOfZone = jobj["can_out_of_zone"].ToObject<bool>();
-            if (jobj["zone"] != null)
-                Zone = ((JArray)jobj["zone"]).ToObject<List<string>>();
-            else
-                Zone = new List<string>();
+            try
+            {
+                var jobj = JsonConvert.DeserializeObject<JObject>(json);
+                Key = jobj["key"].ToString();
+                if (jobj["default"] != null)
+                    Value = Default = jobj["default"].ToString();
+                if (jobj["can_out_of_zone"] != null)
+                    CanOutOfZone = jobj["can_out_of_zone"].ToObject<bool>();
+                if (jobj["zone"] != null)
+                    Zone = ((JArray)jobj["zone"]).ToObject<List<string>>();
+                else
+                    Zone = new List<string>();
+
+                MainForm.ShowInfo("parsers_info_loadsuccessfully");
+            }
+            catch
+            {
+                MainForm.ShowInfo("parsers_error_loadbad");
+            }
         }
 
         public void SetSize(int width)
@@ -109,7 +127,12 @@ namespace DataMaker.Parsers
 
         private void comboBoxValue_TextChanged(object sender, EventArgs e)
         {
-            Value = comboBoxValue.Text;
+            // 不能出区域，不保存意外值
+            // 能的话就直接保存
+            if (CanOutOfZone || comboBoxValue.AllItems.Contains(comboBoxValue.Text))
+                Value = comboBoxValue.Text;
+            else
+                MainForm.ShowInfo("textparser_error_outofzone");
         }
     }
 }

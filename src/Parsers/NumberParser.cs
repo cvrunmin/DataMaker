@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DataMaker.Forms;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Windows.Forms;
@@ -60,9 +61,18 @@ namespace DataMaker.Parsers
             }
             set
             {
-                var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                if (jobj[Key] != null) Value = decimal.Parse(jobj[Key].ToString());
-                else Value = Default;
+                try
+                {
+                    var jobj = JsonConvert.DeserializeObject<JObject>(value);
+                    if (jobj[Key] != null) Value = decimal.Parse(jobj[Key].ToString());
+                    else Value = Default;
+
+                    MainForm.ShowInfo("parsers_info_parsesuccessfully");
+                }
+                catch
+                {
+                    MainForm.ShowInfo("parsers_error_parsebad");
+                }
             }
         }
         public decimal Max
@@ -86,14 +96,23 @@ namespace DataMaker.Parsers
 
         public void SetParser(string json)
         {
-            var jobj = JsonConvert.DeserializeObject<JObject>(json);
-            Key = jobj["key"].ToString();
-            if (jobj["default"] != null)
-                Value = Default = decimal.Parse(jobj["default"].ToString());
-            if (jobj["max"] != null)
-                Max = decimal.Parse(jobj["max"].ToString());
-            if (jobj["min"] != null)
-                Min = decimal.Parse(jobj["min"].ToString());
+            try
+            {
+                var jobj = JsonConvert.DeserializeObject<JObject>(json);
+                Key = jobj["key"].ToString();
+                if (jobj["default"] != null)
+                    Value = Default = decimal.Parse(jobj["default"].ToString());
+                if (jobj["max"] != null)
+                    Max = decimal.Parse(jobj["max"].ToString());
+                if (jobj["min"] != null)
+                    Min = decimal.Parse(jobj["min"].ToString());
+
+                MainForm.ShowInfo("parsers_info_loadsuccessfully");
+            }
+            catch
+            {
+                MainForm.ShowInfo("parsers_error_loadbad");
+            }
         }
 
         private void upDownValue_ValueChanged(object sender, EventArgs e)

@@ -102,7 +102,7 @@ namespace DataMaker
         /// </summary>
         public string DatapackPath
         {
-            get => dataPackPath;
+            get => DataPackPath;
             set
             {
                 if (!File.Exists(value + @"\pack.mcmeta") && (
@@ -117,7 +117,7 @@ namespace DataMaker
                     if (result == DialogResult.No)
                         return;
                 }
-                dataPackPath = value;
+                DataPackPath = value;
                 LoadFileTree(DatapackPath);
             }
         }
@@ -157,7 +157,7 @@ namespace DataMaker
             editor.SetEditor(json);
 
             // 用该 editor 读取已有 json
-            editor.Json = File.ReadAllText(node.GetPath());
+            editor.Json = File.ReadAllText(node.GetFilePath());
 
             return editor;
         }
@@ -206,7 +206,7 @@ $@"{{
         /// <param name="editor">指定数据类</param>
         public static void SaveFile(Editor editor, TreeNode node)
         {
-            var path = node.GetPath();
+            var path = node.GetFilePath();
             File.WriteAllText(path, editor.Json);
         }
 
@@ -365,11 +365,7 @@ $@"{{
         /// </summary>
         private static Item SelectedItem => (Item)GetInstance().tvwFiles.SelectedNode;
 
-        /// <summary>
-        /// 获取指定节点对应的路径是否是文件
-        /// </summary>
-        /// <param name="node">指定节点</param>
-        private static bool IsFile(TreeNode node) => File.Exists(node.GetPath());
+        public static string DataPackPath { get => dataPackPath; set => dataPackPath = value; }
         #endregion
 
         #region 启动时初始化
@@ -433,19 +429,19 @@ $@"{{
         private void CompleteDirectory()
         {
             // 一级
-            Directory.CreateDirectory(dataPackPath + @"\data");
-            if (!File.Exists(dataPackPath + @"\pack.mcmeta"))
+            Directory.CreateDirectory(DataPackPath + @"\data");
+            if (!File.Exists(DataPackPath + @"\pack.mcmeta"))
             {
                 // 创建默认的 pack.mcmeta 文件
                 using (var editor = new Editor())
                 {
                     editor.SetEditor(GetRootParserJson(ItemSort.PackMcmeta));
-                    File.WriteAllText(dataPackPath + @"\pack.mcmeta", editor.Json);
+                    File.WriteAllText(DataPackPath + @"\pack.mcmeta", editor.Json);
                 }
             }
 
             // 补全命名空间下的目录
-            foreach (var i in Directory.GetDirectories(dataPackPath + @"\data"))
+            foreach (var i in Directory.GetDirectories(DataPackPath + @"\data"))
             {
                 Directory.CreateDirectory(i + @"\advancements");
                 Directory.CreateDirectory(i + @"\functions");
@@ -935,7 +931,7 @@ $@"{{
                     MessageBox.Show(
                         Lang("filetree_properties_name") + ": " + tvwFiles.SelectedNode.Text + "\n" +
                         Lang("filetree_properties_type") + ": " + tvwFiles.SelectedNode.Tag + "\n" +
-                        Lang("filetree_properties_path") + ": " + tvwFiles.SelectedNode.GetPath() + "\n"
+                        Lang("filetree_properties_path") + ": " + tvwFiles.SelectedNode.GetFilePath() + "\n"
                         );
                 }
             }
@@ -954,15 +950,15 @@ $@"{{
 
                     TreeNode node;
                     string name;
-                    if (IsFile(tvwFiles.SelectedNode))
+                    if (tvwFiles.SelectedNode.IsFile())
                     {
-                        name = GetAvailableDirName(tvwFiles.SelectedNode.GetPath() + "\\new_folder");
+                        name = GetAvailableDirName(tvwFiles.SelectedNode.GetFilePath() + "\\new_folder");
                         node = tvwFiles.SelectedNode.Parent.Nodes.Add(name);
                         tvwFiles.SelectedNode.Parent.Expand();
                     }
                     else
                     {
-                        name = GetAvailableDirName(tvwFiles.SelectedNode.GetPath() + "\\new_folder");
+                        name = GetAvailableDirName(tvwFiles.SelectedNode.GetFilePath() + "\\new_folder");
                         node = tvwFiles.SelectedNode.Nodes.Add(name);
                         tvwFiles.SelectedNode.Expand();
                     }
@@ -972,7 +968,7 @@ $@"{{
                     try
                     {
                         // 尝试创建目录
-                        Directory.CreateDirectory(node.GetPath());
+                        Directory.CreateDirectory(node.GetFilePath());
                         node.BeginEdit();
                     }
                     catch (Exception ex)
@@ -982,7 +978,7 @@ $@"{{
                         // 弹窗提示
                         MessageBox.Show(ex.Message);
 
-                        if (!Directory.Exists(node.GetPath()))
+                        if (!Directory.Exists(node.GetFilePath()))
                         {
                             // 目录创建失败
                             // 把节点删除
@@ -1007,10 +1003,10 @@ $@"{{
                 {
                     TreeNode node;
                     var name = GetAvailableFileName(
-                        tvwFiles.SelectedNode.GetPath() + "\\new_file",
+                        tvwFiles.SelectedNode.GetFilePath() + "\\new_file",
                         SelectedItem.GetFileSuffix(true)
                         );
-                    if (IsFile(tvwFiles.SelectedNode))
+                    if (tvwFiles.SelectedNode.IsFile())
                     {
                         // 在文件级别右键
 
@@ -1039,7 +1035,7 @@ $@"{{
                         using (var editor = new Editor())
                         {
                             editor.SetEditor(GetRootParserJson(((Item)node).Sort));
-                            File.WriteAllText(node.GetPath(), editor.Json);
+                            File.WriteAllText(node.GetFilePath(), editor.Json);
                         }
 
                         node.BeginEdit();
@@ -1050,7 +1046,7 @@ $@"{{
                         // 弹窗提示
                         MessageBox.Show(ex.Message);
 
-                        if (!File.Exists(node.GetPath()))
+                        if (!File.Exists(node.GetFilePath()))
                         {
                             // 文件创建失败
                             // 把节点删除
@@ -1083,12 +1079,12 @@ $@"{{
                         {
                             // 尝试删除
 
-                            if (File.Exists(tvwFiles.SelectedNode.GetPath()))
+                            if (File.Exists(tvwFiles.SelectedNode.GetFilePath()))
                                 // 删除文件
-                                File.Delete(tvwFiles.SelectedNode.GetPath());
+                                File.Delete(tvwFiles.SelectedNode.GetFilePath());
                             else
                                 // 删除目录
-                                Directory.Delete(tvwFiles.SelectedNode.GetPath(), true);
+                                Directory.Delete(tvwFiles.SelectedNode.GetFilePath(), true);
 
                             // 移除节点
                             tvwFiles.Nodes.Remove(tvwFiles.SelectedNode);
@@ -1116,7 +1112,7 @@ $@"{{
             {
                 if (tvwFiles.SelectedNode != null)
                 {
-                    SetClipboardList(new[] { tvwFiles.SelectedNode.GetPath() }, false);
+                    SetClipboardList(new[] { tvwFiles.SelectedNode.GetFilePath() }, false);
                 }
             }
         }
@@ -1130,7 +1126,7 @@ $@"{{
             {
                 if (tvwFiles.SelectedNode != null)
                 {
-                    SetClipboardList(new[] { tvwFiles.SelectedNode.GetPath() }, true);
+                    SetClipboardList(new[] { tvwFiles.SelectedNode.GetFilePath() }, true);
                 }
             }
         }
@@ -1179,17 +1175,17 @@ $@"{{
                 string destination;
 
                 // 设定粘贴路径
-                if (IsFile(tvwFiles.SelectedNode))
+                if (tvwFiles.SelectedNode.IsFile())
                 {
                     // 选择的是文件
                     // 粘贴到上一级目录
-                    destination = tvwFiles.SelectedNode.Parent.GetPath();
+                    destination = tvwFiles.SelectedNode.Parent.GetFilePath();
                 }
                 else
                 {
                     // 选择的是目录
                     // 粘贴到本级下面
-                    destination = tvwFiles.SelectedNode.GetPath();
+                    destination = tvwFiles.SelectedNode.GetFilePath();
                 }
                 destination += source.Remove(0, source.LastIndexOf("\\"));
                 if (File.Exists(source))
@@ -1297,17 +1293,17 @@ $@"{{
                 if (tvwFiles.SelectedNode != null)
                 {
                     ProcessStartInfo info = new ProcessStartInfo("explorer.exe");
-                    if (IsFile(tvwFiles.SelectedNode))
+                    if (tvwFiles.SelectedNode.IsFile())
                     {
                         // 选中的是文件
                         // 打开explorer.exe, 将光标定位在此文件
-                        info.Arguments = "/e,/select," + tvwFiles.SelectedNode.GetPath();
+                        info.Arguments = "/e,/select," + tvwFiles.SelectedNode.GetFilePath();
                     }
                     else
                     {
                         // 选中的是文件夹
                         // 以此文件夹作为根目录打开explorer.exe
-                        info.Arguments = "/root," + tvwFiles.SelectedNode.GetPath();
+                        info.Arguments = "/root," + tvwFiles.SelectedNode.GetFilePath();
                     }
                     Process.Start(info);
                 }
@@ -1335,11 +1331,11 @@ $@"{{
                     {
                         // 合法文件名
 
-                        var before = e.Node.GetPath();
+                        var before = e.Node.GetFilePath();
                         var backup = e.Node.Text;
-                        var isFile = IsFile(e.Node);
+                        var isFile = e.Node.IsFile();
                         e.Node.Text = e.Label;
-                        var after = e.Node.GetPath();
+                        var after = e.Node.GetFilePath();
 
                         if (isFile)
                         {

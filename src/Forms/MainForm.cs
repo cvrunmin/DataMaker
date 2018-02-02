@@ -34,6 +34,7 @@ namespace DataMaker.Forms
                 i.BackColor = BackColor;
                 i.ForeColor = ForeColor;
             }
+            lblInfo.Font = new Font(lblInfo.Font.FontFamily, 15f);
         }
 
         /// <summary>
@@ -261,16 +262,14 @@ namespace DataMaker.Forms
                     ZipFile.CreateFromDirectory(FileTree.GetInstance().DatapackPath, name);
 
                     // 通知
-                    ShowMessagebox(
-                        Lang("mainform_msgbox_exportzipsuccessfully"), 
-                        name);
+                    ShowInfo("mainform_info_exportzipsuccessfully", name);
                 }
             }
         }
 
         private void LayoutForms()
         {
-            var height = ClientSize.Height - menuTop.Height - 5;
+            var height = ClientSize.Height - menuTop.Height - 5 - lblInfo.Height;
 
             // 设置FileTree
             FileTree.GetInstance().Left = ClientSize.Width - FileTree.GetInstance().ClientSize.Width;
@@ -299,8 +298,6 @@ namespace DataMaker.Forms
         private void smnuAbout_Click(object sender, EventArgs e) => ShowAboutBox();
         private void smnuLoadFolder_Click(object sender, EventArgs e) => SelectDatapackFolder();
         private void smnuExportZip_Click(object sender, EventArgs e) => ExportZip();
-
-        private void MainForm_Load(object sender, EventArgs e) { }// => LayoutForms();
         private void Form_Resize(object sender, EventArgs e) => LayoutForms();
         #endregion
 
@@ -309,6 +306,36 @@ namespace DataMaker.Forms
         private void smnuSaveFile_Click(object sender, EventArgs e)
         {
             SaveFile();
+        }
+
+        public static void ShowInfo(string lang, params string[] replacers)
+        {
+            var seperates = lang.Split('_');
+            var preffix = "";
+            var forecolor = new Color();
+            var msg = "";
+
+            switch (seperates[1])
+            {
+                case "error":
+                    preffix = Lang("mainform_info_error");
+                    forecolor = DarkTheme.ErrorColor;
+                    msg = $"[{preffix}] {Lang(lang, replacers)}";
+                    break;
+                case "warn":
+                    preffix = Lang("mainform_info_warn");
+                    forecolor = DarkTheme.WarnColor;
+                    msg = $"[{preffix}] {Lang(lang, replacers)}";
+                    break;
+                default:
+                    preffix = Lang("mainform_info_info");
+                    forecolor = DarkTheme.InfoColor;
+                    msg = $"[{preffix}] {Lang(lang, replacers)}";
+                    break;
+            }
+
+            GetInstance().lblInfo.Text = msg;
+            GetInstance().lblInfo.ForeColor = forecolor;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DataMaker.Forms;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -91,32 +92,50 @@ namespace DataMaker.Parsers
             }
             set
             {
-                var jObj = JsonConvert.DeserializeObject<JObject>(value);
-                if (jObj[Key] != null)
+                try
                 {
-                    // 加载数组
-                    var JAry = (JArray)jObj[Key];
-                    var values = new List<string>();
-                    // 把数组内容的Json加入Value
-                    foreach (var i in JAry)
-                        values.Add(GetLeftBrackets(i) + i.ToString() + GetRightBrackets(i));
-                    Values = values;
+                    var jObj = JsonConvert.DeserializeObject<JObject>(value);
+                    if (jObj[Key] != null)
+                    {
+                        // 加载数组
+                        var JAry = (JArray)jObj[Key];
+                        var values = new List<string>();
+                        // 把数组内容的Json加入Value
+                        foreach (var i in JAry)
+                            values.Add(GetLeftBrackets(i) + i.ToString() + GetRightBrackets(i));
+                        Values = values;
+                    }
+                    // 开始编辑第0个
+                    EditedIndex = 0;
+
+                    MainForm.ShowInfo("parsers_info_parsesuccessfully");
                 }
-                // 开始编辑第0个
-                EditedIndex = 0;
+                catch
+                {
+                    MainForm.ShowInfo("parsers_error_parsebad");
+                }
             }
         }
 
         public void SetParser(string json)
         {
-            var jobj = JsonConvert.DeserializeObject<JObject>(json);
-            Key = jobj["key"].ToString();
-            var rootParserJson =
+            try
+            {
+                var jobj = JsonConvert.DeserializeObject<JObject>(json);
+                Key = jobj["key"].ToString();
+                var rootParserJson =
 $@"{{
     ""key"": ""%NoKey%%NoBrackets%"",
     ""json"": ""{jobj["json"].ToString()}""
 }}";
-            frameRoot.SetParser(rootParserJson);
+                frameRoot.SetParser(rootParserJson);
+
+                MainForm.ShowInfo("parsers_info_loadsuccessfully");
+            }
+            catch
+            {
+                MainForm.ShowInfo("parsers_error_loadbad");
+            }
         }
 
         public void SetSize(int width)
@@ -181,6 +200,9 @@ $@"{{
             // 触发 Setter
             Values = Values;
             EditedIndex = EditedIndex;
+
+            // 设置焦点
+            frameRoot.Focus();
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
@@ -192,8 +214,11 @@ $@"{{
             // 读取删除后的上一个位置
             if (EditedIndex > 0) EditedIndex = EditedIndex - 1;
             else if (EditedIndex == 0) EditedIndex = 0;
-            // 然后如果没东西读取的话老子就不读了
+            // 如果没东西读取的话老子就不读了
             if (listValues.Items.Count == 0) EditedIndex = -1;
+
+            // 设置焦点
+            frameRoot.Focus();
         }
 
         // 当赋值后值一样时并不会触发此事件

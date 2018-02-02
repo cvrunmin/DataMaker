@@ -10,6 +10,9 @@ namespace DataMaker
         public static Color BackColor = Color.FromArgb(37, 37, 37);
         public static Color ForeColor = Color.FromArgb(245, 245, 245);
         public static Color HoverColor = Color.FromArgb(51, 51, 52);
+        public static Color WarnColor = Color.Yellow;
+        public static Color ErrorColor = Color.Red;
+        public static Color InfoColor = Color.Green;
         public static Font Font = new Font("微软雅黑", 12f, GraphicsUnit.Point);
 
         public static void Initialize(Control container)

@@ -4,6 +4,6 @@
 		"zone": [
 			"%SameTags%"
 		],
-		"out_of_zone": true
+		"can_out_of_zone": false
 	}]
 }
