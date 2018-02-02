@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using static DataMaker.Tools;
+using static DataMaker.Utils;
 using System;
 
 namespace DataMaker.Parsers
@@ -12,7 +12,7 @@ namespace DataMaker.Parsers
     {
         private string frameFileName;
 
-        public event ValueChangedHandler ValueChanged;
+        public event EventHandler ValueChanged;
 
         public string FrameFileName
         {

@@ -1,5 +1,5 @@
 ﻿using System;
-using static DataMaker.Tools;
+using static DataMaker.Utils;
 
 namespace DataMaker.Parsers
 {
@@ -35,6 +35,6 @@ namespace DataMaker.Parsers
         /// <summary>
         /// 值更改时触发
         /// </summary>
-        event ValueChangedHandler ValueChanged;
+        event EventHandler ValueChanged;
     }
 }

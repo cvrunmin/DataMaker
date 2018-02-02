@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.lblKey = new System.Windows.Forms.Label();
-            this.textBoxValue = new System.Windows.Forms.TextBox();
+            this.comboBoxValue = new DataMaker.BetterControls.BetterComboBox();
             this.SuspendLayout();
             // 
             // lblKey
@@ -42,20 +42,25 @@
             this.lblKey.Size = new System.Drawing.Size(0, 20);
             this.lblKey.TabIndex = 0;
             // 
-            // textBoxValue
+            // comboBoxValue
             // 
-            this.textBoxValue.Dock = System.Windows.Forms.DockStyle.Left;
-            this.textBoxValue.Location = new System.Drawing.Point(0, 0);
-            this.textBoxValue.Name = "textBoxValue";
-            this.textBoxValue.Size = new System.Drawing.Size(323, 26);
-            this.textBoxValue.TabIndex = 1;
-            this.textBoxValue.TextChanged += new System.EventHandler(this.textBoxValue_TextChanged);
+            this.comboBoxValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.comboBoxValue.Dock = System.Windows.Forms.DockStyle.Left;
+            this.comboBoxValue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
+            this.comboBoxValue.Font = new System.Drawing.Font("微软雅黑", 12F);
+            this.comboBoxValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
+            this.comboBoxValue.Location = new System.Drawing.Point(0, 0);
+            this.comboBoxValue.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.comboBoxValue.Name = "comboBoxValue";
+            this.comboBoxValue.Size = new System.Drawing.Size(326, 25);
+            this.comboBoxValue.TabIndex = 2;
+            this.comboBoxValue.TextChanged += new System.EventHandler(this.comboBoxValue_TextChanged);
             // 
             // TextParser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.textBoxValue);
+            this.Controls.Add(this.comboBoxValue);
             this.Controls.Add(this.lblKey);
             this.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -69,6 +74,6 @@
         #endregion
 
         private System.Windows.Forms.Label lblKey;
-        private System.Windows.Forms.TextBox textBoxValue;
+        private BetterControls.BetterComboBox comboBoxValue;
     }
 }

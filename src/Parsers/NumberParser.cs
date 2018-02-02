@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Windows.Forms;
-using static DataMaker.Tools;
+using static DataMaker.Utils;
 
 namespace DataMaker.Parsers
 {
@@ -13,7 +13,7 @@ namespace DataMaker.Parsers
         private decimal min = -2147483648;
         private decimal max = 2147483647;
 
-        public event ValueChangedHandler ValueChanged;
+        public event EventHandler ValueChanged;
 
         public NumberParser()
         {

@@ -29,42 +29,43 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.comboBoxContent = new System.Windows.Forms.ComboBox();
+            this.timerMatch = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // comboBox1
+            // comboBoxContent
             // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(0, 0);
-            this.comboBox1.MaxDropDownItems = 16;
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(100, 20);
-            this.comboBox1.Sorted = true;
-            this.comboBox1.TabIndex = 0;
-            this.comboBox1.TextChanged += new System.EventHandler(this.comboBox1_TextChanged);
+            this.comboBoxContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboBoxContent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBoxContent.Location = new System.Drawing.Point(0, 0);
+            this.comboBoxContent.MaxDropDownItems = 16;
+            this.comboBoxContent.Name = "comboBoxContent";
+            this.comboBoxContent.Size = new System.Drawing.Size(100, 20);
+            this.comboBoxContent.Sorted = true;
+            this.comboBoxContent.TabIndex = 0;
+            this.comboBoxContent.TextChanged += new System.EventHandler(this.comboBoxContent_TextChanged);
             // 
-            // timer1
+            // timerMatch
             // 
-            this.timer1.Interval = 250;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timerMatch.Interval = 250;
+            this.timerMatch.Tick += new System.EventHandler(this.timerMatch_Tick);
             // 
             // BetterComboBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.comboBoxContent);
+            this.Font = new System.Drawing.Font("宋体", 9F);
             this.Name = "BetterComboBox";
-            this.Size = new System.Drawing.Size(100, 20);
+            this.Size = new System.Drawing.Size(100, 19);
+            this.Resize += new System.EventHandler(this.BetterComboBox_Resize);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ComboBox comboBoxContent;
+        private System.Windows.Forms.Timer timerMatch;
     }
 }

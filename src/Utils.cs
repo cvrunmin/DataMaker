@@ -8,10 +8,8 @@ using System.Windows.Forms;
 
 namespace DataMaker
 {
-    public class Tools
+    public static class Utils
     {
-        public delegate void ValueChangedHandler(object sender, EventArgs e);
-
         /// <summary>
         /// 依据指定key从资源文件读取文字
         /// </summary>
@@ -175,6 +173,18 @@ namespace DataMaker
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 通过节点获取该节点对应的文件路径
+        /// </summary>
+        /// <param name="node">指定节点</param>
+        /// <returns>文件路径</returns>
+        public static string GetPath(this TreeNode node)
+        {
+            var result = node.Name;
+
+            return result.ToString();
         }
     }
 }

@@ -3,16 +3,18 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static DataMaker.Tools;
+using static DataMaker.Utils;
 
 namespace DataMaker.Parsers
 {
     public partial class TextParser : UserControl, IParser
     {
+        private bool canOutOfZone = true;
         private string frameFileName;
         private string value;
+        private List<string> zone;
 
-        public event ValueChangedHandler ValueChanged;
+        public event EventHandler ValueChanged;
 
         public TextParser()
         {
@@ -21,9 +23,28 @@ namespace DataMaker.Parsers
         }
 
         public string Key { get; set; }
-
         public string Default { get; set; }
-
+        public List<string> Zone
+        {
+            get => zone;
+            set
+            {
+                zone = value;
+                if (CanOutOfZone)
+                    // 可以出界，无元素就显示文本框，有元素就显示下拉
+                    if (Zone.Count == 0) comboBoxValue.DropDownStyle = ComboBoxStyle.Simple;
+                    else comboBoxValue.DropDownStyle = ComboBoxStyle.DropDown;
+            }
+        }
+        public bool CanOutOfZone
+        {
+            get => canOutOfZone;
+            set
+            {
+                canOutOfZone = value;
+                if (!CanOutOfZone) comboBoxValue.DropDownStyle = ComboBoxStyle.DropDownList;
+            }
+        }
         public string FrameFileName
         {
             get => frameFileName;
@@ -33,7 +54,6 @@ namespace DataMaker.Parsers
                 lblKey.Text = Lang("key_" + FrameFileName + "_" + Key);
             }
         }
-
         public string Value
         {
             get => value;
@@ -41,10 +61,9 @@ namespace DataMaker.Parsers
             {
                 this.value = value;
                 ValueChanged?.Invoke(this, new EventArgs());
-                textBoxValue.Text = value;
+                comboBoxValue.Text = value;
             }
         }
-
         public string Json
         {
             get
@@ -65,29 +84,32 @@ namespace DataMaker.Parsers
             }
         }
 
-        // TODO ZoneTextParser
-        public bool OutOfZone { get; set; }
-        public List<string> Zone { get; set; }
-
         public void SetParser(string json)
         {
             var jobj = JsonConvert.DeserializeObject<JObject>(json);
             Key = jobj["key"].ToString();
             if (jobj["default"] != null)
                 Value = Default = jobj["default"].ToString();
-        }
-
-        private void textBoxValue_TextChanged(object sender, EventArgs e)
-        {
-            Value = textBoxValue.Text;
+            if (jobj["can_out_of_zone"] != null)
+                CanOutOfZone = jobj["can_out_of_zone"].ToObject<bool>();
+            if (jobj["zone"] != null)
+                Zone = ((JArray)jobj["zone"]).ToObject<List<string>>();
+            else
+                Zone = new List<string>();
         }
 
         public void SetSize(int width)
         {
             Width = width;
-            textBoxValue.Left = lblKey.Left + lblKey.Width + textBoxValue.Margin.Left;
-            textBoxValue.Width = Width - lblKey.Left - lblKey.Width - textBoxValue.Margin.Left - 50;
-            Height = Math.Max(textBoxValue.Height, lblKey.Height);
+            comboBoxValue.Left = lblKey.Left + lblKey.Width + comboBoxValue.Margin.Left;
+            comboBoxValue.Width = Width - lblKey.Left - lblKey.Width - comboBoxValue.Margin.Left - 50;
+            // FIXME: 高度Hardcode
+            Height = 30;
+        }
+
+        private void comboBoxValue_TextChanged(object sender, EventArgs e)
+        {
+            Value = comboBoxValue.Text;
         }
     }
 }

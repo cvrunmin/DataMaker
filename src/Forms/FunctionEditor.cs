@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using static DataMaker.Tools;
+using static DataMaker.Utils;
 
 namespace DataMaker.Forms
 {

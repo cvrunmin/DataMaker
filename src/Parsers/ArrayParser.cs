@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static DataMaker.Tools;
+using static DataMaker.Utils;
 
 namespace DataMaker.Parsers
 {
@@ -14,7 +14,7 @@ namespace DataMaker.Parsers
         private bool isSettingValue;
         private int editedIndex;
 
-        public event ValueChangedHandler ValueChanged;
+        public event EventHandler ValueChanged;
 
         public ArrayParser()
         {

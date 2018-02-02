@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Windows.Forms;
-using static DataMaker.Tools;
+using static DataMaker.Utils;
 
 namespace DataMaker.Parsers
 {
@@ -11,7 +11,7 @@ namespace DataMaker.Parsers
         private string frameFileName;
         private bool value;
 
-        public event ValueChangedHandler ValueChanged;
+        public event EventHandler ValueChanged;
 
         public BooleanParser()
         {
