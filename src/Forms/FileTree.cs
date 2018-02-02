@@ -10,7 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using static DataMaker.Tools;
+using static DataMaker.Utils;
 
 namespace DataMaker
 {
@@ -157,7 +157,7 @@ namespace DataMaker
             editor.SetEditor(json);
 
             // 用该 editor 读取已有 json
-            editor.Json = File.ReadAllText(GetPath(node));
+            editor.Json = File.ReadAllText(node.GetPath());
 
             return editor;
         }
@@ -206,7 +206,7 @@ $@"{{
         /// <param name="editor">指定数据类</param>
         public static void SaveFile(Editor editor, TreeNode node)
         {
-            var path = GetPath(node);
+            var path = node.GetPath();
             File.WriteAllText(path, editor.Json);
         }
 
@@ -242,33 +242,6 @@ $@"{{
                     CopyDirectory(i.FullName, destPath);
                 }
             }
-        }
-
-        /// <summary>
-        /// 通过节点获取该节点对应的文件路径
-        /// </summary>
-        /// <param name="node">指定节点</param>
-        /// <returns>文件路径</returns>
-        private static string GetPath(TreeNode node)
-        {
-            StringBuilder result = new StringBuilder(node.FullPath);
-            result = result.Replace(Lang("global_datapack"), dataPackPath)
-                .Replace("/" + Lang("global_data"), "/data")
-                .Replace("/" + Lang("global_advancement"), "/advancements")
-                .Replace("/" + Lang("global_function"), "/functions")
-                .Replace("/" + Lang("global_structure"), "/structures")
-                .Replace("/" + Lang("global_loottable"), "/loot_tables")
-                .Replace("/" + Lang("global_recipe"), "/recipes")
-                .Replace("/" + Lang("global_tag"), "/tags")
-                .Replace("/" + Lang("global_block"), "/blocks")
-                .Replace("/" + Lang("global_item"), "/items")
-                .Replace("/" + Lang("global_function"), "/functions")
-                .Replace("/" + Lang("global_settings"), "/pack.mcmeta")
-                .Replace("/", "\\");
-            // 加后缀
-            result.Append(((Item)node).GetFileSuffix(false));
-
-            return result.ToString();
         }
 
         /// <summary>
@@ -396,7 +369,7 @@ $@"{{
         /// 获取指定节点对应的路径是否是文件
         /// </summary>
         /// <param name="node">指定节点</param>
-        private static bool IsFile(TreeNode node) => File.Exists(GetPath(node));
+        private static bool IsFile(TreeNode node) => File.Exists(node.GetPath());
         #endregion
 
         #region 启动时初始化
@@ -444,6 +417,7 @@ $@"{{
             tvwFiles.Nodes.Clear();
 
             var rootNode = tvwFiles.Nodes.Add("dataPack");
+            rootNode.Name = path;
             InitializeNode(rootNode, false);
 
             // 补全目录
@@ -497,6 +471,7 @@ $@"{{
             {
                 var dirName = dir.LastIndexOf("\\") + 1;
                 var dirNode = node.Nodes.Add(dir.Remove(0, dirName));
+                dirNode.Name = dir;
                 InitializeNode(dirNode, false);
                 // 递归
                 LoadDirectory(dir, dirNode);
@@ -508,6 +483,7 @@ $@"{{
             {
                 var fileName = file.Remove(0, file.LastIndexOf("\\") + 1);
                 var fileNode = node.Nodes.Add(fileName);
+                fileNode.Name = file;
                 InitializeNode(fileNode, true);
             }
         }
@@ -959,7 +935,7 @@ $@"{{
                     MessageBox.Show(
                         Lang("filetree_properties_name") + ": " + tvwFiles.SelectedNode.Text + "\n" +
                         Lang("filetree_properties_type") + ": " + tvwFiles.SelectedNode.Tag + "\n" +
-                        Lang("filetree_properties_path") + ": " + GetPath(tvwFiles.SelectedNode) + "\n"
+                        Lang("filetree_properties_path") + ": " + tvwFiles.SelectedNode.GetPath() + "\n"
                         );
                 }
             }
@@ -980,13 +956,13 @@ $@"{{
                     string name;
                     if (IsFile(tvwFiles.SelectedNode))
                     {
-                        name = GetAvailableDirName(GetPath(tvwFiles.SelectedNode) + "\\new_folder");
+                        name = GetAvailableDirName(tvwFiles.SelectedNode.GetPath() + "\\new_folder");
                         node = tvwFiles.SelectedNode.Parent.Nodes.Add(name);
                         tvwFiles.SelectedNode.Parent.Expand();
                     }
                     else
                     {
-                        name = GetAvailableDirName(GetPath(tvwFiles.SelectedNode) + "\\new_folder");
+                        name = GetAvailableDirName(tvwFiles.SelectedNode.GetPath() + "\\new_folder");
                         node = tvwFiles.SelectedNode.Nodes.Add(name);
                         tvwFiles.SelectedNode.Expand();
                     }
@@ -996,7 +972,7 @@ $@"{{
                     try
                     {
                         // 尝试创建目录
-                        Directory.CreateDirectory(GetPath(node));
+                        Directory.CreateDirectory(node.GetPath());
                         node.BeginEdit();
                     }
                     catch (Exception ex)
@@ -1006,7 +982,7 @@ $@"{{
                         // 弹窗提示
                         MessageBox.Show(ex.Message);
 
-                        if (!Directory.Exists(GetPath(node)))
+                        if (!Directory.Exists(node.GetPath()))
                         {
                             // 目录创建失败
                             // 把节点删除
@@ -1031,7 +1007,7 @@ $@"{{
                 {
                     TreeNode node;
                     var name = GetAvailableFileName(
-                        GetPath(tvwFiles.SelectedNode) + "\\new_file",
+                        tvwFiles.SelectedNode.GetPath() + "\\new_file",
                         SelectedItem.GetFileSuffix(true)
                         );
                     if (IsFile(tvwFiles.SelectedNode))
@@ -1063,7 +1039,7 @@ $@"{{
                         using (var editor = new Editor())
                         {
                             editor.SetEditor(GetRootParserJson(((Item)node).Sort));
-                            File.WriteAllText(GetPath(node), editor.Json);
+                            File.WriteAllText(node.GetPath(), editor.Json);
                         }
 
                         node.BeginEdit();
@@ -1074,7 +1050,7 @@ $@"{{
                         // 弹窗提示
                         MessageBox.Show(ex.Message);
 
-                        if (!File.Exists(GetPath(node)))
+                        if (!File.Exists(node.GetPath()))
                         {
                             // 文件创建失败
                             // 把节点删除
@@ -1107,12 +1083,12 @@ $@"{{
                         {
                             // 尝试删除
 
-                            if (File.Exists(GetPath(tvwFiles.SelectedNode)))
+                            if (File.Exists(tvwFiles.SelectedNode.GetPath()))
                                 // 删除文件
-                                File.Delete(GetPath(tvwFiles.SelectedNode));
+                                File.Delete(tvwFiles.SelectedNode.GetPath());
                             else
                                 // 删除目录
-                                Directory.Delete(GetPath(tvwFiles.SelectedNode), true);
+                                Directory.Delete(tvwFiles.SelectedNode.GetPath(), true);
 
                             // 移除节点
                             tvwFiles.Nodes.Remove(tvwFiles.SelectedNode);
@@ -1140,7 +1116,7 @@ $@"{{
             {
                 if (tvwFiles.SelectedNode != null)
                 {
-                    SetClipboardList(new[] { GetPath(tvwFiles.SelectedNode) }, false);
+                    SetClipboardList(new[] { tvwFiles.SelectedNode.GetPath() }, false);
                 }
             }
         }
@@ -1154,7 +1130,7 @@ $@"{{
             {
                 if (tvwFiles.SelectedNode != null)
                 {
-                    SetClipboardList(new[] { GetPath(tvwFiles.SelectedNode) }, true);
+                    SetClipboardList(new[] { tvwFiles.SelectedNode.GetPath() }, true);
                 }
             }
         }
@@ -1207,13 +1183,13 @@ $@"{{
                 {
                     // 选择的是文件
                     // 粘贴到上一级目录
-                    destination = GetPath(tvwFiles.SelectedNode.Parent);
+                    destination = tvwFiles.SelectedNode.Parent.GetPath();
                 }
                 else
                 {
                     // 选择的是目录
                     // 粘贴到本级下面
-                    destination = GetPath(tvwFiles.SelectedNode);
+                    destination = tvwFiles.SelectedNode.GetPath();
                 }
                 destination += source.Remove(0, source.LastIndexOf("\\"));
                 if (File.Exists(source))
@@ -1325,13 +1301,13 @@ $@"{{
                     {
                         // 选中的是文件
                         // 打开explorer.exe, 将光标定位在此文件
-                        info.Arguments = "/e,/select," + GetPath(tvwFiles.SelectedNode);
+                        info.Arguments = "/e,/select," + tvwFiles.SelectedNode.GetPath();
                     }
                     else
                     {
                         // 选中的是文件夹
                         // 以此文件夹作为根目录打开explorer.exe
-                        info.Arguments = "/root," + GetPath(tvwFiles.SelectedNode);
+                        info.Arguments = "/root," + tvwFiles.SelectedNode.GetPath();
                     }
                     Process.Start(info);
                 }
@@ -1359,11 +1335,11 @@ $@"{{
                     {
                         // 合法文件名
 
-                        var before = GetPath(e.Node);
+                        var before = e.Node.GetPath();
                         var backup = e.Node.Text;
                         var isFile = IsFile(e.Node);
                         e.Node.Text = e.Label;
-                        var after = GetPath(e.Node);
+                        var after = e.Node.GetPath();
 
                         if (isFile)
                         {
