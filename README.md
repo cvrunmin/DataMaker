@@ -7,7 +7,7 @@
 
 ## Goal and Philosophy
 
-  Users who can just use computers simply will be able to make their own recipes, advancements, loot tables and so on.
+  Noob (such as me) and also dalaos will be able to make their own recipes, advancements, loot tables and so on.
 
 ## What's DataMaker
   
