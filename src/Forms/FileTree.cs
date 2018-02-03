@@ -476,6 +476,12 @@ $@"{{
                     File.WriteAllText(DataPackPath + @"\pack.mcmeta", editor.Json);
                 }
             }
+            if (!File.Exists(DataPackPath + @"\!project.json"))
+            {
+                // 创建默认的 .spgodingdatapackmakerproject 文件
+                // 依赖默认
+                File.Copy(@"Jsons\!project.json", DataPackPath + @"\!project.json");
+            }
 
             // 补全命名空间下的目录
             foreach (var i in Directory.GetDirectories(DataPackPath + @"\data"))
