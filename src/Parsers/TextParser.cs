@@ -42,8 +42,7 @@ namespace DataMaker.Parsers
                         case "%SameTags%":
                             zone.Remove(i);
                             zone.AddRange(FileTree.GetAllIds(
-                                    ((Item)MainForm.GetInstance().EditedNode).Sort)
-                                    );
+                                    ((Item)MainForm.GetInstance().EditedNode).Sort, true));
                             isChanged = true;
                             break;
                         default:

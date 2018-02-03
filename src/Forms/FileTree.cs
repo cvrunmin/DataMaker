@@ -2,6 +2,7 @@
 using DataMaker.Parsers;
 using DataMaker.Properties;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -105,6 +106,12 @@ namespace DataMaker
          * TooltipText: 实际文件名
          * Name: 实际目录名
          */
+        private static string dataPackPath;
+
+        /// <summary>
+        /// 是否正在新建文件夹
+        /// </summary>
+        private static bool isAddingFolder;
 
         /// <summary>
         /// 要加载的文件夹路径
@@ -130,13 +137,56 @@ namespace DataMaker
                 LoadFileTree(DatapackPath);
             }
         }
-        
-        private static string dataPackPath;
 
-        /// <summary>
-        /// 是否正在新建文件夹
-        /// </summary>
-        private static bool isAddingFolder;
+        #region 各依赖项属性
+        public static List<string> DependentAdvancements
+        {
+            get;
+            set;
+        } = new List<string>();
+
+        public static List<string> DependentRecipes
+        {
+            get;
+            set;
+        } = new List<string>();
+
+        public static List<string> DependentBlockTags
+        {
+            get;
+            set;
+        } = new List<string>();
+
+        public static List<string> DependentFunctionTags
+        {
+            get;
+            set;
+        } = new List<string>();
+
+        public static List<string> DependentItemTags
+        {
+            get;
+            set;
+        } = new List<string>();
+
+        public static List<string> DependentFunctions
+        {
+            get;
+            set;
+        } = new List<string>();
+
+        public static List<string> DependentLootTables
+        {
+            get;
+            set;
+        } = new List<string>();
+
+        public static List<string> DependentStructures
+        {
+            get;
+            set;
+        } = new List<string>();
+        #endregion
 
         #region Single instance
         private static FileTree fileTree;
@@ -160,13 +210,17 @@ namespace DataMaker
         /// <param name="sort"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static List<string> GetAllIds(ItemSort sort, ItemType type = ItemType.File, TreeNodeCollection nodes = null)
+        public static List<string> GetAllIds
+            (ItemSort sort, bool containsDependencies, 
+            ItemType type = ItemType.File,
+            TreeNodeCollection nodes = null)
         {
             // 默认值为根Nodes
             if (nodes == null) nodes = GetInstance().tvwFiles.Nodes;
 
             var result = new List<string>();
 
+            // 加入项目中已有的
             foreach (var i in nodes)
             {
                 var node = (TreeNode)i;
@@ -174,7 +228,43 @@ namespace DataMaker
                 if (((Item)node).Type == type && ((Item)node).Sort == sort)
                     result.Add(node.GetID());
                 // 递归
-                result.AddRange(GetAllIds(sort, type, node.Nodes));
+                result.AddRange(GetAllIds(sort, false, type, node.Nodes));
+            }
+
+            if (containsDependencies)
+            {
+                // 加入依赖项中有的
+                var target = new List<string>();
+                switch (sort)
+                {
+                    case ItemSort.Advancement:
+                        target = DependentAdvancements;
+                        break;
+                    case ItemSort.Function:
+                        target = DependentFunctions;
+                        break;
+                    case ItemSort.LootTable:
+                        target = DependentLootTables;
+                        break;
+                    case ItemSort.Recipe:
+                        target = DependentRecipes;
+                        break;
+                    case ItemSort.Structure:
+                        target = DependentStructures;
+                        break;
+                    case ItemSort.BlockTag:
+                        target = DependentBlockTags;
+                        break;
+                    case ItemSort.ItemTag:
+                        target = DependentItemTags;
+                        break;
+                    case ItemSort.FunctionTag:
+                        target = DependentFunctionTags;
+                        break;
+                    default:
+                        break;
+                }
+                foreach (var i in target) result.Add(i);
             }
 
             return result;
@@ -458,6 +548,29 @@ $@"{{
 
             // 开始递归读取
             LoadDirectory(path, rootNode);
+
+            // 加载依赖项
+            var content = File.ReadAllText($@"{dataPackPath}\!dependencies.json");
+            var jAry = JsonConvert.DeserializeObject<JArray>(content);
+            foreach (var i in jAry)
+            {
+                if (i["advancements"] != null)
+                    DependentAdvancements.AddRange(i["advancements"].ToObject<List<string>>());
+                if (i["recipes"] != null)
+                    DependentRecipes.AddRange(i["recipes"].ToObject<List<string>>());
+                if (i["block_tags"] != null)
+                    DependentBlockTags.AddRange(i["block_tags"].ToObject<List<string>>());
+                if (i["item_tags"] != null)
+                    DependentItemTags.AddRange(i["item_tags"].ToObject<List<string>>());
+                if (i["function_tags"] != null)
+                    DependentFunctionTags.AddRange(i["function_tags"].ToObject<List<string>>());
+                if (i["structures"] != null)
+                    DependentStructures.AddRange(i["structures"].ToObject<List<string>>());
+                if (i["functions"] != null)
+                    DependentFunctions.AddRange(i["functions"].ToObject<List<string>>());
+                if (i["loot_tables"] != null)
+                    DependentLootTables.AddRange(i["loot_tables"].ToObject<List<string>>());
+            }
         }
 
         /// <summary>
@@ -476,11 +589,11 @@ $@"{{
                     File.WriteAllText(DataPackPath + @"\pack.mcmeta", editor.Json);
                 }
             }
-            if (!File.Exists(DataPackPath + @"\!project.json"))
+            if (!File.Exists(DataPackPath + @"\!dependencies.json"))
             {
                 // 创建默认的 .spgodingdatapackmakerproject 文件
                 // 依赖默认
-                File.Copy(@"Jsons\!project.json", DataPackPath + @"\!project.json");
+                File.Copy(@"Jsons\!dependencies.json", DataPackPath + @"\!dependencies.json");
             }
 
             // 补全命名空间下的目录
@@ -509,12 +622,15 @@ $@"{{
             foreach (var dir in dirs)
             {
                 var dirName = dir.Remove(0, dir.LastIndexOf("\\") + 1);
-                var dirNode = node.Nodes.Add(dirName);
-                dirNode.Name = dir;
-                dirNode.ToolTipText = dirName;
-                InitializeNode(dirNode, false);
-                // 递归
-                LoadDirectory(dir, dirNode);
+                if (IsNameLegal(dirName))
+                {
+                    var dirNode = node.Nodes.Add(dirName);
+                    dirNode.Name = dir;
+                    dirNode.ToolTipText = dirName;
+                    InitializeNode(dirNode, false);
+                    // 递归
+                    LoadDirectory(dir, dirNode);
+                }
             }
 
             // 读取文件
@@ -522,10 +638,13 @@ $@"{{
             foreach (var file in files)
             {
                 var fileName = file.Remove(0, file.LastIndexOf("\\") + 1);
-                var fileNode = node.Nodes.Add(fileName);
-                fileNode.Name = file;
-                fileNode.ToolTipText = fileName;
-                InitializeNode(fileNode, true);
+                if (IsNameLegal(fileName))
+                {
+                    var fileNode = node.Nodes.Add(fileName);
+                    fileNode.Name = file;
+                    fileNode.ToolTipText = fileName;
+                    InitializeNode(fileNode, true);
+                }
             }
         }
 
