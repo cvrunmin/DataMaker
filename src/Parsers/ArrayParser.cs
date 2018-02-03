@@ -15,7 +15,7 @@ namespace DataMaker.Parsers
         private bool isSettingValue;
         private int editedIndex;
 
-        public event EventHandler ValueChanged;
+        public event EventHandler ValueChanged; 
 
         public ArrayParser()
         {
@@ -225,6 +225,21 @@ $@"{{
         private void listValues_SelectedIndexChanged(object sender, EventArgs e)
         {
             EditedIndex = listValues.SelectedIndex;
+        }
+
+        private void ArrayParser_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                    btnAdd_Click(this, new EventArgs());
+                    break;
+                case Keys.Delete:
+                    btnRemove_Click(this, new EventArgs());
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

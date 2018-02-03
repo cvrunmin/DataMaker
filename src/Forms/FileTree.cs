@@ -14,9 +14,9 @@ using static DataMaker.Utils;
 
 namespace DataMaker
 {
-    public enum ItemType { DataPack, Data, Namespace, Root, Directory, File, Unknown }
+    public enum ItemType { DataPack, Data, Namespace, SortRoot, Module, File, Unknown }
 
-    public enum ItemSort { Advancement, Function, LootTable, Recipe, Structure, Tag, BlockTag, PackMcmeta, None }
+    public enum ItemSort { Advancement, Function, LootTable, Recipe, Structure, TagRoot , BlockTag, ItemTag, FunctionTag, PackMcmeta, None }
 
     /// <summary>
     /// 代表一个项目(文件/文件夹)
@@ -55,7 +55,9 @@ namespace DataMaker
                 case ItemSort.Advancement:
                 case ItemSort.LootTable:
                 case ItemSort.Recipe:
-                case ItemSort.Tag:
+                case ItemSort.BlockTag:
+                case ItemSort.ItemTag:
+                case ItemSort.FunctionTag:
                     suffix = ".json";
                     break;
                 case ItemSort.Function:
@@ -97,6 +99,13 @@ namespace DataMaker
 
     public partial class FileTree : Form
     {
+        /* 使用 TreeNode 的各个属性储存不同信息
+         * Tag: Sort 与 Type
+         * Text: 显示名称
+         * TooltipText: 实际文件名
+         * Name: 实际目录名
+         */
+
         /// <summary>
         /// 要加载的文件夹路径
         /// </summary>
@@ -146,6 +155,32 @@ namespace DataMaker
 
         #region 定义函数
         /// <summary>
+        /// 获取全部指定类型文件的ID
+        /// </summary>
+        /// <param name="sort"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static List<string> GetAllIds(ItemSort sort, ItemType type = ItemType.File, TreeNodeCollection nodes = null)
+        {
+            // 默认值为根Nodes
+            if (nodes == null) nodes = GetInstance().tvwFiles.Nodes;
+
+            var result = new List<string>();
+
+            foreach (var i in nodes)
+            {
+                var node = (TreeNode)i;
+                // 当前node符合，加入列表
+                if (((Item)node).Type == type && ((Item)node).Sort == sort)
+                    result.Add(node.GetID());
+                // 递归
+                result.AddRange(GetAllIds(sort, type, node.Nodes));
+            }
+
+            return result;
+        }
+        
+        /// <summary>
         /// 根据指定节点获取Editor
         /// </summary>
         /// <param name="node">指定节点</param>
@@ -183,7 +218,9 @@ namespace DataMaker
                     break;
                 case ItemSort.Structure:
                     break;
-                case ItemSort.Tag:
+                case ItemSort.BlockTag:
+                case ItemSort.ItemTag:
+                case ItemSort.FunctionTag:
                     rootParserFileName = "tag/tag";
                     break;
                 case ItemSort.PackMcmeta:
@@ -465,9 +502,10 @@ $@"{{
             var dirs = Directory.GetDirectories(path);
             foreach (var dir in dirs)
             {
-                var dirName = dir.LastIndexOf("\\") + 1;
-                var dirNode = node.Nodes.Add(dir.Remove(0, dirName));
+                var dirName = dir.Remove(0, dir.LastIndexOf("\\") + 1);
+                var dirNode = node.Nodes.Add(dirName);
                 dirNode.Name = dir;
+                dirNode.ToolTipText = dirName;
                 InitializeNode(dirNode, false);
                 // 递归
                 LoadDirectory(dir, dirNode);
@@ -480,6 +518,7 @@ $@"{{
                 var fileName = file.Remove(0, file.LastIndexOf("\\") + 1);
                 var fileNode = node.Nodes.Add(fileName);
                 fileNode.Name = file;
+                fileNode.ToolTipText = fileName;
                 InitializeNode(fileNode, true);
             }
         }
@@ -583,37 +622,37 @@ $@"{{
                             case "advancements":
                                 node.ImageKey = node.SelectedImageKey = "Advancements";
                                 node.Text = Lang("global_advancement");
-                                node.Tag = new Item(ItemType.Root, ItemSort.Advancement);
+                                node.Tag = new Item(ItemType.SortRoot, ItemSort.Advancement);
                                 //node.Expand();
                                 break;
                             case "functions":
                                 node.ImageKey = node.SelectedImageKey = "Functions";
                                 node.Text = Lang("global_function");
-                                node.Tag = new Item(ItemType.Root, ItemSort.Function);
+                                node.Tag = new Item(ItemType.SortRoot, ItemSort.Function);
                                 //node.Expand();
                                 break;
                             case "loot_tables":
                                 node.ImageKey = node.SelectedImageKey = "LootTables";
                                 node.Text = Lang("global_loottable");
-                                node.Tag = new Item(ItemType.Root, ItemSort.LootTable);
+                                node.Tag = new Item(ItemType.SortRoot, ItemSort.LootTable);
                                 //node.Expand();
                                 break;
                             case "structures":
                                 node.ImageKey = node.SelectedImageKey = "Structures";
                                 node.Text = Lang("global_structure");
-                                node.Tag = new Item(ItemType.Root, ItemSort.Structure);
+                                node.Tag = new Item(ItemType.SortRoot, ItemSort.Structure);
                                 //node.Expand();
                                 break;
                             case "recipes":
                                 node.ImageKey = node.SelectedImageKey = "Recipes";
                                 node.Text = Lang("global_recipe");
-                                node.Tag = new Item(ItemType.Root, ItemSort.Recipe);
+                                node.Tag = new Item(ItemType.SortRoot, ItemSort.Recipe);
                                 //node.Expand();
                                 break;
                             case "tags":
                                 node.ImageKey = node.SelectedImageKey = "Tags";
                                 node.Text = Lang("global_tag");
-                                node.Tag = new Item(ItemType.Root, ItemSort.Tag);
+                                node.Tag = new Item(ItemType.SortRoot, ItemSort.TagRoot);
                                 //node.Expand();
                                 break;
                             default:
@@ -625,22 +664,24 @@ $@"{{
 
                     case 4:
                         // tags下细分类
-                        if (((Item)node.Parent).Sort == ItemSort.Tag)
+                        if (((Item)node.Parent).Sort == ItemSort.TagRoot)
                         {
                             node.ImageKey = node.SelectedImageKey = "Directory";
-                            node.Tag = new Item(ItemType.Root, ItemSort.Tag);
                             switch (node.Text)
                             {
                                 case "blocks":
                                     node.ImageKey = node.SelectedImageKey = "BlockTags";
+                                    node.Tag = new Item(ItemType.SortRoot, ItemSort.BlockTag);
                                     node.Text = Lang("global_block");
                                     break;
                                 case "items":
                                     node.ImageKey = node.SelectedImageKey = "ItemTags";
+                                    node.Tag = new Item(ItemType.SortRoot, ItemSort.ItemTag);
                                     node.Text = Lang("global_item");
                                     break;
                                 case "functions":
                                     node.ImageKey = node.SelectedImageKey = "FunctionTags";
+                                    node.Tag = new Item(ItemType.SortRoot, ItemSort.FunctionTag);
                                     node.Text = Lang("global_function");
                                     break;
                                 default:
@@ -664,7 +705,7 @@ $@"{{
                             // 合法
                             // 跟随父级目录的属性
                             node.ImageKey = node.SelectedImageKey = "Directory";
-                            node.Tag = new Item(ItemType.Directory, ((Item)node.Parent).Sort);
+                            node.Tag = new Item(ItemType.Module, ((Item)node.Parent).Sort);
                         }
                         else
                         {
@@ -767,7 +808,7 @@ $@"{{
                         smnuAddFile.Enabled = false;
                         smnuAddDirectory.Enabled = false;
                         break;
-                    case ItemType.Root:
+                    case ItemType.SortRoot:
                         smnuDelete.Enabled = false;
                         smnuRename.Enabled = false;
                         break;
@@ -803,12 +844,20 @@ $@"{{
                     case ItemSort.Structure:
                         smnuAddFile.Text = Lang("global_structure");
                         break;
-                    case ItemSort.Tag:
+                    case ItemSort.BlockTag:
+                    case ItemSort.ItemTag:
+                    case ItemSort.FunctionTag:
                         smnuAddFile.Text = Lang("global_tag");
                         break;
                     // 不允许删除配置文件
                     case ItemSort.PackMcmeta:
                         smnuDelete.Enabled = false;
+                        break;
+                    // 不允许在Tags下新建
+                    case ItemSort.TagRoot:
+                        smnuAdd.Enabled = false;
+                        smnuAddDirectory.Enabled = false;
+                        smnuAddFile.Enabled = false;
                         break;
                     default:
                         break;

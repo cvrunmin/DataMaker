@@ -81,6 +81,7 @@
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.listValues);
             this.Name = "ArrayParser";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ArrayParser_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

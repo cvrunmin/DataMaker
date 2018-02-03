@@ -217,6 +217,69 @@ namespace DataMaker
         }
 
         /// <summary>
+        /// 获取指定节点的ID名
+        /// </summary>
+        /// <param name="node">指定节点</param>
+        public static string GetID(this TreeNode node)
+        {
+            var result = "";
+
+            // (namespace):
+            var ns = node.GetNamespace();
+            result = $"{ns.ToolTipText}:";
+
+            // foo/bar
+            var rest = node.GetModulesNames();
+            rest = rest.Remove(rest.LastIndexOf("."));
+
+            // (namespace):foo/bar
+            result += rest;
+
+            // #(namespace):foo/bar
+            if (((Item)node).Sort == ItemSort.FunctionTag ||
+                ((Item)node).Sort == ItemSort.BlockTag ||
+                ((Item)node).Sort == ItemSort.FunctionTag)
+                result = $"#{result}";
+
+            return result;
+        }
+        
+        /// <summary>
+        /// 获取指定节点的Namespace
+        /// </summary>
+        /// <param name="node">指定节点</param>
+        public static TreeNode GetNamespace(this TreeNode node)
+        {
+            var result = new TreeNode();
+
+            if (((Item)node).Type == ItemType.Namespace)
+                result = node;
+            else
+                result = node.Parent.GetNamespace();
+
+            return result;
+        }
+
+        /// <summary>
+        /// 获取指定节点的所有模块名
+        /// </summary>
+        /// <param name="node">指定节点</param>
+        /// <returns>foo/bar.json</returns>
+        public static string GetModulesNames(this TreeNode node, string before = "")
+        {
+            var result = before;
+
+            if (((Item)node).Type == ItemType.Module || 
+                ((Item)node).Type == ItemType.File)
+            {
+                var b = $"{node.ToolTipText}/{before}";
+                result = node.Parent.GetModulesNames(b);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// 获取指定节点对应的路径是否是文件
         /// </summary>
         /// <param name="node">指定节点</param>

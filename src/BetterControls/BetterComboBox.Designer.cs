@@ -44,7 +44,8 @@
             this.comboBoxContent.Size = new System.Drawing.Size(322, 19);
             this.comboBoxContent.Sorted = true;
             this.comboBoxContent.TabIndex = 0;
-            this.comboBoxContent.TextChanged += new System.EventHandler(this.comboBoxContent_TextChanged);
+            this.comboBoxContent.SelectedIndexChanged += new System.EventHandler(this.comboBoxContent_SelectedIndexChanged);
+            this.comboBoxContent.TextUpdate += new System.EventHandler(this.comboBoxContent_TextUpdated);
             // 
             // timerMatch
             // 

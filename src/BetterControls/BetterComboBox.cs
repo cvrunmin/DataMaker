@@ -12,15 +12,11 @@ namespace DataMaker.BetterControls
         public new event EventHandler TextChanged;
 
         public ComboBox.ObjectCollection Items => comboBoxContent.Items;
-        public List<string> AllItems
+        public List<string> AllItems => allItems;
+        public int SelectionStart
         {
-            get => allItems;
-            set => allItems = value;
-        }
-        public int SelectedIndex
-        {
-            get => comboBoxContent.SelectedIndex;
-            set => comboBoxContent.SelectedIndex = value;
+            get => comboBoxContent.SelectionStart;
+            set => comboBoxContent.SelectionStart = value;
         }
         public override string Text
         {
@@ -41,8 +37,11 @@ namespace DataMaker.BetterControls
 
         private List<string> allItems = new List<string>();
 
-        private void comboBoxContent_TextChanged(object sender, EventArgs e)
+        private void comboBoxContent_TextUpdated(object sender, EventArgs e)
         {
+            // 显示下拉框
+            comboBoxContent.DroppedDown = true;
+
             // 重新计时
             // 不着急立刻match，不然会卡
             timerMatch.Enabled = false;
@@ -51,6 +50,9 @@ namespace DataMaker.BetterControls
             // 触发事件
             TextChanged(this, new EventArgs());
         }
+
+        private void comboBoxContent_SelectedIndexChanged(object sender, EventArgs e)
+            => TextChanged(this, new EventArgs());
 
         private void MatchPattern()
         {

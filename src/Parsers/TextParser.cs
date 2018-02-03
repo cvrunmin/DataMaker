@@ -32,9 +32,28 @@ namespace DataMaker.Parsers
             {
                 zone = value;
 
+                // Note: ZoneTextParser替换变量
+                Replaces:
+                var isChanged = false;
+                foreach (var i in zone)
+                {
+                    switch (i)
+                    {
+                        case "%SameTags%":
+                            zone.Remove(i);
+                            zone.AddRange(FileTree.GetAllIds(ItemSort.BlockTag));
+                            isChanged = true;
+                            break;
+                        default:
+                            break;
+                    }
+                    // 集合修改了，重新继续替换
+                    if (isChanged) goto Replaces;
+                }
+
                 // 加入列表项
-                comboBoxValue.Items.Clear();
-                comboBoxValue.Items.AddRange(Zone.ToArray());
+                comboBoxValue.AllItems.Clear();
+                comboBoxValue.AllItems.AddRange(zone.ToArray());
             }
         }
         public bool CanOutOfZone
@@ -60,8 +79,10 @@ namespace DataMaker.Parsers
             set
             {
                 this.value = value;
-                ValueChanged?.Invoke(this, new EventArgs());
+                var tempIndex = comboBoxValue.SelectionStart;
                 comboBoxValue.Text = value;
+                comboBoxValue.SelectionStart = tempIndex;
+                ValueChanged?.Invoke(this, new EventArgs());
             }
         }
         public string Json
@@ -121,7 +142,6 @@ namespace DataMaker.Parsers
             Width = width;
             comboBoxValue.Left = lblKey.Left + lblKey.Width + comboBoxValue.Margin.Left;
             comboBoxValue.Width = Width - lblKey.Left - lblKey.Width - comboBoxValue.Margin.Left - 50;
-            // FIXME: 高度Hardcode
             Height = 30;
         }
 
