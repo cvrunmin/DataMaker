@@ -475,6 +475,15 @@ namespace DataMaker.Languages {
         }
         
         /// <summary>
+        ///   查找类似 警告 的本地化字符串。
+        /// </summary>
+        internal static string mainform_infobar_warn {
+            get {
+                return ResourceManager.GetString("mainform_infobar_warn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 是否将你所作的更改保存到 {0} ？ 的本地化字符串。
         /// </summary>
         internal static string mainform_msgbox_savechangedornot {
@@ -522,9 +531,9 @@ namespace DataMaker.Languages {
         /// <summary>
         ///   查找类似 你所输入的内容超出范围！ 的本地化字符串。
         /// </summary>
-        internal static string textparser_error_outofzone {
+        internal static string textparser_warn_outofzone {
             get {
-                return ResourceManager.GetString("textparser_error_outofzone", resourceCulture);
+                return ResourceManager.GetString("textparser_warn_outofzone", resourceCulture);
             }
         }
     }

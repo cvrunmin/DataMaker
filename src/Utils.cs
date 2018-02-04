@@ -43,16 +43,6 @@ namespace DataMaker
         }
 
         /// <summary>
-        /// 将指定对象序列化为Json文本
-        /// </summary>
-        /// <param name="obj">指定对象</param>
-        /// <returns></returns>
-        public static string SerializeObjectToJson(object obj)
-        {
-            return JsonConvert.SerializeObject(obj, Formatting.Indented);
-        }
-
-        /// <summary>
         /// 获取指定文件名是否合法
         /// </summary>
         /// <param name="str">文件名</param>
@@ -110,6 +100,9 @@ namespace DataMaker
         public static string GetJsonPreffix(string key, string brackets)
         {
             var result = "";
+
+            if (!key.Contains("%NoKey%") && key.Contains("%NoBrackets%"))
+                throw new ArgumentException("Just has a key, doesn't have brackets.");
 
             if (!key.Contains("%NoKey%"))
                 result += $"\"{key}\":";

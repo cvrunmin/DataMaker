@@ -52,6 +52,7 @@
             this.comboBoxValue.Location = new System.Drawing.Point(0, 0);
             this.comboBoxValue.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.comboBoxValue.Name = "comboBoxValue";
+            this.comboBoxValue.SelectionStart = 0;
             this.comboBoxValue.Size = new System.Drawing.Size(326, 25);
             this.comboBoxValue.TabIndex = 2;
             this.comboBoxValue.TextChanged += new System.EventHandler(this.comboBoxValue_TextChanged);

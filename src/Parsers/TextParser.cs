@@ -39,16 +39,27 @@ namespace DataMaker.Parsers
                 {
                     switch (i)
                     {
-                        case "%SameTags%":
-                            zone.Remove(i);
-                            zone.AddRange(FileTree.GetAllIds(
-                                    ((Item)MainForm.GetInstance().EditedNode).Sort, true));
+                        case "%Same%":
+                            TryGetSameItems(i);
+                            isChanged = true;
+                            break;
+                        case "%SameWithoutItself%":
+                            TryGetSameItemsWithoutItself(i);
+                            isChanged = true;
+                            break;
+                        case "%Similar%":
+                            TryGetSimilarItems(i);
+                            isChanged = true;
+                            break;
+                        case "%SimilarWithouItself%":
+                            TryGetSimilarItemsWithoutItself(i);
                             isChanged = true;
                             break;
                         default:
                             break;
                     }
                     // 集合修改了，重新继续替换
+                    // 噢我的上帝，我竟然用上了goto
                     if (isChanged) goto Replaces;
                 }
 
@@ -57,6 +68,48 @@ namespace DataMaker.Parsers
                 comboBoxValue.AllItems.AddRange(zone.ToArray());
             }
         }
+
+        private void TryGetSimilarItemsWithoutItself(string i)
+        {
+            TryGetSimilarItems(i);
+            if (zone.Contains(MainForm.GetInstance().EditedNode.GetID()))
+                zone.Remove(MainForm.GetInstance().EditedNode.GetID());
+        }
+
+        private void TryGetSimilarItems(string i)
+        {
+            TryGetSameItems(i);
+
+            switch (((Item)MainForm.GetInstance().EditedNode).Sort)
+            {
+                case ItemSort.Function:
+                case ItemSort.FunctionTag:
+                    if (((Item)MainForm.GetInstance().EditedNode).Sort == ItemSort.Function)
+                        zone.AddRange(FileTree.GetAllIds(ItemSort.FunctionTag, true));
+                    else zone.AddRange(FileTree.GetAllIds(ItemSort.Function, true));
+                    break;
+                default:
+                    break;
+            }
+
+            zone.AddRange(FileTree.GetAllIds(
+                    ((Item)MainForm.GetInstance().EditedNode).Sort, true));
+        }
+
+        private void TryGetSameItemsWithoutItself(string i)
+        {
+            TryGetSameItems(i);
+            if (zone.Contains(MainForm.GetInstance().EditedNode.GetID()))
+                zone.Remove(MainForm.GetInstance().EditedNode.GetID());
+        }
+
+        private void TryGetSameItems(string i)
+        {
+            zone.Remove(i);
+            zone.AddRange(FileTree.GetAllIds(
+                    ((Item)MainForm.GetInstance().EditedNode).Sort, true));
+        }
+
         public bool CanOutOfZone
         {
             get => canOutOfZone;
@@ -153,7 +206,7 @@ namespace DataMaker.Parsers
             if (CanOutOfZone || comboBoxValue.AllItems.Contains(comboBoxValue.Text))
                 Value = comboBoxValue.Text;
             else
-                MainForm.ShowInfoBar("textparser_error_outofzone");
+                MainForm.ShowInfoBar("textparser_warn_outofzone");
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMaker", "DataMaker.csproj", "{C4414956-7813-43F3-B754-2BFF65F196F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMakerTests", "..\DataMakerTests\DataMakerTests.csproj", "{EA144EC2-D915-4211-BA49-1B3453DA1975}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{C4414956-7813-43F3-B754-2BFF65F196F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4414956-7813-43F3-B754-2BFF65F196F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4414956-7813-43F3-B754-2BFF65F196F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA144EC2-D915-4211-BA49-1B3453DA1975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA144EC2-D915-4211-BA49-1B3453DA1975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA144EC2-D915-4211-BA49-1B3453DA1975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA144EC2-D915-4211-BA49-1B3453DA1975}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74F8455E-ECE2-4090-84FB-E55B65D5B65E}
 	EndGlobalSection
 EndGlobal

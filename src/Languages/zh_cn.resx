@@ -229,8 +229,8 @@
   <data name="mainform_infobar_error" xml:space="preserve">
     <value>错误</value>
   </data>
-  <data name="mainform_infobar_error" xml:space="preserve">
-    <value>错误</value>
+  <data name="mainform_infobar_warn" xml:space="preserve">
+    <value>警告</value>
   </data>
   <data name="mainform_infobar_info" xml:space="preserve">
     <value>信息</value>
@@ -251,7 +251,7 @@
   </data>
   
   <!--TextParser-->
-  <data name="textparser_error_outofzone" xml:space="preserve">
+  <data name="textparser_warn_outofzone" xml:space="preserve">
     <value>你所输入的内容超出范围！</value>
   </data>
 
