@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using static DataMaker.Utils;
 
@@ -92,9 +93,6 @@ namespace DataMaker.Parsers
                 default:
                     break;
             }
-
-            zone.AddRange(FileTree.GetAllIds(
-                    ((Item)MainForm.GetInstance().EditedNode).Sort, true));
         }
 
         private void GetSameItemsWithoutItself(string i)

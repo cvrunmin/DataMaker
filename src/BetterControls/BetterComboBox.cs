@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -58,8 +59,8 @@ namespace DataMaker.BetterControls
 
             // 重新计时
             // 不着急立刻match，不然会卡
-            timerMatch.Enabled = false;
-            timerMatch.Enabled = true;
+            timerMatch.Stop();
+            timerMatch.Start();
             
             // 触发事件
             TextChanged(this, new EventArgs());
@@ -121,7 +122,7 @@ namespace DataMaker.BetterControls
             comboBoxContent.SelectionLength = selectionLength;
 
             // 停止计时
-            timerMatch.Enabled = false;
+            timerMatch.Stop();
         }
 
         private void BetterComboBox_Resize(object sender, EventArgs e)
