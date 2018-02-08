@@ -1,0 +1,22 @@
+{
+    "number": [
+        {
+            "key": "count",
+            "min": 1,
+            "max": 64,
+            "default": 1,
+            "show_index": 2
+        }
+    ],
+    "text": [
+        {
+            "key": "item",
+            "zone": [
+                "%Blocks%",
+                "%Items%"
+            ],
+            "can_out_of_zone": false,
+            "show_index": 1
+        }
+    ]
+}

@@ -1,0 +1,66 @@
+{
+	"text": [
+        {
+            "key": "type",
+            "default": "",
+            "zone": [
+                "crafting_shaped",
+                "crafting_shapeless",
+                "crafting_special_armordye",
+                "crafting_special_banneraddpattern",
+                "crafting_special_bannerduplicate",
+                "crafting_special_bookcloning",
+                "crafting_special_firework_rocket",
+                "crafting_special_firework_star",
+                "crafting_special_firework_star_fade",
+                "crafting_special_mapcloning",
+                "crafting_special_mapextending",
+                "crafting_special_repairitem",
+                "crafting_special_shielddecoration",
+                "crafting_special_shulkerboxcoloring",
+                "crafting_special_tippedarrow"
+            ],
+            "can_out_of_zone": false,
+            "show_index": 1
+        }
+    ],
+	"array": [
+        {
+            "key": "key",
+            "json": "recipe/key",
+            "conditions": [
+                [
+                    "%Value:type%==crafting_shaped"
+                ]
+            ],
+            "show_index": 2
+        },
+        {
+            "key": "ingredients",
+            "json": "recipe/item",
+            "conditions": [
+                [
+                    "%Value:type%==crafting_shapeless"
+                ]
+            ],
+            "show_index": 4
+        }
+    ],
+    "frame": [
+        {
+            "key": "pattern",
+            "json": "recipe/pattern",
+            "conditions": [
+                [
+                    "%Value:type%==crafting_shaped"
+                ]
+            ],
+            "show_index": 3
+        },
+        {
+            "key": "result",
+            "json": "recipe/item",
+            "show_index": 5
+        }
+    ]
+}

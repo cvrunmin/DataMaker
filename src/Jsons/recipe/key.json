@@ -1,0 +1,16 @@
+{
+    "text": [
+        {
+            "key": "key_name",
+            "ignore": true,
+            "show_index": 1
+        }
+    ],
+    "frame": [
+        {
+            "key": "%Value:key_name%",
+            "json": "recipe/item",
+            "show_index": 2
+        }
+    ]
+}
