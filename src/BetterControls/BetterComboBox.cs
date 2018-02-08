@@ -10,6 +10,7 @@ namespace DataMaker.BetterControls
     public partial class BetterComboBox : UserControl
     {
         public new event EventHandler TextChanged;
+        private List<string> allItems = new List<string>();
 
         public ComboBox.ObjectCollection Items => comboBoxContent.Items;
         public List<string> AllItems => allItems;
@@ -17,6 +18,11 @@ namespace DataMaker.BetterControls
         {
             get => comboBoxContent.SelectionStart;
             set => comboBoxContent.SelectionStart = value;
+        }
+        public int SelectionLength
+        {
+            get => comboBoxContent.SelectionLength;
+            set => comboBoxContent.SelectionLength = value;
         }
         public override string Text
         {
@@ -34,13 +40,21 @@ namespace DataMaker.BetterControls
             InitializeComponent();
             DarkTheme.Initialize(this);
         }
-
-        private List<string> allItems = new List<string>();
-
+        
         private void comboBoxContent_TextUpdated(object sender, EventArgs e)
         {
             // 显示下拉框
             comboBoxContent.DroppedDown = true;
+            // Fuck microsoft, for it always hide my cursor.
+            // Thx to https://stackoverflow.com/questions/1093067/why-combobox-hides-cursor-when-droppeddown-is-set
+            comboBoxContent.Cursor = Cursors.Default;
+
+            // 强制小写
+            var selectionStart = comboBoxContent.SelectionStart;
+            var selectionLength = comboBoxContent.SelectionLength;
+            comboBoxContent.Text = comboBoxContent.Text.ToLower();
+            comboBoxContent.SelectionStart = selectionStart;
+            comboBoxContent.SelectionLength = selectionLength;
 
             // 重新计时
             // 不着急立刻match，不然会卡
@@ -59,21 +73,29 @@ namespace DataMaker.BetterControls
             try
             {
                 // 存储所有Item
-                if (allItems == null)
+                if (allItems.Count == 0)
                 {
                     allItems.AddRange(comboBoxContent.Items.Cast<string>());
                 }
 
                 // 筛选合格的到result
                 var result = new List<string>();
+                // 首先筛选完整包含的
                 foreach (var i in allItems)
-                    if (Regex.IsMatch(
-                        i.ToString(),
-                        $".*{comboBoxContent.Text}.*",
-                        RegexOptions.IgnoreCase |
-                        RegexOptions.IgnorePatternWhitespace)
-                        )
+                {
+                    if (i.ToString().Contains(comboBoxContent.Text))
+                    {
                         result.Add(i.ToString());
+                    }
+                }
+                // 然后筛选包含所有字符的
+                foreach (var i in allItems)
+                {
+                    if (!result.Contains(i) && i.ToString().ContainsAllChars(comboBoxContent.Text))
+                    {
+                        result.Add(i.ToString());
+                    }
+                }
 
                 // 把合格的Items显示
                 comboBoxContent.Items.Clear();
@@ -89,12 +111,14 @@ namespace DataMaker.BetterControls
         {
             // 记录光标位置
             var selectionStart = comboBoxContent.SelectionStart;
-            
+            var selectionLength = comboBoxContent.SelectionLength;
+
             // 匹配
             MatchPattern();
 
             // 把光标的位置复原
             comboBoxContent.SelectionStart = selectionStart;
+            comboBoxContent.SelectionLength = selectionLength;
 
             // 停止计时
             timerMatch.Enabled = false;

@@ -277,5 +277,34 @@ namespace DataMaker
         /// </summary>
         /// <param name="node">指定节点</param>
         public static bool IsFile(this TreeNode node) => File.Exists(node.GetFilePath());
+
+        /// <summary>
+        /// 字符串是否包含指定字符串的所有字符
+        /// （忽略空格）
+        /// </summary>
+        /// <param name="source">源字符串</param>
+        /// <param name="destination">指定字符串</param>
+        /// <returns>是否包含</returns>
+        public static bool ContainsAllChars(this string source, string destination)
+        {
+            if (string.IsNullOrEmpty(destination))
+            {
+                return true;
+            }
+
+            var chars = destination.ToCharArray();
+            foreach (var i in chars)
+            {
+                if (i != ' ')
+                {
+                    if (!source.Contains(i.ToString()))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
     }
 }

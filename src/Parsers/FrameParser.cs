@@ -90,8 +90,8 @@ namespace DataMaker.Parsers
 
         public void SetParser(string json)
         {
-            try
-            {
+            //try
+            //{
                 var jobj = JsonConvert.DeserializeObject<JObject>(json);
                 Key = jobj["key"].ToString();
                 var parsersJson = File.ReadAllText(Application.StartupPath + "/Jsons/" +
@@ -148,11 +148,11 @@ namespace DataMaker.Parsers
                     // 设置Parsers的位置
                     SetSize(ClientSize.Width);
                 }
-            }
-            catch
-            {
-                MainForm.ShowInfoBar("parsers_error_loadbad");
-            }
+            //}
+            //catch
+            //{
+            //    MainForm.ShowInfoBar("parsers_error_loadbad");
+            //}
         }
     }
 }

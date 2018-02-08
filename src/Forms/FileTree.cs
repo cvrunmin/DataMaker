@@ -103,7 +103,7 @@ namespace DataMaker
         /* 使用 TreeNode 的各个属性储存不同信息
          * Tag: Sort 与 Type
          * Text: 显示名称
-         * TooltipText: 实际文件名
+         * ToolTipText: 实际文件名
          * Name: 实际目录名
          */
         private static string dataPackPath;
@@ -492,7 +492,11 @@ $@"{{
         /// </summary>
         private static Item SelectedItem => (Item)GetInstance().tvwFiles.SelectedNode;
 
-        public static string DataPackPath { get => dataPackPath; set => dataPackPath = value; }
+        public static string DataPackPath
+        {
+            get => dataPackPath;
+            set => dataPackPath = value;
+        }
         #endregion
 
         #region 启动时初始化
@@ -1202,6 +1206,7 @@ $@"{{
                     }
 
                     InitializeNode(node, true);
+                    MainForm.GetInstance().EditedNode = node;
 
                     try
                     {

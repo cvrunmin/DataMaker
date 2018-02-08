@@ -156,9 +156,12 @@ $@"{{
         /// </summary>
         private void SaveEditedValue()
         {
-            Values[EditedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
-            // 触发一次 Setter
-            Values = Values;
+            if (Values.Count > EditedIndex)
+            {
+                Values[EditedIndex] = frameRoot.Json.Remove(frameRoot.Json.Length - 1);
+                // 触发一次 Setter
+                Values = Values;
+            }
         }
 
         /// <summary>

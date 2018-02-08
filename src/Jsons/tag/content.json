@@ -2,7 +2,6 @@
 	"text": [{
 		"key": "%NoKey%",
 		"zone": [
-			"%SameWithoutItself%",
 			"%SimilarWithoutItself%"
 		],
 		"can_out_of_zone": false

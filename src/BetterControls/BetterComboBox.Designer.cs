@@ -49,7 +49,7 @@
             // 
             // timerMatch
             // 
-            this.timerMatch.Interval = 250;
+            this.timerMatch.Interval = 500;
             this.timerMatch.Tick += new System.EventHandler(this.timerMatch_Tick);
             // 
             // BetterComboBox

@@ -221,6 +221,17 @@ namespace DataMaker.Forms
 
         private void ExitApplication()
         {
+            if (isChanged)
+            {
+                var result = ShowMessagebox(
+                    Lang("mainform_msgbox_savechangedornot", editedNode.ToolTipText), 
+                    MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    SaveFile();
+                }
+            }
+
             FileTree.GetInstance().Resize -= Form_Resize;
             Application.Exit();
         }

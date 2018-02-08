@@ -40,19 +40,19 @@ namespace DataMaker.Parsers
                     switch (i)
                     {
                         case "%Same%":
-                            TryGetSameItems(i);
+                            GetSameItems(i);
                             isChanged = true;
                             break;
                         case "%SameWithoutItself%":
-                            TryGetSameItemsWithoutItself(i);
+                            GetSameItemsWithoutItself(i);
                             isChanged = true;
                             break;
                         case "%Similar%":
-                            TryGetSimilarItems(i);
+                            GetSimilarItems(i);
                             isChanged = true;
                             break;
-                        case "%SimilarWithouItself%":
-                            TryGetSimilarItemsWithoutItself(i);
+                        case "%SimilarWithoutItself%":
+                            GetSimilarItemsWithoutItself(i);
                             isChanged = true;
                             break;
                         default:
@@ -69,16 +69,16 @@ namespace DataMaker.Parsers
             }
         }
 
-        private void TryGetSimilarItemsWithoutItself(string i)
+        private void GetSimilarItemsWithoutItself(string i)
         {
-            TryGetSimilarItems(i);
+            GetSimilarItems(i);
             if (zone.Contains(MainForm.GetInstance().EditedNode.GetID()))
                 zone.Remove(MainForm.GetInstance().EditedNode.GetID());
         }
 
-        private void TryGetSimilarItems(string i)
+        private void GetSimilarItems(string i)
         {
-            TryGetSameItems(i);
+            GetSameItems(i);
 
             switch (((Item)MainForm.GetInstance().EditedNode).Sort)
             {
@@ -86,7 +86,8 @@ namespace DataMaker.Parsers
                 case ItemSort.FunctionTag:
                     if (((Item)MainForm.GetInstance().EditedNode).Sort == ItemSort.Function)
                         zone.AddRange(FileTree.GetAllIds(ItemSort.FunctionTag, true));
-                    else zone.AddRange(FileTree.GetAllIds(ItemSort.Function, true));
+                    else
+                        zone.AddRange(FileTree.GetAllIds(ItemSort.Function, true));
                     break;
                 default:
                     break;
@@ -96,14 +97,14 @@ namespace DataMaker.Parsers
                     ((Item)MainForm.GetInstance().EditedNode).Sort, true));
         }
 
-        private void TryGetSameItemsWithoutItself(string i)
+        private void GetSameItemsWithoutItself(string i)
         {
-            TryGetSameItems(i);
+            GetSameItems(i);
             if (zone.Contains(MainForm.GetInstance().EditedNode.GetID()))
                 zone.Remove(MainForm.GetInstance().EditedNode.GetID());
         }
 
-        private void TryGetSameItems(string i)
+        private void GetSameItems(string i)
         {
             zone.Remove(i);
             zone.AddRange(FileTree.GetAllIds(
@@ -133,9 +134,15 @@ namespace DataMaker.Parsers
             set
             {
                 this.value = value;
+
                 var tempIndex = comboBoxValue.SelectionStart;
+                var tempLength = comboBoxValue.SelectionLength;
+
                 comboBoxValue.Text = value;
+
                 comboBoxValue.SelectionStart = tempIndex;
+                comboBoxValue.SelectionLength = tempLength;
+
                 ValueChanged?.Invoke(this, new EventArgs());
             }
         }
@@ -172,16 +179,26 @@ namespace DataMaker.Parsers
         {
             try
             {
-                var jobj = JsonConvert.DeserializeObject<JObject>(json);
-                Key = jobj["key"].ToString();
-                if (jobj["default"] != null)
-                    Value = Default = jobj["default"].ToString();
-                if (jobj["can_out_of_zone"] != null)
-                    CanOutOfZone = jobj["can_out_of_zone"].ToObject<bool>();
-                if (jobj["zone"] != null)
-                    Zone = ((JArray)jobj["zone"]).ToObject<List<string>>();
+                var jObj = JsonConvert.DeserializeObject<JObject>(json);
+                Key = jObj["key"].ToString();
+                if (jObj["default"] != null)
+                {
+                    Value = Default = jObj["default"].ToString();
+                }
+
+                if (jObj["can_out_of_zone"] != null)
+                {
+                    CanOutOfZone = jObj["can_out_of_zone"].ToObject<bool>();
+                }
+
+                if (jObj["zone"] != null)
+                {
+                    Zone = ((JArray)jObj["zone"]).ToObject<List<string>>();
+                }
                 else
+                {
                     Zone = new List<string>();
+                }
 
                 MainForm.ShowInfoBar("parsers_info_loadsuccessfully");
             }
