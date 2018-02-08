@@ -1,6 +1,5 @@
-[
-    {
-        "name": "vanilla",
+{
+    "vanilla": {
         "advancements": [
             "minecraft:recipes/root",
             "minecraft:recipes/brewing/blaze_powder",
@@ -957,4 +956,4 @@
             "#minecraft:init"
         ]
     }
-]
+}

@@ -322,6 +322,7 @@ namespace DataMaker
             var json =
 $@"{{
     ""key"": ""%NoKey%"",
+    ""show_index"": 0,
     ""json"": ""{rootParserFileName}""
 }}";
             return json;
@@ -555,25 +556,48 @@ $@"{{
 
             // 加载依赖项
             var content = File.ReadAllText($@"{dataPackPath}\!dependencies.json");
-            var jAry = JsonConvert.DeserializeObject<JArray>(content);
-            foreach (var i in jAry)
+            var jObj = JsonConvert.DeserializeObject<JObject>(content);
+            foreach (JProperty i in jObj.Children())
             {
-                if (i["advancements"] != null)
-                    DependentAdvancements.AddRange(i["advancements"].ToObject<List<string>>());
-                if (i["recipes"] != null)
-                    DependentRecipes.AddRange(i["recipes"].ToObject<List<string>>());
-                if (i["block_tags"] != null)
-                    DependentBlockTags.AddRange(i["block_tags"].ToObject<List<string>>());
-                if (i["item_tags"] != null)
-                    DependentItemTags.AddRange(i["item_tags"].ToObject<List<string>>());
-                if (i["function_tags"] != null)
-                    DependentFunctionTags.AddRange(i["function_tags"].ToObject<List<string>>());
-                if (i["structures"] != null)
-                    DependentStructures.AddRange(i["structures"].ToObject<List<string>>());
-                if (i["functions"] != null)
-                    DependentFunctions.AddRange(i["functions"].ToObject<List<string>>());
-                if (i["loot_tables"] != null)
-                    DependentLootTables.AddRange(i["loot_tables"].ToObject<List<string>>());
+                if (i.Value["advancements"] != null)
+                {
+                    DependentAdvancements.AddRange(i.Value["advancements"].ToObject<List<string>>());
+                }
+
+                if (i.Value["recipes"] != null)
+                {
+                    DependentRecipes.AddRange(i.Value["recipes"].ToObject<List<string>>());
+                }
+
+                if (i.Value["block_tags"] != null)
+                {
+                    DependentBlockTags.AddRange(i.Value["block_tags"].ToObject<List<string>>());
+                }
+
+                if (i.Value["item_tags"] != null)
+                {
+                    DependentItemTags.AddRange(i.Value["item_tags"].ToObject<List<string>>());
+                }
+
+                if (i.Value["function_tags"] != null)
+                {
+                    DependentFunctionTags.AddRange(i.Value["function_tags"].ToObject<List<string>>());
+                }
+
+                if (i.Value["structures"] != null)
+                {
+                    DependentStructures.AddRange(i.Value["structures"].ToObject<List<string>>());
+                }
+
+                if (i.Value["functions"] != null)
+                {
+                    DependentFunctions.AddRange(i.Value["functions"].ToObject<List<string>>());
+                }
+
+                if (i.Value["loot_tables"] != null)
+                {
+                    DependentLootTables.AddRange(i.Value["loot_tables"].ToObject<List<string>>());
+                }
             }
         }
 
@@ -595,7 +619,7 @@ $@"{{
             }
             if (!File.Exists(DataPackPath + @"\!dependencies.json"))
             {
-                // 创建默认的 .spgodingdatapackmakerproject 文件
+                // 创建默认的 !dependencies.json 文件
                 // 依赖默认
                 File.Copy(@"Jsons\!dependencies.json", DataPackPath + @"\!dependencies.json");
             }

@@ -2,15 +2,16 @@
     "text": [
         {
             "key": "key_name",
+            "show_index": 0,
             "ignore": true,
-            "show_index": 1
+            "length": 1
         }
     ],
     "frame": [
         {
             "key": "%Value:key_name%",
-            "json": "recipe/item",
-            "show_index": 2
+            "show_index": 1,
+            "json": "recipe/item"
         }
     ]
 }

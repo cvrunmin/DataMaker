@@ -1,6 +1,7 @@
 {
 	"text": [{
 		"key": "%NoKey%",
+		"show_index": 0,
 		"zone": [
 			"%SimilarWithoutItself%"
 		],

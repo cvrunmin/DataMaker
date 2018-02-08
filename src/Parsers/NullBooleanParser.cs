@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using static DataMaker.Utils;
 
@@ -21,6 +22,25 @@ namespace DataMaker.Parsers
         public event EventHandler ValueChanged;
 
         public string Key { get; set; }
+
+        public int ShowIndex
+        {
+            get;
+            set;
+        }
+
+        public bool Ignore
+        {
+            get;
+            set;
+        }
+
+        public List<List<string>> Conditions
+        {
+            get;
+            set;
+        } = new List<List<string>>();
+
         public string FrameFileName
         {
             get => frameFileName;
@@ -66,9 +86,9 @@ namespace DataMaker.Parsers
             {
                 try
                 {
-                    var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                    if (jobj[Key] != null)
-                        Value = bool.Parse(jobj[Key].ToString());
+                    var jObj = JsonConvert.DeserializeObject<JObject>(value);
+                    if (jObj[Key] != null)
+                        Value = bool.Parse(jObj[Key].ToString());
                     else
                         Value = null;
 
@@ -85,10 +105,21 @@ namespace DataMaker.Parsers
         {
             try
             {
-                var jobj = JsonConvert.DeserializeObject<JObject>(json);
-                Key = jobj["key"].ToString();
-                if (jobj["default"] != null)
-                    Value = bool.Parse(jobj["default"].ToString());
+                var jObj = JsonConvert.DeserializeObject<JObject>(json);
+                Key = jObj["key"].ToString();
+                ShowIndex = int.Parse(jObj["show_index"].ToString());
+                if (jObj["ignore"] != null)
+                {
+                    Ignore = jObj["ignore"].ToObject<bool>();
+                }
+                if (jObj["conditions"] != null)
+                {
+                    Conditions = jObj["conditions"].ToObject<List<List<string>>>();
+                }
+                if (jObj["default"] != null)
+                {
+                    Value = bool.Parse(jObj["default"].ToString());
+                }
 
                 MainForm.ShowInfoBar("parsers_info_loadsuccessfully");
             }

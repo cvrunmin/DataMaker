@@ -35,6 +35,7 @@
             // 
             // mainPanel
             // 
+            this.mainPanel.AutoScroll = false;
             this.mainPanel.Controls.Add(this.lblKey);
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -56,7 +57,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
             this.Controls.Add(this.mainPanel);
             this.Name = "FrameParser";
             this.Size = new System.Drawing.Size(342, 253);

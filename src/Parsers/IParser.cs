@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using static DataMaker.Utils;
 
 namespace DataMaker.Parsers
@@ -20,6 +21,21 @@ namespace DataMaker.Parsers
         /// 该 Parser 所编辑的 Json
         /// </summary>
         string Json { get; set; }
+
+        /// <summary>
+        /// 该 Parser 的显示位置
+        /// </summary>
+        int ShowIndex { get; set; }
+
+        /// <summary>
+        /// 该 Parser 是否被忽略
+        /// </summary>
+        bool Ignore { get; set; }
+
+        /// <summary>
+        /// 该 Parser 的可用条件
+        /// </summary>
+        List<List<string>> Conditions { get; set; }
 
         /// <summary>
         /// 根据指定的Json文件设置parser

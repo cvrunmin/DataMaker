@@ -31,6 +31,22 @@ namespace DataMaker.Parsers
 
         public string Key { get; set; }
 
+        public int ShowIndex
+        {
+            get;
+            set;
+        }
+        public bool Ignore
+        {
+            get;
+            set;
+        }
+        public List<List<string>> Conditions
+        {
+            get;
+            set;
+        } = new List<List<string>>();
+
         public string FrameFileName
         {
             get => frameFileName;
@@ -54,7 +70,7 @@ namespace DataMaker.Parsers
             }
         }
 
-        private List<string> Values
+        public List<string> Values
         {
             get => values;
             set
@@ -119,23 +135,34 @@ namespace DataMaker.Parsers
 
         public void SetParser(string json)
         {
-            try
-            {
-                var jobj = JsonConvert.DeserializeObject<JObject>(json);
-                Key = jobj["key"].ToString();
+            //try
+            //{
+                var jObj = JsonConvert.DeserializeObject<JObject>(json);
+                Key = jObj["key"].ToString();
+                ShowIndex = int.Parse(jObj["show_index"].ToString());
+                if (jObj["ignore"] != null)
+                {
+                    Ignore = jObj["ignore"].ToObject<bool>();
+                }
+                if (jObj["conditions"] != null)
+                {
+                    Conditions = jObj["conditions"].ToObject<List<List<string>>>();
+                }
+
                 var rootParserJson =
 $@"{{
     ""key"": ""%NoKey%%NoBrackets%"",
-    ""json"": ""{jobj["json"].ToString()}""
+    ""show_index"": 0,
+    ""json"": ""{jObj["json"].ToString()}""
 }}";
                 frameRoot.SetParser(rootParserJson);
 
                 MainForm.ShowInfoBar("parsers_info_loadsuccessfully");
-            }
-            catch
-            {
-                MainForm.ShowInfoBar("parsers_error_loadbad");
-            }
+            //}
+            //catch
+            //{
+            //    MainForm.ShowInfoBar("parsers_error_loadbad");
+            //}
         }
 
         public void SetSize(int width)

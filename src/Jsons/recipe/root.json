@@ -2,6 +2,7 @@
 	"text": [
         {
             "key": "type",
+            "show_index": 0,
             "default": "",
             "zone": [
                 "crafting_shaped",
@@ -20,47 +21,46 @@
                 "crafting_special_shulkerboxcoloring",
                 "crafting_special_tippedarrow"
             ],
-            "can_out_of_zone": false,
-            "show_index": 1
+            "can_out_of_zone": false
         }
     ],
 	"array": [
         {
             "key": "key",
+            "show_index": 1,
             "json": "recipe/key",
             "conditions": [
                 [
                     "%Value:type%==crafting_shaped"
                 ]
-            ],
-            "show_index": 2
+            ]
         },
         {
             "key": "ingredients",
+            "show_index": 3,
             "json": "recipe/item",
             "conditions": [
                 [
                     "%Value:type%==crafting_shapeless"
                 ]
-            ],
-            "show_index": 4
+            ]
         }
     ],
     "frame": [
         {
             "key": "pattern",
+            "show_index": 2,
             "json": "recipe/pattern",
             "conditions": [
                 [
                     "%Value:type%==crafting_shaped"
                 ]
-            ],
-            "show_index": 3
+            ]
         },
         {
             "key": "result",
-            "json": "recipe/item",
-            "show_index": 5
+            "show_index": 4,
+            "json": "recipe/item"
         }
     ]
 }

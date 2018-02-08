@@ -24,8 +24,36 @@ namespace DataMaker.Parsers
             DarkTheme.Initialize(this);
         }
 
-        public string Key { get; set; }
-        public string Default { get; set; }
+        public string Key
+        {
+            get;
+            set;
+        }
+
+        public int ShowIndex
+        {
+            get;
+            set;
+        }
+
+        public bool Ignore
+        {
+            get;
+            set;
+        }
+
+        public List<List<string>> Conditions
+        {
+            get;
+            set;
+        } = new List<List<string>>();
+
+        public string Default
+        {
+            get;
+            set;
+        }
+
         public List<string> Zone
         {
             get => zone;
@@ -160,8 +188,8 @@ namespace DataMaker.Parsers
             {
                 try
                 {
-                    var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                    if (jobj[Key] != null) Value = jobj[Key].ToString();
+                    var jObj = JsonConvert.DeserializeObject<JObject>(value);
+                    if (jObj[Key] != null) Value = jObj[Key].ToString();
                     else Value = Default;
 
                     MainForm.ShowInfoBar("parsers_info_parsesuccessfully");
@@ -175,20 +203,27 @@ namespace DataMaker.Parsers
 
         public void SetParser(string json)
         {
-            try
-            {
+            //try
+            //{
                 var jObj = JsonConvert.DeserializeObject<JObject>(json);
                 Key = jObj["key"].ToString();
+                ShowIndex = int.Parse(jObj["show_index"].ToString());
+                if (jObj["ignore"] != null)
+                {
+                    Ignore = jObj["ignore"].ToObject<bool>();
+                }
+                if (jObj["conditions"] != null)
+                {
+                    Conditions = jObj["conditions"].ToObject<List<List<string>>>();
+                }
                 if (jObj["default"] != null)
                 {
                     Value = Default = jObj["default"].ToString();
                 }
-
                 if (jObj["can_out_of_zone"] != null)
                 {
                     CanOutOfZone = jObj["can_out_of_zone"].ToObject<bool>();
                 }
-
                 if (jObj["zone"] != null)
                 {
                     Zone = ((JArray)jObj["zone"]).ToObject<List<string>>();
@@ -199,11 +234,11 @@ namespace DataMaker.Parsers
                 }
 
                 MainForm.ShowInfoBar("parsers_info_loadsuccessfully");
-            }
-            catch
-            {
-                MainForm.ShowInfoBar("parsers_error_loadbad");
-            }
+            //}
+            //catch
+            //{
+            //    MainForm.ShowInfoBar("parsers_error_loadbad");
+            //}
         }
 
         public void SetSize(int width)

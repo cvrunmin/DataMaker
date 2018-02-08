@@ -2,21 +2,21 @@
     "number": [
         {
             "key": "count",
+            "show_index": 1,
             "min": 1,
             "max": 64,
-            "default": 1,
-            "show_index": 2
+            "default": 1
         }
     ],
     "text": [
         {
             "key": "item",
+            "show_index": 0,
             "zone": [
                 "%Blocks%",
                 "%Items%"
             ],
-            "can_out_of_zone": false,
-            "show_index": 1
+            "can_out_of_zone": false
         }
     ]
 }

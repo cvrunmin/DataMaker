@@ -1,10 +1,12 @@
 {
 	"boolean": [{
 		"key": "replace",
+		"show_index": 0,
 		"default": false
 	}],
 	"array": [{
 		"key": "values",
+		"show_index": 1,
 		"json": "tag/content"
 	}]
 }

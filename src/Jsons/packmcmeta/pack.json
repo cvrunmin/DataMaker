@@ -1,10 +1,12 @@
 {
 	"number": [{
 		"key": "pack_format",
+		"show_index": 0,
 		"default": "3"
 	}],
 	"text": [{
 		"key": "description",
+		"show_index": 1,
 		"default": "A data pack."
 	}]
 }

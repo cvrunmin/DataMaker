@@ -1,6 +1,7 @@
 {
 	"frame": [{
 		"key": "pack",
+		"show_index": 0,
 		"json": "packmcmeta/pack"
 	}]
 }

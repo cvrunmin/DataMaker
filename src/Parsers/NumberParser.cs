@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using static DataMaker.Utils;
 
@@ -23,6 +24,24 @@ namespace DataMaker.Parsers
         }
 
         public string Key { get; set; }
+
+        public int ShowIndex
+        {
+            get;
+            set;
+        }
+
+        public bool Ignore
+        {
+            get;
+            set;
+        }
+
+        public List<List<string>> Conditions
+        {
+            get;
+            set;
+        } = new List<List<string>>();
 
         public decimal Default { get; set; }
 
@@ -61,18 +80,18 @@ namespace DataMaker.Parsers
             }
             set
             {
-                try
-                {
-                    var jobj = JsonConvert.DeserializeObject<JObject>(value);
-                    if (jobj[Key] != null) Value = decimal.Parse(jobj[Key].ToString());
+                //try
+                //{
+                    var jObj = JsonConvert.DeserializeObject<JObject>(value);
+                    if (jObj[Key] != null) Value = decimal.Parse(jObj[Key].ToString());
                     else Value = Default;
 
                     MainForm.ShowInfoBar("parsers_info_parsesuccessfully");
-                }
-                catch
-                {
-                    MainForm.ShowInfoBar("parsers_error_parsebad");
-                }
+                //}
+                //catch
+                //{
+                //    MainForm.ShowInfoBar("parsers_error_parsebad");
+                //}
             }
         }
         public decimal Max
@@ -98,14 +117,29 @@ namespace DataMaker.Parsers
         {
             try
             {
-                var jobj = JsonConvert.DeserializeObject<JObject>(json);
-                Key = jobj["key"].ToString();
-                if (jobj["default"] != null)
-                    Value = Default = decimal.Parse(jobj["default"].ToString());
-                if (jobj["max"] != null)
-                    Max = decimal.Parse(jobj["max"].ToString());
-                if (jobj["min"] != null)
-                    Min = decimal.Parse(jobj["min"].ToString());
+                var jObj = JsonConvert.DeserializeObject<JObject>(json);
+                Key = jObj["key"].ToString();
+                ShowIndex = int.Parse(jObj["show_index"].ToString());
+                if (jObj["ignore"] != null)
+                {
+                    Ignore = jObj["ignore"].ToObject<bool>();
+                }
+                if (jObj["conditions"] != null)
+                {
+                    Conditions = jObj["conditions"].ToObject<List<List<string>>>();
+                }
+                if (jObj["default"] != null)
+                {
+                    Value = Default = decimal.Parse(jObj["default"].ToString());
+                }
+                if (jObj["max"] != null)
+                {
+                    Max = decimal.Parse(jObj["max"].ToString());
+                }
+                if (jObj["min"] != null)
+                {
+                    Min = decimal.Parse(jObj["min"].ToString());
+                }
 
                 MainForm.ShowInfoBar("parsers_info_loadsuccessfully");
             }
