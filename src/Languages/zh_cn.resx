@@ -261,7 +261,7 @@
     <value></value>
   </data>
   
-  <data name="key_packmcmeta_packmcmeta_pack" xml:space="preserve">
+  <data name="key_packmcmeta_root_pack" xml:space="preserve">
     <value>信息</value>
   </data>
   <data name="key_packmcmeta_pack_pack_format" xml:space="preserve">
@@ -270,32 +270,44 @@
   <data name="key_packmcmeta_pack_description" xml:space="preserve">
     <value>描述</value>
   </data>
-  <data name="key_tag_tag_replace" xml:space="preserve">
+  <data name="key_tag_root_replace" xml:space="preserve">
     <value>是否覆盖</value>
   </data>
-  <data name="key_tag_tag_values" xml:space="preserve">
+  <data name="key_tag_root_values" xml:space="preserve">
     <value>值</value>
   </data>
-
+  <data name="key_recipe_root_type" xml:space="preserve">
+    <value>种类</value>
+  </data>
+  <data name="key_recipe_root_key" xml:space="preserve">
+    <value>标识符</value>
+  </data>
+  <data name="key_recipe_root_ingredients" xml:space="preserve">
+    <value>原料</value>
+  </data>
+  <data name="key_recipe_root_ingredient" xml:space="preserve">
+    <value>原料</value>
+  </data>
+  
   <!--Descriptions-->
 
   <data name="description_" xml:space="preserve">
     <value></value>
   </data>
 
-  <data name="description_packmcmeta_pack" xml:space="preserve">
+  <data name="description_packmcmeta_root_pack" xml:space="preserve">
     <value>存放数据包信息。展开进行编辑。</value>
   </data>
-  <data name="description_pack_pack_format" xml:space="preserve">
+  <data name="description_packmcmeta_pack_pack_format" xml:space="preserve">
     <value>数据包版本，可以是任何数字。</value>
   </data>
-  <data name="description_pack_description" xml:space="preserve">
+  <data name="description_packmcmeta_pack_description" xml:space="preserve">
     <value>一段描述，此字段可以为空。在数据包列表下，光标移动到对应的数据包时会显示描述。</value>
   </data>
-  <data name="description_tag_replace" xml:space="preserve">
+  <data name="description_tag_root_replace" xml:space="preserve">
     <value>该标签是否要覆盖掉低优先级的数据包中的相同标签。设置为“否”将会把内容合并到该标签，而不是覆盖。</value>
   </data>
-  <data name="description_tag_values" xml:space="preserve">
+  <data name="description_tag_root_values" xml:space="preserve">
     <value>一堆物品，方块或函数。可以放入其他同类型的标签。</value>
   </data>
 

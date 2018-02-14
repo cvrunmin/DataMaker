@@ -305,16 +305,17 @@ namespace DataMaker
                 case ItemSort.LootTable:
                     break;
                 case ItemSort.Recipe:
+                    rootParserFileName = "recipe/root";
                     break;
                 case ItemSort.Structure:
                     break;
                 case ItemSort.BlockTag:
                 case ItemSort.ItemTag:
                 case ItemSort.FunctionTag:
-                    rootParserFileName = "tag/tag";
+                    rootParserFileName = "tag/root";
                     break;
                 case ItemSort.PackMcmeta:
-                    rootParserFileName = "packmcmeta/packmcmeta";
+                    rootParserFileName = "packmcmeta/root";
                     break;
             }
 

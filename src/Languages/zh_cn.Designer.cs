@@ -72,45 +72,45 @@ namespace DataMaker.Languages {
         /// <summary>
         ///   查找类似 一段描述，此字段可以为空。在数据包列表下，光标移动到对应的数据包时会显示描述。 的本地化字符串。
         /// </summary>
-        internal static string description_pack_description {
+        internal static string description_packmcmeta_pack_description {
             get {
-                return ResourceManager.GetString("description_pack_description", resourceCulture);
+                return ResourceManager.GetString("description_packmcmeta_pack_description", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 数据包版本，可以是任何数字。 的本地化字符串。
         /// </summary>
-        internal static string description_pack_pack_format {
+        internal static string description_packmcmeta_pack_pack_format {
             get {
-                return ResourceManager.GetString("description_pack_pack_format", resourceCulture);
+                return ResourceManager.GetString("description_packmcmeta_pack_pack_format", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 存放数据包信息。展开进行编辑。 的本地化字符串。
         /// </summary>
-        internal static string description_packmcmeta_pack {
+        internal static string description_packmcmeta_root_pack {
             get {
-                return ResourceManager.GetString("description_packmcmeta_pack", resourceCulture);
+                return ResourceManager.GetString("description_packmcmeta_root_pack", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 该标签是否要覆盖掉低优先级的数据包中的相同标签。设置为“否”将会把内容合并到该标签，而不是覆盖。 的本地化字符串。
         /// </summary>
-        internal static string description_tag_replace {
+        internal static string description_tag_root_replace {
             get {
-                return ResourceManager.GetString("description_tag_replace", resourceCulture);
+                return ResourceManager.GetString("description_tag_root_replace", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 一堆物品，方块或函数。可以放入其他同类型的标签。 的本地化字符串。
         /// </summary>
-        internal static string description_tag_values {
+        internal static string description_tag_root_values {
             get {
-                return ResourceManager.GetString("description_tag_values", resourceCulture);
+                return ResourceManager.GetString("description_tag_root_values", resourceCulture);
             }
         }
         
@@ -423,27 +423,63 @@ namespace DataMaker.Languages {
         /// <summary>
         ///   查找类似 信息 的本地化字符串。
         /// </summary>
-        internal static string key_packmcmeta_packmcmeta_pack {
+        internal static string key_packmcmeta_root_pack {
             get {
-                return ResourceManager.GetString("key_packmcmeta_packmcmeta_pack", resourceCulture);
+                return ResourceManager.GetString("key_packmcmeta_root_pack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 原料 的本地化字符串。
+        /// </summary>
+        internal static string key_recipe_root_ingredient {
+            get {
+                return ResourceManager.GetString("key_recipe_root_ingredient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 原料 的本地化字符串。
+        /// </summary>
+        internal static string key_recipe_root_ingredients {
+            get {
+                return ResourceManager.GetString("key_recipe_root_ingredients", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 标识符 的本地化字符串。
+        /// </summary>
+        internal static string key_recipe_root_key {
+            get {
+                return ResourceManager.GetString("key_recipe_root_key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 种类 的本地化字符串。
+        /// </summary>
+        internal static string key_recipe_root_type {
+            get {
+                return ResourceManager.GetString("key_recipe_root_type", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 是否覆盖 的本地化字符串。
         /// </summary>
-        internal static string key_tag_tag_replace {
+        internal static string key_tag_root_replace {
             get {
-                return ResourceManager.GetString("key_tag_tag_replace", resourceCulture);
+                return ResourceManager.GetString("key_tag_root_replace", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 值 的本地化字符串。
         /// </summary>
-        internal static string key_tag_tag_values {
+        internal static string key_tag_root_values {
             get {
-                return ResourceManager.GetString("key_tag_tag_values", resourceCulture);
+                return ResourceManager.GetString("key_tag_root_values", resourceCulture);
             }
         }
         

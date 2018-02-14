@@ -249,13 +249,19 @@
     <None Include="Jsons\packmcmeta\pack.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Jsons\packmcmeta\packmcmeta.json">
+    <None Include="Jsons\packmcmeta\root.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Jsons\recipe\item.json" />
-    <None Include="Jsons\recipe\key.json" />
-    <None Include="Jsons\recipe\root.json" />
-    <None Include="Jsons\tag\tag.json">
+    <None Include="Jsons\recipe\item.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Jsons\recipe\key.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Jsons\recipe\root.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Jsons\tag\root.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Jsons\tag\content.json">
